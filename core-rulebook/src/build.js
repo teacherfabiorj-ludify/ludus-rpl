@@ -31,6 +31,8 @@ const sizeOf = (() => {
 })();
 
 const GAME_NAME = "Ludify RPL"; // locked 12/08/2026 — Roleplaying Language
+// O livro do aluno. Trocar para "Player's Book" é uma linha só, quando o Fábio decidir.
+const BOOK_NAME = "Core Rulebook";
 
 // ---- Palette (shared across Core Rulebook AND Master's Guide for visual consistency) ----
 const ACCENT = "2A78D6";
@@ -375,7 +377,8 @@ const PAGES = {
   "Ch. 10": "32",
   "Ch. 11": "34",
   "Ch. 12": "35",
-  "Appendix A": "36",
+  "Door Section": "36",
+  "Appendix A": "44",
 };
 
 const contentsRows = [
@@ -391,6 +394,7 @@ const contentsRows = [
   ["Ch. 10 — Table Etiquette", "The four house rules that keep this a safe place to make mistakes."],
   ["Ch. 11 — Your Responsibilities", "Homework, punctuality, showing up ready."],
   ["Ch. 12 — Session Zero Checklist", "What to agree on before your very first adventure."],
+  ["Door Section — The Tallow Coast", "The peoples, the gods and the plain facts of the Fantasy world — everything you need to build a character in it."],
   ["Appendix A — As Regras em Português", "The core mechanics, summarised in Portuguese, for players still starting out."],
 ];
 
@@ -590,7 +594,7 @@ function chapter3() {
   ));
   children.push(calloutBox(
     "In Practice",
-    `This is also what keeps every Archetype fair against every other, no matter which world you're playing in — a Warrior in the Fantasy setting and a Netrunner in the Cyberpunk setting both build from the same four numbers. Chapter 5 suggests a starting array for each Archetype, but the choice of how you split your own numbers is always yours.`,
+    `This is also what keeps every Archetype fair against every other, no matter which world you're playing in — a Warrior on the Tallow Coast and a Netrunner behind the Cyberpunk Door both build from the same four numbers. Chapter 5 suggests a starting array for each Archetype, but the choice of how you split your own numbers is always yours.`,
     "clarify"
   ));
 
@@ -619,7 +623,7 @@ function chapter3() {
   children.push(threeColTable(
     ["ON THE SHEET", "WHAT GOES THERE", "HOW OFTEN IT CHANGES"],
     [
-      ["1 — Who you are", "Your name, the Setting your table is playing in, and your Archetype (Chapter 5). Your character's name is the only part you choose here.", "Once, when you make the character."],
+      ["1 — Who you are", "Your name, the Setting your table is playing in, your People and Lineage or Gift (from your Door Section), and your Archetype (Chapter 5).", "Once, when you make the character."],
       ["2 — Growth Level", "How far along the twelve-level track you are (Chapter 5). It is copied from your Growth Ledger, which your GM keeps — never the other way round.", "Once every six units of your course."],
       ["3 — Focuses", "Courage, Empathy, Wit and Instinct, holding your +2, +1, +0 and −1 in the order you chose.", "Almost never. Only a Focus Shift moves them, and nothing ever raises them."],
       ["4 — Language Focus", "The grammar point or vocabulary set you are working on right now, and the Evolve unit it came from.", "Every time you finish a unit. Your GM writes it."],
@@ -636,7 +640,7 @@ function chapter3() {
   children.push(spacer(180));
   children.push(sectionHeading("One Sheet, In Practice"));
   children.push(bodyPara(
-    `Diego plays a Scholar-Mage in the Fantasy setting, at a C1 level. Here's the top of his sheet:`,
+    `Diego plays a Scholar-Mage on the Tallow Coast, at a C1 level. Here's the top of his sheet:`,
     { after: 100 }
   ));
   children.push(threeColTable(
@@ -1139,7 +1143,7 @@ function chapterSessionZero() {
   children.push(spacer(180));
   children.push(sectionHeading("That's the Whole Book"));
   children.push(bodyPara(
-    `Cover to cover, everything you need is behind you now — the 2d6 engine (Chapter 2), your character (Chapter 3), your Moves (Chapter 4), your Archetype and the twelve-level track it climbs (Chapter 5), everything you carry (Chapter 6), your resources (Chapter 8), the worlds you can play in (Chapter 9), and the etiquette and responsibilities that keep the table running (Chapters 10 and 11). Every future Setting Guide builds on top of exactly what you already know — new worlds, new dressing, the same four Focuses and the same six Moves underneath. Session Zero is the last thing standing between you and the lantern gutters, the gate, and Oren's hand on the pommel of his sword. Roll the dice.`,
+    `Cover to cover, everything you need is behind you now — the 2d6 engine (Chapter 2), your character (Chapter 3), your Moves (Chapter 4), your Archetype and the twelve-level track it climbs (Chapter 5), everything you carry (Chapter 6), your resources (Chapter 8), the worlds you can play in (Chapter 9), and the etiquette and responsibilities that keep the table running (Chapters 10 and 11). Every Door Section builds on top of exactly what you already know — new worlds, new dressing, the same four Focuses and the same six Moves underneath. The Tallow Coast is at the back of this book; the Doors still sealed will be added there as they open. Session Zero is the last thing standing between you and the lantern gutters, the gate, and Oren's hand on the pommel of his sword. Roll the dice.`,
     { italics: true }
   ));
 
@@ -1286,10 +1290,10 @@ function chapterArchetypes() {
   children.push(spacer(140));
 
   children.push(bodyPara(
-    `Your Archetype is the role your character plays at the table — how they tend to solve problems, and which Focus they usually lean on to do it. The four Archetypes in this chapter work in absolutely any setting, no matter which of the worlds in Chapter 9 your table picks. As Setting Guides get written, each will add its own world-flavored Archetypes on top of these — you already glimpsed one in Chapter 3's example, Diego's Scholar-Mage, which is exactly what a Fantasy-flavored Archetype looks like. The four below are different: they belong to no single world, so they are playable today, anywhere.`
+    `Your Archetype is the role your character plays at the table — how they tend to solve problems, and which Focus they usually lean on to do it. The four Archetypes in this chapter work in absolutely any setting, no matter which of the worlds in Chapter 9 your table picks. As Door Sections get written, each will add its own world-flavored Archetypes on top of these — you already glimpsed one in Chapter 3's example, Diego's Scholar-Mage, which is exactly what a Door-flavored Archetype looks like. The four below are different: they belong to no single world, so they are playable today, anywhere.`
   ));
   children.push(bodyPara(
-    `One thing this chapter deliberately leaves out: species or ancestry — elf, android, ghost, whatever a given world calls for. That is setting flavor rather than a universal role, so it stays with each Setting Guide instead of living here.`
+    `One thing this chapter deliberately leaves out: species or ancestry — elf, android, ghost, whatever a given world calls for. That is setting flavor rather than a universal role, so it lives in the Door Section for the world you are playing — for the Tallow Coast, at the back of this book.`
   ));
 
   children.push(sectionHeading("The Four Archetypes"));
@@ -1509,7 +1513,7 @@ function chapterGear() {
   // -------------------------------------------------------------------------
   children.push(sectionHeading("Your Kit"));
   children.push(bodyPara(
-    `Your Kit is the four or five things your character always has, printed on your sheet the day you make them. It comes from your Archetype and from the world you are playing in — a Scout in a Fantasy setting carries a rope, a knife, a lantern and a water bottle; a Scout in a Cyberpunk setting carries a grapple line, a knife, a flashlight and a grey hoodie. Same role, same job, different century.`
+    `Your Kit is the four or five things your character always has, printed on your sheet the day you make them. It comes from your Archetype and from the world you are playing in — a Scout on the Tallow Coast carries a rope, a knife, a lantern and a water bottle; a Scout behind the Cyberpunk Door carries a grapple line, a knife, a flashlight and a grey hoodie. Same role, same job, different century.`
   ));
   children.push(bodyPara(
     `Your Kit never runs out and never needs tracking. You do not spend it, you do not count it, and you do not lose it unless the story takes it from you in a scene everybody watched happen.`
@@ -1720,7 +1724,7 @@ function chapterAna() {
 
   children.push(sectionHeading("Step 7 — Your Kit Is Already Written"));
   children.push(bodyPara(
-    `Ana does not choose her gear. The Diplomat's Kit for a Fantasy table is a sealed letter, a silver ring, a warm cloak and a small mirror, and it is printed on her sheet before she touches it. Her six Pack slots are empty, because she has not been anywhere yet.`
+    `Ana does not choose her gear. The Diplomat's Kit on the Tallow Coast is a sealed letter, a silver ring, a warm cloak and a small mirror, and it is printed on her sheet before she touches it. Her six Pack slots are empty, because she has not been anywhere yet.`
   ));
   children.push(bodyPara(
     `She reads the four items and does what every good player does with a Kit: she asks who the letter is addressed to. Her GM does not know yet. Neither does she. That is now a thing the campaign owes both of them.`,
@@ -1753,7 +1757,8 @@ function chapterAna() {
 // CHAPTER 8 — The Worlds You Can Play In
 // ---------------------------------------------------------------------------
 // Introductory only, by design. Each of these gets a full module in the
-// Master's Guide (reskinned Focuses, world Archetypes, adventure skeletons).
+// Door Book do GM (arcos, vilão, segredos). O que o jogador precisa saber de
+// cada mundo vive na Door Section deste mesmo livro, no fim.
 // This chapter exists so a student can choose one at Session Zero.
 // ---------------------------------------------------------------------------
 
@@ -1780,15 +1785,25 @@ function chapterSettings() {
   children.push(chapterTitle("The Worlds You Can Play In"));
 
   children.push(flavorQuote(
-    `Six worlds. One engine. The dice never notice which one you picked.`
+    `Six Doors. One engine. The dice never notice which one you walked through.`
   ));
   children.push(spacer(140));
 
   children.push(bodyPara(
-    `Everything you have read so far is the engine, and the engine does not care where the story happens. The same four Focuses, the same six Moves, the same three outcome bands run a haunted lighthouse, a collapsing megacity, and a road out of a burned town equally well. What changes between worlds is the dressing: what the Focuses are called, what an Archetype looks like when it walks into a room, and what kind of trouble the GM is allowed to make.`
+    `You do not simply pick a setting in this game. You arrive somewhere first.`
   ));
   children.push(bodyPara(
-    `Below are the six worlds ${GAME_NAME} is built to run. This chapter is a menu, not a manual — enough for your table to choose one at Session Zero and know roughly what it is agreeing to. The full version of each, with its own Archetypes, adventure skeletons, and world-specific Moves, lives in the Master's Guide, in your GM's hands.`
+    `Every session begins in the same place: the Ludus, a building that is always there when you log in, and a hall inside it with six Doors along one wall. Your table walks in, crosses the Door you have agreed on, and comes out the other side as your characters, in a world that is not this one. At the end of the session you go back through, and the Ludus is where you leave from next week. Passing through a Door remakes you for the world beyond it — which is why, whenever your table opens a different one, everybody builds a character again.`
+  ));
+  children.push(bodyPara(
+    `Five of the six Doors are sealed when you start. Your table opens one at Session Zero and plays it for as long as it holds your interest; when a campaign finishes, you decide together whether to go back through the same Door or try another. Nothing you have earned is lost either way — your Growth Level and your Boons travel with you, as Chapter 5 explains.`
+  ));
+  children.push(spacer(120));
+  children.push(bodyPara(
+    `Everything you have read so far is the engine, and the engine does not care which Door you went through. The same four Focuses, the same six Moves, the same three outcome bands run a haunted lighthouse, a collapsing megacity, and a road out of a burned town equally well. What changes between worlds is the dressing: what the Focuses are called, what an Archetype looks like when it walks into a room, and what kind of trouble the GM is allowed to make.`
+  ));
+  children.push(bodyPara(
+    `Below are the six worlds ${GAME_NAME} is built to run. This chapter is a menu, not a manual — enough for your table to choose one at Session Zero and know roughly what it is agreeing to. Once your table has chosen, everything you need to build a character in that world waits for you in its Door Section, at the back of this book. What the world is hiding stays with your GM.`
   ));
 
   settingBlock(
@@ -1814,8 +1829,6 @@ function chapterSettings() {
     "You have powers. So does the government, and theirs are legal.",
     `Big abilities, bigger consequences, and a world where the real problem is never the fight. Characters argue in public, take sides, and answer for what they did. The loudest of the six worlds, and the best one for a table that likes debating — most scenes end up being about whether an action was justified rather than whether it worked.`
   ).forEach(p => children.push(p));
-
-  children.push(pageBreak());
 
   settingBlock(
     "Post-Apocalypse Survival",
@@ -1847,6 +1860,324 @@ function chapterSettings() {
   ));
   children.push(bodyPara(
     `And if you change your mind anyway, nothing is lost. Your Growth Level is yours, your Ledger travels, and your Boons get reimagined for wherever you land next. Switching worlds costs you fiction, not progress.`
+  ));
+
+  return children;
+}
+
+// ---------------------------------------------------------------------------
+// DOOR SECTION — The Tallow Coast
+// Público. Tudo aqui é o que um morador da costa saberia. O que o mundo esconde
+// — o vilão, os arcos, os segredos dos NPCs — vive no Door Book, com o GM.
+// Fonte única futura: doors/fantasy/content.js (public: true).
+// ---------------------------------------------------------------------------
+
+const coastPlaces = [
+  ["Ashlight", "A walled city on the coast road",
+   "Trade, a gate that checks papers, and a guild that will vouch for you if it likes you. Everyone knows everyone, which is either comfortable or unbearable depending on the week."],
+  ["Bellmoor", "The middle of the road, and the largest",
+   "Richer, louder, and the seat of the Concord in this region. If a decision is being made about the coast, it is being made here."],
+  ["Saltgate", "The last city before the road ends",
+   "A port. Ships, salt, and a great deal of cargo nobody asks about. People who want to stop being asked questions come here."],
+  ["The road", "Days, not hours, between cities",
+   "Patrolled badly. Villages, farms and shrines line it, and none of them are on any map you can buy."],
+  ["Inland", "Where the road gives up",
+   "Nobody goes. This is where the Hush is."],
+];
+
+const burnLadder = [
+  ["a spark", "No paper at all", "Light it, warm it, find something you dropped. Anyone may."],
+  ["a taper", "A plain Warrant", "Set a broken bone. Lock a door so that it stays locked."],
+  ["a lantern", "A sealed Warrant", "Turn the weather. Bring down a wall. Somebody signs to answer for you."],
+  ["a pyre", "Nobody is licensed", "There is no Warrant for this, and there has not been for eighty years."],
+];
+
+const humanLineages = [
+  ["Emberkin", "The foundry towns of the inland hills",
+   "Endurance and metal. They judge a blade by looking at it and a wall by putting a hand on it. Half the smiths on the coast learned from an Emberkin, and all of them will tell you so."],
+  ["Tidebound", "The Tallow Coast itself",
+   "Sailors, traders, harbour clerks, gatekeepers. They read weather and water, and they are the people most likely to have an opinion about the Concord."],
+  ["Roadborn", "Caravan families, no fixed city",
+   "They have heard most dialects on the coast and know which roads flood. Welcome everywhere for a week, and suspected everywhere by the third."],
+  ["Stonewake", "Descended from those who left the fourth city before it stopped",
+   "Eighty years of being asked about it. They are uneasy in places that are too quiet, and they do not think that is superstition."],
+  ["Fenfolk", "The inland wetlands",
+   "Herbalists, midwives, bone-setters. Where the Concord has licensed nobody, a Fenfolk healer is what stands between a village and the burying ground."],
+];
+
+const theSix = [
+  ["The Wright", "Making, craft, building, repair",
+   "Said of anything well made, and of anyone you hope will last. “Wright's hands on it.” · “May the Wright hold this roof.”"],
+  ["The Ferryman", "Roads, sea, travel — and death, which is only the last of these",
+   "Said to someone leaving and said at a graveside, in the same words. Nobody finds that strange. “Ferryman keep you.” · “He's gone to the water.”"],
+  ["The Ledger", "Trade, debt, oath, law",
+   "The god of the Concord's world, whether the Concord admits it or not. “On the Ledger.” · “That's written, then.”"],
+  ["The Green Mother", "Growth, harvest, birth, healing",
+   "Said over food, over children, and over anyone who is ill. “Mother's luck to you.” · “Green on your table.”"],
+  ["The Watcher", "Knowledge, memory, records, secrets",
+   "Said when a truth is hidden, and said pointedly when someone is lying to your face. “The Watcher knows.” · “Well — someone remembers.”"],
+  ["The Stranger", "Chance, change, luck, whatever was not planned",
+   "Said when something unexpected happens, good or bad. The only one of the Six people speak to casually. “Stranger's turn.”"],
+];
+
+const peopleQuickRef = [
+  ["Human", "Kinship Everywhere",
+   "Name one distant relation or old acquaintance wherever you go. They are not obliged to help. Once per arc."],
+  ["Wickborn", "The Old Sense",
+   "You feel that burning has happened nearby, and roughly how much. Never who, never why, never what it did."],
+  ["Greenkept", "Green Memory",
+   "You can tell how long a place has been as it is — older, younger, about the same. Never a date."],
+  ["Duskborn", "Nightsight",
+   "You see in poor light as others see at dusk. Full daylight tires your eyes within the hour."],
+  ["Hybrid", "The Animal's Gift",
+   "One sense or one fact of your body, taken from your animal and written by you in a single sentence."],
+];
+
+function chapterDoorTallowCoast() {
+  const children = [];
+  children.push(eyebrow("Door Section"));
+  children.push(chapterTitle("The Tallow Coast"));
+
+  children.push(flavorQuote([
+    `Walled towns, tired gatekeepers, and a road that goes somewhere worse than it looks.`,
+  ]));
+  children.push(spacer(140));
+
+  children.push(bodyPara(
+    `This is a Door Section: everything you need to build a character in one particular world, and nothing else. Every fact in it is public. A carter in Ashlight knows all of this, and so does a child who has been listening at the right tables. What the coast does not know — and there is a great deal of it — stays with your GM, and you will find it out the way your character would.`
+  ));
+  children.push(bodyPara(
+    `Nothing here changes a rule. The four Focuses, the six Moves and the three outcome bands are exactly what Chapters 2 to 5 said they were. What a Door Section adds is who you can be, what people believe, and what the words on the coast mean when somebody says them to your face.`
+  ));
+
+  // ---- The coast itself
+  children.push(sectionHeading("Three Cities, One Road"));
+  children.push(bodyPara(
+    `The Tallow Coast is named for the fat that goes into candles, because its cities burn lamplight all night and always have. It is a thin country: sea on one side, unmapped interior on the other, and one road running the length of it.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["PLACE", "WHAT IT IS", "WHAT PEOPLE SAY ABOUT IT"],
+    coastPlaces,
+    [1700, 2900, 5480]
+  ));
+  children.push(calloutBox(
+    "Three names, and no more",
+    `Three cities are named in this book and nothing else is. That is deliberate. Every village, farm, shrine and back alley on this coast is unwritten, and your table will invent them as you go — starting with the place your own character comes from, which becomes true the moment you describe it and stays true afterwards.`,
+    "clarify"
+  ));
+
+  children.push(pageBreak());
+
+  // ---- Concord and Warrant
+  children.push(sectionHeading("The Concord, and What a Warrant Is"));
+  children.push(bodyPara(
+    `Magic on this coast did not fade and was not lost. It was licensed. Eighty years ago something went catastrophically wrong, and out of the fright that followed came the Concord — a body of clerks, inspectors and archivists whose entire purpose is to decide who may burn, how much, and for what.`
+  ));
+  children.push(bodyPara(
+    `The document that says so is a Warrant. It is a real piece of paper with a real seal, it expires, and it names the person who answers for you if you exceed it. Nobody on this coast finds it strange to be asked for papers. Everybody finds it tiresome.`
+  ));
+  children.push(bodyPara(
+    `The Concord is not a villain and does not think of itself as one. It was made by frightened people for a reason that has not gone away, and it is also slow, expensive, and much harder on a village without a licensed healer than on a city with four. Both of those are true at once, and most arguments on the coast are somewhere inside that.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["HOW MUCH YOU BURN", "WHAT IT TAKES", "WHAT IT COVERS"],
+    burnLadder,
+    [2200, 2500, 5380]
+  ));
+  children.push(calloutBox(
+    "The rungs are the whole vocabulary",
+    `Four rungs, and no fifth. Nobody on the coast measures burning in any other way — not in numbers, not in hours, not in weight. You will say these four words out loud at the table every session, which is exactly why there are only four of them.`,
+    "clarify"
+  ));
+  children.push(calloutBox(
+    "And it never touches the dice",
+    `A Warrant is permission, not power. Burning changes what is possible in a scene and what you are allowed to do about it — it never changes a number. There is no roll in this book that a Warrant improves.`,
+    "warn"
+  ));
+
+  children.push(pageBreak());
+
+  // ---- The Hush
+  children.push(sectionHeading("The Hush"));
+  children.push(bodyPara(
+    `Eighty years ago there was a fourth city, at the end of the road where nothing is now. Somebody there burned a pyre. The city was not destroyed, burned down or buried: it stopped. It is still standing, and nothing inside it moves.`
+  ));
+  children.push(bodyPara(
+    `People who go close describe losing the wish to speak, and then losing the wish to leave. Almost nobody goes close. The road that used to run there is grown over, and the Concord has spent eighty years discouraging anyone from clearing it.`
+  ));
+  children.push(bodyPara(
+    `Nobody agrees on what the city was called. The Concord's own records list it as Site Nine, which is what you write when you would rather not write a name. The coast calls it Cinder, which is wrong but has the advantage of being a word. There are people alive who say they know the real one, and there is a stone by the road inland with a list of names carved into it — the people who were inside when it stopped — which somebody still tends.`
+  ));
+  children.push(calloutBox(
+    "This is not a secret",
+    `Everything above is common knowledge and appears in this book for that reason. Ask anyone on the coast about the Hush and they will tell you all of it, at length, and probably add something their grandmother said. What nobody can tell you is what actually happened, and that is a different kind of question.`,
+    "example"
+  ));
+
+  children.push(pageBreak());
+
+  // ---- Peoples
+  children.push(sectionHeading("The Peoples of the Coast"));
+  children.push(bodyPara(
+    `Five peoples are played on the Tallow Coast. Each one carries an inner characteristic: a way of noticing or a permission your character simply has. None of them changes a roll — the equity rule from Chapter 2 holds here as everywhere. What they give you is something to say.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["PEOPLE", "INNER CHARACTERISTIC", "WHAT IT DOES"],
+    peopleQuickRef,
+    [1700, 2400, 5980]
+  ));
+
+  children.push(sectionHeading("Humans"));
+  children.push(bodyPara(
+    `Humans are everywhere, in every trade, on both sides of every argument. They are the shortest-lived of the peoples and by far the busiest. Most of what this coast has built — the walls, the roads, the Concord itself — was built by people who did not expect to see it finished.`
+  ));
+  children.push(bodyPara(
+    `Their inner characteristic is Kinship Everywhere. Wherever you go, you may name one distant relation or old acquaintance who lives there: a second cousin, a woman your father sailed with, the son of your first employer. Your GM will tell you what has become of them. They are under no obligation to help you — but the door is one you may knock on. Once per arc, and once named, that person is real for good.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["LINEAGE", "WHERE THEY COME FROM", "WHAT THEY ARE KNOWN FOR"],
+    humanLineages,
+    [1600, 2700, 5780]
+  ));
+  children.push(calloutBox(
+    "Lineage is not what you look like",
+    `A lineage is where your family is from and what they did. Skin, hair, height and features vary within every one of them, exactly as they do among people you know. An Emberkin can look any way at all. Decide how your character looks because it is the character you want to play, not because a table told you to.`,
+    "clarify"
+  ));
+
+  children.push(sectionHeading("Bloodlines"));
+  children.push(bodyPara(
+    `Two bloodlines exist on this coast, and neither is a people. A bloodline is a line on your sheet: you are a human of your lineage who happens to carry it.`
+  ));
+  children.push(bodyPara(
+    `Elf-touched means an elven ancestor two or three generations back. You may have eyes that catch the light oddly, or a life a decade or two longer than your neighbours expect, or a trace of one of the elven senses — enough to notice something, never enough to be sure of it. Elves themselves consider you human. So does everyone else.`
+  ));
+  children.push(bodyPara(
+    `Orc-blooded means that somewhere back in your family, in the deep interior, a line crossed that most people prefer not to discuss. You are heavier through the shoulders than your parents, you recover from hard work faster than you should, and your temper arrives before you do. In a crowded room, people step aside for you without deciding to. This is occasionally useful and frequently tiresome.`
+  ));
+
+  children.push(pageBreak());
+
+  children.push(sectionHeading("The Wickborn"));
+  children.push(bodyPara(
+    `You can tell when burning has happened near you, and roughly how much: a spark, a taper, more than a taper. You feel it as a taste at the back of the throat, or a pressure behind the eyes — every Wickborn describes it differently and no two of them agree.`
+  ));
+  children.push(bodyPara(
+    `Their ancestors are said to have burned freely, before anyone thought to license it, and to have understood the burning as nobody now does. Whatever that knowledge was, it is gone. What remains is the sensitivity: a Wickborn cannot burn better than anyone else, only notice. They have made a certain peace with this. The Concord employs a great many of them and pays them poorly.`
+  ));
+  children.push(calloutBox(
+    "What the Old Sense will and will not tell you",
+    `You sense that burning happened and roughly how much. You never sense who did it, why, or what it accomplished. When you want those, you do what everyone else does: you ask, and you Read the Scene.`,
+    "warn"
+  ));
+
+  children.push(sectionHeading("The Greenkept"));
+  children.push(bodyPara(
+    `You can tell how long a place has been the way it is. Whether a wood grew or was planted. Whether a field was farmed within living memory. Whether a ruin is older than the road that runs past it. You do not get dates — you get older than that, younger than that, about the same.`
+  ));
+  children.push(bodyPara(
+    `The Greenkept hold that the world keeps its own accounts and that people are simply bad at reading them. They tend woods, coasts and old orchards, and they are unhurried in a way that other peoples find either restful or unbearable. They are not opposed to cities. They are opposed to cities that pretend nothing was there first.`
+  ));
+
+  children.push(sectionHeading("The Duskborn"));
+  children.push(bodyPara(
+    `You see in poor light as others see at dusk, and you do not lose your bearings in the dark. Full daylight tires your eyes within the hour, which is why you will find a Duskborn indoors at noon and out at every other hour.`
+  ));
+  children.push(bodyPara(
+    `They keep their own towns, underground and inland, and their own hours everywhere else. The coast tells stories about them that the Duskborn find both insulting and useful, and they have never bothered to correct a single one. Most night work on this coast — harbours, watches, mills that cannot stop — is done by Duskborn who would like it known that they are not doing anyone a favour, they are being paid.`
+  ));
+
+  children.push(sectionHeading("Hybrids"));
+  children.push(bodyPara(
+    `You carry the shape and the senses of one animal in a body that walks upright and speaks: a hare, a cat, a lizard, an ape, a bird, whatever you choose. Your gift is one sense or one fact of your body, taken from that animal and written on your sheet in a single sentence — a hare's hearing, a lizard's tolerance of heat, a cat's balance on a narrow ledge.`
+  ));
+  children.push(bodyPara(
+    `Nobody agrees where Hybrids come from, and Hybrids themselves give different answers depending on who is asking and how rude they were about it. They are rare enough that a small town may go a generation without seeing one, and common enough that no city is surprised. You will be stared at. You will also be remembered, which cuts both ways.`
+  ));
+  children.push(calloutBox(
+    "Write it as a sense, never as a power",
+    `“I hear what people say two rooms away” is a gift. “I can smell whether someone is lying” is a power, and powers are not what this is. If you cannot decide, write the plainest version of it — you will get more out of a small true thing than a large vague one.`,
+    "warn"
+  ));
+
+  children.push(sectionHeading("Orcs"));
+  children.push(bodyPara(
+    `Orcs are not a people of the coast and are not played. They live deep in the interior, build nothing that lasts, trade with no one, and speak no language anyone here has learned. Travellers who have met them describe something between an animal and a person, and describe it badly, because they were frightened at the time. There are no half-orcs. A human whose family carries orc blood is a human — see Bloodlines above.`
+  ));
+
+  children.push(spacer(200));
+
+  // ---- The Six
+  children.push(sectionHeading("The Six"));
+  children.push(bodyPara(
+    `Six gods made the world and then left it. This is not a controversial claim on the Tallow Coast; it is simply what everyone was told as a child. The Six do not answer prayers, do not send signs, and do not quarrel with one another. No one has ever had to choose between them, and the idea that one might would strike most people as a joke in poor taste.`
+  ));
+  children.push(bodyPara(
+    `What the Six do is give people a way to speak about the parts of a life that are hard to speak about. You thank the Wright for a roof that held. You wish the Ferryman on someone leaving. You swear on the Ledger because a promise needs somewhere to be kept.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["GOD", "DOMAIN", "WHAT PEOPLE SAY"],
+    theSix,
+    [1900, 2700, 5480]
+  ));
+  children.push(bodyPara(
+    `Temples are the oldest buildings in most towns and the busiest, for reasons that have nothing to do with faith: they hold records, they take in people with nowhere to sleep, and they are the one place a stranger may sit down without explaining themselves.`
+  ));
+  children.push(calloutBox(
+    "Believe as much or as little as you like",
+    `Some people are devout and will correct you if you name the wrong god. Some say the words out of habit and could not tell you which god they just named. Some believe none of it and say the words anyway, because that is how their mother said goodbye. None of this is a problem, and nobody will make it one. There is no religious authority on this coast, no compulsory observance, and nothing resembling a heresy.`,
+    "example"
+  ));
+
+  children.push(pageBreak());
+
+  // ---- The creation spread
+  children.push(sectionHeading("Making a Character on the Tallow Coast"));
+  children.push(bodyPara(
+    `Chapter 7 walked Ana through the parts every character has, in every world. Here is what this world adds, in the order you will actually be asked for it at Session Zero. It should take about ten minutes.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["STEP", "WHAT YOU DECIDE", "WHERE TO LOOK"],
+    [
+      ["1 — Your people", "One of the five above. Write it in the People field on your sheet.", "The table at the top of this section."],
+      ["2 — Lineage or gift", "If you are Human, your lineage and any bloodline. If you are a Hybrid, your animal and your gift in one sentence — you write that sentence yourself.", "The lineage table above."],
+      ["3 — Your Archetype", "Vanguard, Diplomat, Strategist or Scout. This does not depend on the world.", "Chapter 5."],
+      ["4 — Your Focuses", "One each of +2, +1, +0 and −1, in whatever order fits the character you want.", "Chapter 3."],
+      ["5 — Where you are from", "A village, a farm, a street in Ashlight — anywhere on this coast that is not one of the three named cities. Describe it out loud. It is real from then on.", "Nowhere. This one is yours."],
+      ["6 — Your name", "Yours to choose, and the only part of the sheet nobody can advise you on.", "—"],
+    ],
+    [1900, 5200, 2980]
+  ));
+  children.push(calloutBox(
+    "Step 5 is the one people underestimate",
+    `The place your character comes from becomes part of the world permanently, and your table will end up going there. Say two or three sentences about it — what it smells of, what it is short of, who runs it. That is enough. Your GM will build on what you said, and will not contradict it.`,
+    "example"
+  ));
+
+  children.push(spacer(160));
+  children.push(sectionHeading("The Three Ladders, Side by Side"));
+  children.push(bodyPara(
+    `Every quantity on this coast is said in words, never in numbers. These twelve words are the whole system, and you will use all of them.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["MONEY", "DISTANCE", "BURNING"],
+    [
+      ["a coin", "Within reach", "a spark"],
+      ["a handful — ten coins", "Nearby", "a taper"],
+      ["a bag — ten handfuls", "Far away", "a lantern"],
+      ["a chest — ten bags, and the top", "Out of sight", "a pyre"],
+    ],
+    [3600, 3200, 3280]
+  ));
+  children.push(bodyPara(
+    `Money and burning are yours to spend and to argue about. The four distances never change, in any world this game runs — they are how everyone at this table describes where things are, for as long as you play.`
   ));
 
   return children;
@@ -1997,6 +2328,8 @@ children.push(pageBreak());
 children.push(...chapterResponsibilities());
 children.push(pageBreak());
 children.push(...chapterSessionZero());
+children.push(pageBreak());
+children.push(...chapterDoorTallowCoast());
 children.push(pageBreak());
 children.push(...chapterAppendixPT());
 
