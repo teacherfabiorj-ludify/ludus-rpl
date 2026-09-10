@@ -1,7 +1,7 @@
 // ============================================================================
 // LUDIFY RPL — MASTER'S GUIDE — single-manuscript build script
 //
-// This file is the ONE source of truth for the whole Core Rulebook.
+// This file is the ONE source of truth for the whole Player's Guide.
 // Every chapter lives here, as data + layout, in the order it appears in
 // the book (CH1, CH2, ... Appendix A).
 //
@@ -32,7 +32,7 @@ const sizeOf = (() => {
 
 const GAME_NAME = "Ludify RPL"; // locked 12/08/2026 — Roleplaying Language
 
-// ---- Palette (shared across Core Rulebook AND Master's Guide for visual consistency) ----
+// ---- Palette (shared across Player's Guide AND Master's Guide for visual consistency) ----
 const ACCENT = "2A78D6";
 const GOOD = "0CA30C";
 const WARN = "FAB219";
@@ -374,6 +374,7 @@ const PAGES = {
   "Ch. 6": "18",
   "Ch. 7": "22",
   "Ch. 8": "26",
+  "Ch. 9": "30",
 };
 
 const contentsRows = [
@@ -382,9 +383,10 @@ const contentsRows = [
   ["Ch. 3 — The Two Clocks", "How a study track drives the table without ever slowing it down."],
   ["Ch. 4 — Your Job at the Table", "The three things only you can do, and the habits that make them work."],
   ["Ch. 5 — Correcting Without Breaking the Scene", "Why the technique everyone uses is the weakest one, and what to do instead."],
-  ["Ch. 6 — The Ludus", "The shared world that holds every setting, and the five people in it."],
-  ["Ch. 7 — The Six Doors", "Each setting in depth: what it feels like, and what language it produces."],
-  ["Ch. 8 — Learning to Run It", "Training a teacher in five meetings, and how to do it alone if you have to."],
+  ["Ch. 6 — Passing the Lantern", "How a student becomes a co-author of the world, and why that is the same act as aiming at their grammar."],
+  ["Ch. 7 — The Ludus", "The shared world that holds every setting, and the five people in it."],
+  ["Ch. 8 — The Six Doors", "Choosing a Door: what each world feels like, and what language it produces."],
+  ["Ch. 9 — Learning to Run It", "Training a teacher in five meetings, and how to do it alone if you have to."],
 ];
 
 const bookContents = contentsRows.map(([title, blurb]) => {
@@ -411,12 +413,12 @@ function chapter1() {
     `Ludify RPL is an English course that happens to be a tabletop roleplaying game, and a tabletop roleplaying game that happens to be an English course. Both halves are real. If you run it as a game and forget the course, students have fun and stop progressing. If you run it as a course and forget the game, they progress for six weeks and then stop coming.`
   ));
   children.push(bodyPara(
-    `This guide exists so you never have to choose. Every mechanic in the Core Rulebook was built to make the pedagogically correct move also the most fun move at the table. Your job is not to balance the two. Your job is to run the game properly and let the design do the balancing.`
+    `This guide exists so you never have to choose. Every mechanic in the Player's Guide was built to make the pedagogically correct move also the most fun move at the table. Your job is not to balance the two. Your job is to run the game properly and let the design do the balancing.`
   ));
 
   children.push(calloutBox(
-    "Read the Core Rulebook first",
-    `This guide does not explain the rules. It assumes you have read the Core Rulebook — the same book your students get — and it will send you back to it by chapter whenever a rule matters. If you have not read it yet, stop here and read that instead. It takes about an hour, and nothing below will land properly without it.`,
+    "Read the Player's Guide first",
+    `This guide does not explain the rules. It assumes you have read the Player's Guide — the same book your students get — and it will send you back to it by chapter whenever a rule matters. If you have not read it yet, stop here and read that instead. It takes about an hour, and nothing below will land properly without it.`,
     "warn"
   ));
 
@@ -481,8 +483,9 @@ function chapter1() {
   children.push(threeColTable(
     ["DOCUMENT", "WHO READS IT", "WHAT IT HOLDS"],
     [
-      ["The Core Rulebook", "Your students.", "Every rule of play: the dice, the six Moves, Archetypes, the twelve-level track, what a character carries. Written in English at roughly B2, with a Portuguese summary in the appendix for players who are still starting out."],
-      ["This guide", "You.", "How to run it. Not the rules again — the judgement calls, the session shape, the world, and the things nobody tells you until you have run twenty sessions."],
+      ["The Player's Guide", "Your students.", "Every rule of play: the dice, the six Moves, Archetypes, the twelve-level track, what a character carries — and, at the back, a Door Section for each world that is open, holding the peoples, the gods and the plain public facts your players need in order to build a character. Written at roughly B2, with a Portuguese summary in the appendix."],
+      ["This guide", "You.", "How to run it. Not the rules again — the judgement calls, the session shape, the world, and the things nobody tells you until you have run twenty sessions. It is the same guide behind every Door."],
+      ["A Door Book", "You, and only you.", "One per Door. The campaign for that world: its arcs, its antagonist, what its people are hiding, and what happens if the players push. Never shown to students."],
       ["Your table's spreadsheet", "You and your students.", "Character sheets, and a permanent Growth Ledger for each student. Chapter 3 covers what lives where and why the two must never be the same file."],
     ],
     [2600, 2000, 5480]
@@ -529,13 +532,14 @@ const principles = [
    `Before you write a scene, ask: what is the conversational task I want a player to practise here? Only then decide what is happening in the fiction that would require it.`],
   [5, "The GM Is Not the Centre of the Table",
    `It is natural to want to narrate. A good session here is not measured by how good your story was — it is measured by how much each student produced. Make that an explicit check at the end of every session, not a feeling you get sometimes.`,
-   `After each session ask: who hit their own Language Focus? Who finished with unused Spotlight Tokens, meaning they never got enough airtime? Write the answer down. Patterns show up in a month that you would never notice week to week.`],
+   `After each session ask: who hit their own Language Focus? Who finished with unused Spotlight Tokens, meaning the scenes never came to them? Write the answer down. Patterns show up in a month that you would never notice week to week.`],
   [6, "Mistakes Are Data, Not Missteps",
    `A student who feels safe takes more linguistic risks, and more risk means more practice. Establish this in Session Zero as a table rule, out loud, not as an attitude you hope people absorb: mistakes are how we play this game, not something to avoid.`,
    `This is what Language Points are actually built on. A student earns one for correctly attempting their Language Focus, not for using it perfectly. It is also why nobody is ever told they were wrong out loud.`],
   [7, "Fair Play Is a Rule, Not a Mood",
-   `A table where the most fluent person gets the most airtime is not a lively table — it is a table teaching the beginner that they do not need to try. Respect here is not general kindness, it is distribution. Everybody speaks, everybody waits, nobody finishes anybody else's sentence, and one person's error is treated exactly like everyone else's. This is your responsibility, not the group's, and it is enforced the minute it is broken — not raised gently three weeks later.`,
-   `The four table rules in Chapter 10 of the Core Rulebook already are this. One Scene, One Voice bans talking over. Yes, And bans knocking down someone's idea. Mistakes Are How We Play removes the social cost of being wrong. And one more that is yours to hold: nobody compares Growth Levels, and nobody comments on anybody else's English. The only score in this game is the story, and it belongs to everyone.`],
+   `Your most fluent student will speak more than your beginner. That is not a problem and you should not try to fix it — a table where everyone talks for the same number of seconds is a table where somebody is being held back and somebody else is being pushed past what they can do. What ruins a table is different and quieter: a student who is never asked. A beginner who reaches the end of the night without once being invited to speak has been taught, very efficiently, that they do not need to try.`
+   + ` So the thing you distribute is the invitation, not the minutes. Everybody gets asked, everybody waits their turn, nobody finishes anybody else's sentence, and one person's error is treated exactly like everyone else's. This is your responsibility, not the group's, and it is enforced the minute it is broken — not raised gently three weeks later.`,
+   `The four table rules in Chapter 10 of the Player's Guide already are this. One Scene, One Voice bans talking over. Yes, And bans knocking down someone's idea. Mistakes Are How We Play removes the social cost of being wrong. And one more that is yours to hold: nobody compares Growth Levels, and nobody comments on anybody else's English. The only score in this game is the story, and it belongs to everyone.`],
 ];
 
 function chapter2() {
@@ -568,7 +572,7 @@ function chapter2() {
       ["4 — One task per scene", "Decide the communicative task first, the plot second."],
       ["5 — Not the centre", "Count student output, not your own performance."],
       ["6 — Mistakes are data", "Reward the attempt, never the accuracy."],
-      ["7 — Fair play", "Airtime is distributed, not earned. Enforce it the minute it breaks."],
+      ["7 — Fair play", "Invitations are distributed, not minutes. Nobody ends a session unasked."],
     ],
     [3000, 7080]
   ));
@@ -810,6 +814,191 @@ function chapter4() {
 // ---------------------------------------------------------------------------
 // CHAPTER 5 — THE LUDUS
 // ---------------------------------------------------------------------------
+// CHAPTER 6 — PASSING THE LANTERN
+// A mecânica de co-criação. Fonte: doc de design de 06/09, corrigido em 13/09
+// (oportunidade, não tempo de fala) e o Second Look.
+// ---------------------------------------------------------------------------
+
+const lanternSizes = [
+  ["One Line", "10–20 seconds · A1 and A2",
+   "One or two sentences, answering a closed or either/or question. “Is the market crowded or empty?” “What are the stalls selling?” A student with fifty words can succeed at this, and succeeding is the point."],
+  ["One Place", "30–60 seconds · A2 and B1",
+   "A full description of a place, a person or an object. The student decides what is there and what it is like, and it stays that way."],
+  ["One Story", "1–3 minutes · B1+ and above",
+   "Narration, not just description. “Tell us what happened here before you arrived.” “Tell us about the day your village was attacked.”"],
+];
+
+const lanternRules = [
+  ["Say who, in advance",
+   "In the opening minutes of the session, name the students who will hold the lantern tonight. Nobody is ambushed. Being called on without warning to speak at length in a foreign language is the fastest way to produce silence, and a student who knows it is coming arrives with half a dozen words already prepared. That is rehearsal, not cheating."],
+  ["Opportunity, not a stopwatch",
+   "Every student holds the lantern at least once per session, and nobody holds it twice before everybody has held it once. What you distribute is the invitation, never the minutes. Your most fluent student will speak more than your beginner, and there is nothing wrong with that. The failure this rule exists to prevent is one thing only: a student reaching the end of the night without ever being asked."],
+  ["What they say is true",
+   "It cannot be contradicted afterwards — not by you, not by another player. If Ana's market is enormous, it is enormous for the rest of the campaign. This is the whole reason the mechanic works: students can tell the difference between being asked for a real contribution and being given a turn to fill."],
+  ["You add. You never delete",
+   "You have no veto. What you have is one complicating question on top of what was said: “And why does nobody buy from the stall at the back?” Complicating is accepting. Correcting is overruling, and the student will read it exactly that way."],
+];
+
+const lanternScope = [
+  ["Sensory detail of any place", "smell, sound, weather, movement, the state of things"],
+  ["Minor NPCs and their manner", "who runs the stall, how they talk, what they complain about"],
+  ["Their own character's past", "home village, family, trade, what they lost"],
+  ["Local custom", "food, festivals, superstition, how people greet each other here"],
+];
+
+const lanternLimits = [
+  ["Contradict established lore, or what another player has already created"],
+  ["Remove a threat, solve the scene's problem, or hand the group a resource that solves it"],
+  ["Say what another player's character did, thought or felt"],
+  ["Create — or change the wants of — an NPC the adventure already relies on"],
+];
+
+const lanternPrompts = [
+  ["Describe", "“What does this place look like? What do you notice first?”"],
+  ["Narrate", "“What happened here, before you arrived?”"],
+  ["Report", "“What did the innkeeper tell you about the road? Tell the others.”"],
+  ["Regulate", "“What's the rule here? What is nobody allowed to do?”"],
+  ["Quantify", "“How many people are there? Is there enough food for everyone?”"],
+  ["Plan", "“How are you going to get in? Walk us through the plan.”"],
+  ["Speculate", "“What do you think is happening here? Why?”"],
+  ["Identify", "“Who is this person? How do they introduce themselves?”"],
+  ["React", "“Your character sees this. How do they feel? What do they do first?”"],
+  ["Suppose", "“If you had arrived a day earlier, what would have been different?”"],
+];
+
+function chapterLantern() {
+  const children = [];
+  children.push(eyebrow("Chapter 6"));
+  children.push(chapterTitle("Passing the Lantern"));
+
+  children.push(flavorQuote([
+    `Whoever holds the lantern decides what the rest of the table can see.`,
+  ]));
+  children.push(spacer(140));
+
+  children.push(bodyPara(
+    `There is a problem built into the shape of a roleplaying game, and it is worse in a language classroom than anywhere else: the person who does most of the talking is the one who already speaks the language best. That is you. You describe the room, you voice the innkeeper, you narrate the weather — and every minute you spend doing it is a minute your students spend listening.`
+  ));
+  children.push(bodyPara(
+    `Listening is not nothing. But it is not what they are paying for, and it is not what moves a Language Focus. This chapter is the structural answer: a repeatable move that hands the describing to a student, several times a session, on purpose.`
+  ));
+
+  children.push(calloutBox(
+    "This is not improvisation, and it is not a reward",
+    `Passing the lantern is part of the session's shape, like the debrief. It happens whether or not the scene is going well, whether or not anybody has earned it. If you only do it when you remember to, you will do it for your confident students and forget your quiet ones, which is precisely backwards.`,
+    "warn"
+  ));
+
+  children.push(sectionHeading("Why the Fiction Allows It"));
+  children.push(bodyPara(
+    `The world on the far side of a Door is only fully formed where a traveller has already looked. That is a fact about the Ludus, not a metaphor — it is why the Doors need people to walk through them at all. So when you ask a student what the market looks like, you are not asking them to invent something. You are asking them to look, and what they see is what is there.`
+  ));
+  children.push(bodyPara(
+    `Say it that way at the table and the mechanic stops feeling like a classroom exercise, which is the entire difficulty with asking students to produce language on demand.`
+  ));
+
+  children.push(pageBreak());
+
+  children.push(sectionHeading("The Three Sizes"));
+  children.push(bodyPara(
+    `The size is what stops this from humiliating a beginner. Choose it before the session, from the level of the student who is going to receive it — not from how important the moment is.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["SIZE", "HOW LONG, AND FOR WHOM", "WHAT YOU ASK FOR"],
+    lanternSizes,
+    [1700, 2500, 5880]
+  ));
+  children.push(calloutBox(
+    "The either/or version is a real option",
+    `For a student who is frozen, or having a bad week, ask a question that can be answered with one word and still creates something: “Is it crowded or empty?” They answer “empty”, and the market is empty for good. That is a genuine contribution, it costs them almost nothing, and it is very hard to fail at.`,
+    "example"
+  ));
+
+  children.push(sectionHeading("The Four Rules"));
+  children.push(threeColTable(
+    ["RULE", "HOW IT WORKS, AND WHY", ""],
+    lanternRules.map(([a, b]) => [a, b, ""]),
+    [2200, 7880, 1]
+  ));
+
+  children.push(pageBreak());
+
+  children.push(sectionHeading("What the Lantern May and May Not Create"));
+  children.push(bodyPara(
+    `This is the limit that protects a written adventure. Without it, one well-meaning player resolves your entire arc in a sentence — and they will not have done anything wrong, because you asked them to.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["THEY MAY CREATE", "WHICH MEANS", ""],
+    lanternScope.map(([a, b]) => [a, b, ""]),
+    [3400, 6680, 1]
+  ));
+  children.push(spacer(120));
+  children.push(threeColTable(
+    ["THEY MAY NOT", "", ""],
+    lanternLimits.map(([a]) => [a, "", ""]),
+    [10078, 1, 1]
+  ));
+
+  children.push(sectionHeading("The Second Look"));
+  children.push(bodyPara(
+    `This is the move that handles a mixed table inside a single scene, and it is the most useful thing in this chapter. You pass the lantern twice over the same object: first small, to the student with less language, then large, to the student with more.`
+  ));
+  children.push(bodyPara(
+    `“There's a merchant behind the last stall. Lu, take the lantern — what does he look like?” Lu says: “He is old. He is very tired and his clothes are dirty.” Ten seconds. Then: “An old man, tired, dirty clothes. Diego, second look — what does he regret?” And Diego spends a minute on the man's lost shop and the debt he could not pay.`
+  ));
+  children.push(calloutBox(
+    "Why this beats giving them separate turns",
+    `Look at what happened to Lu's ten seconds: they became the foundation of Diego's minute. Diego could not invent any merchant he liked — he had to build on a man who was old, tired and badly dressed, because that was already true. The beginner's sentence became load-bearing. Giving an A1 student ten seconds in an isolated scene is kindness; making those ten seconds determine what a B2 student has to say next is structure, and the A1 student can feel the difference immediately.`,
+    "example"
+  ));
+  children.push(calloutBox(
+    "The second look never contradicts the first",
+    `Deeper, longer, more history — never a correction. If Diego says “actually he's young”, cut it: “No — Lu already told us he's old. So why is an old man still working?” That is not a rebuke of Diego. It is the rule doing its job in front of everybody, which is how the table learns it.`,
+    "warn"
+  ));
+
+  children.push(pageBreak());
+
+  children.push(sectionHeading("Choosing Who Gets It, and What to Ask"));
+  children.push(bodyPara(
+    `Look at the Language Focus of each student before the session, exactly as Chapter 3 describes, and let it choose both the person and the question. A student working on description gets a One Place. A student working on past narration gets a One Story. A student working on obligation and permission gets asked what the rules of this place are, and who enforces them.`
+  ));
+  children.push(bodyPara(
+    `This is the part worth understanding properly: the mechanic that makes a student a co-author of the world is the same mechanic that aims at their grammar. You are not doing two things. You are doing one thing, and choosing who it lands on.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["WHAT THEY ARE STUDYING", "HOW YOU PASS THE LANTERN", ""],
+    lanternPrompts.map(([a, b]) => [a, b, ""]),
+    [2700, 7380, 1]
+  ));
+  children.push(calloutBox(
+    "Say the question in English, always",
+    `These are lines you say out loud at the table, in the target language, in character wherever you can manage it. A prompt translated into the students' first language stops being part of the fiction and becomes an instruction — and the whole design of this chapter is built to avoid exactly that.`,
+    "warn"
+  ));
+
+  children.push(sectionHeading("The Codex"));
+  children.push(bodyPara(
+    `If what a student says becomes permanently true, somebody has to write it down. The cheapest version that works: a shared document, and one line per lantern, written by you immediately after the session. Four lines a week. Thirty seconds.`
+  ));
+  children.push(calloutBox(
+    "The part nobody expects",
+    `After a year the Codex holds roughly a hundred and fifty lines of world, written in English by your students, about a subject they are personally invested in, at exactly their level. That is a reading text no published material can produce. Open it on screen occasionally and read a few lines aloud before you begin — it takes two minutes and it is the best warm-up in this book.`,
+    "example"
+  ));
+
+  children.push(sectionHeading("Where It Sits in the Session"));
+  children.push(bodyPara(
+    `Two to four passes per session, roughly one every twenty to twenty-five minutes, totalling three to five minutes of table time. It is cheap. One of them is fixed: the opening of Act I is always a lantern. The place where tonight begins is never described by you.`
+  ));
+
+  return children;
+}
+
+// ---------------------------------------------------------------------------
 
 const ludusPlaces = [
   ["The Hall of Doors", "A long room with six doors in it, none of them matching. This is where every expedition starts and ends. The Doors are not decoration: they are the campaign structure made visible."],
@@ -839,7 +1028,7 @@ const ludusCast = [
 
 function chapterLudus() {
   const children = [];
-  children.push(eyebrow("Chapter 6"));
+  children.push(eyebrow("Chapter 7"));
   children.push(chapterTitle("The Ludus"));
 
   children.push(flavorQuote([
@@ -850,7 +1039,7 @@ function chapterLudus() {
 
   children.push(sectionHeading("Why There Is a Shared World at All"));
   children.push(bodyPara(
-    `The Core Rulebook offers six settings, and that creates a problem the moment you try to run it. Six settings means either six invented worlds with nothing connecting them, or a table that starts from nothing every time it changes worlds. Both are exhausting to prepare and neither accumulates: nothing that happened last year matters this year.`
+    `The Player's Guide offers six settings, and that creates a problem the moment you try to run it. Six settings means either six invented worlds with nothing connecting them, or a table that starts from nothing every time it changes worlds. Both are exhausting to prepare and neither accumulates: nothing that happened last year matters this year.`
   ));
   children.push(bodyPara(
     `The Ludus is the answer. It is one place, permanent, that all six settings hang off. Your table always has a home to return to, a cast they already know, and a history that keeps growing no matter how many worlds they visit.`
@@ -906,7 +1095,7 @@ function chapterLudus() {
     `Six Doors, six worlds. A Door will not let you through as you are. It remakes you on the way, so that you arrive belonging to the place — the right body, the right clothes, the right past, a name that fits. You keep everything that is actually you. You lose your shape.`
   ));
   children.push(bodyPara(
-    `This is not flavour. It is the Rebuilding at Level rule from the Core Rulebook, told as a story. When your table moves to a new world, every player rebuilds at their current Growth Level, keeps their Boons in changed form, and may keep or change their Archetype. In the fiction, that is simply what walking through a Door does.`
+    `This is not flavour. It is the Rebuilding at Level rule from the Player's Guide, told as a story. When your table moves to a new world, every player rebuilds at their current Growth Level, keeps their Boons in changed form, and may keep or change their Archetype. In the fiction, that is simply what walking through a Door does.`
   ));
   children.push(calloutBox(
     "Example",
@@ -945,7 +1134,7 @@ function chapterLudus() {
   children.push(spacer(180));
   children.push(calloutBox(
     "You are allowed to ignore all of this",
-    `The Ludus is the default frame, not a rule. A table that wants to play one long Fantasy campaign and never see another world can do that, and none of the mechanics change. Use the Ludus when you want somewhere to come back to; drop it when you do not.`,
+    `The Ludus is not optional, and it is not decoration. Logging into the call is walking into it; crossing the Door is when the players become their characters; leaving through the Door is how a session ends. A table that intends to stay behind one Door for years still arrives through the Ludus every week, because that arrival is what makes the change of world possible later without anything having to be explained.`,
     "clarify"
   ));
 
@@ -962,9 +1151,9 @@ const doors = [
     setting: "Fantasy",
     focuses: "Courage · Empathy · Wit · Instinct",
     look: "Black iron, too heavy for one person, warm to the touch. It smells of rain on stone.",
-    world: "Kingdoms, roads between them, and everything that lives in the gaps. Old power held by people who inherited it and newer power held by people who took it. Magic exists, is rare, and is never a substitute for talking your way out.",
+    world: "The Tallow Coast: three walled cities on one road, sea on one side and unmapped interior on the other. Magic did not fade here — it was licensed, and burning it without a Warrant is a crime. Eighty years ago a fourth city stopped, and nobody goes there.",
     feel: "The most forgiving setting to run and the easiest for a beginner to picture. Nothing here needs explaining to anybody.",
-    language: "Requests and negotiation. Describing places and people. Existence — there is, there are. The default first world for a table with real beginners in it.",
+    language: "Permission and prohibition, because the whole world runs on paperwork. Requests and negotiation. Describing places and people. The default first world for a table with real beginners in it.",
     hooks: [
       "A merchant at the Ludus wants a debt collected in a city three days from the Door. The debtor is not hiding, which is the strange part.",
       "Something came back through the Iron Door last month and nobody saw what. Halden wants it found before it settles.",
@@ -1094,7 +1283,7 @@ function doorBlock(d) {
 
 function chapterDoors() {
   const children = [];
-  children.push(eyebrow("Chapter 7"));
+  children.push(eyebrow("Chapter 8"));
   children.push(chapterTitle("The Six Doors"));
 
   children.push(bodyPara(
@@ -1290,7 +1479,7 @@ const trainingPhases = [
    "Half a session where every student spoke and the trainee never once explained a rule out loud."],
   ["5", "Run a full session",
    "Silent observation end to end, then a structured debrief. After this they are cleared to run their own table, with one follow-up visit a month for the first three months.",
-   "All six criteria met in a single session."],
+   "All seven criteria met in a single session."],
 ];
 
 const trainingCriteria = [
@@ -1300,11 +1489,12 @@ const trainingCriteria = [
   ["At least three in-character prompts were used.", "Chapter 5. Clarification request, repetition or elicitation — not recasts."],
   ["No explicit correction happened during a scene.", "Chapter 5. One slip is a note; a habit is a retrain."],
   ["Nobody finished anybody's sentence, the trainee included.", "Principle 7, and the single hardest habit to break in an experienced teacher."],
+  ["Every student held the lantern at least once.", "Chapter 6. The easiest of the seven to check and the easiest to forget under pressure."],
 ];
 
 function chapter8() {
   const children = [];
-  children.push(eyebrow("Chapter 8"));
+  children.push(eyebrow("Chapter 9"));
   children.push(chapterTitle("Learning to Run It"));
 
   children.push(flavorQuote([
@@ -1367,17 +1557,17 @@ function chapter8() {
     `The first teacher of this system has no trainer, and neither will the second one in a school that only has one table. The five phases still work, with one substitution: record the session, and be your own observer a day later.`
   ));
   children.push(bodyPara(
-    `You cannot self-assess in the moment — you are busy running the table, and your memory of a session is systematically kinder to you than the recording is. But watching yourself against six binary criteria a day later is close to as good as an observer, and on two of them it is better, because the recording knows exactly how long you talked and your memory does not.`
+    `You cannot self-assess in the moment — you are busy running the table, and your memory of a session is systematically kinder to you than the recording is. But watching yourself against seven binary criteria a day later is close to as good as an observer, and on two of them it is better, because the recording knows exactly how long you talked and your memory does not.`
   ));
   children.push(calloutBox(
     "The cheap version that actually works",
-    `Record the audio on your phone. The next day, do one pass with a timer and a piece of paper: mark every stretch where you speak for more than 45 seconds, and tally which student spoke in which scene. That is two of the six criteria measured properly, and it is fifteen minutes of work. Do it once a month, not every week.`,
+    `Record the audio on your phone. The next day, do one pass with a timer and a piece of paper: mark every stretch where you speak for more than 45 seconds, and tally which student spoke in which scene. That is two of the seven criteria measured properly, and it is fifteen minutes of work. Do it once a month, not every week.`,
     "example"
   ));
 
   children.push(sectionHeading("What Comes After the Fifth Session"));
   children.push(bodyPara(
-    `The new teacher runs their own table. You visit once a month for three months, observe silently, and debrief against the same six lines. After that they are on their own, with one standing rule: any time a table starts to feel flat, go back to the six criteria before changing anything about the story. Nine times out of ten the story was never the problem.`
+    `The new teacher runs their own table. You visit once a month for three months, observe silently, and debrief against the same seven lines. After that they are on their own, with one standing rule: any time a table starts to feel flat, go back to the seven criteria before changing anything about the story. Nine times out of ten the story was never the problem.`
   ));
 
   return children;
@@ -1400,6 +1590,8 @@ children.push(...chapter4());
 children.push(pageBreak());
 children.push(...chapter5());
 children.push(pageBreak());
+children.push(...chapterLantern());
+children.push(pageBreak());
 children.push(...chapterLudus());
 children.push(pageBreak());
 children.push(...chapterDoors());
@@ -1420,6 +1612,6 @@ const doc = new Document({
 });
 
 Packer.toBuffer(doc).then((buf) => {
-  require("fs").writeFileSync("/home/claude/rpl_mastersguide/MastersGuide.docx", buf);
+  require("fs").writeFileSync(`${__dirname}/../MastersGuide.docx`, buf);
   console.log("written");
 });

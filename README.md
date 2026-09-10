@@ -1,42 +1,67 @@
-# Ludify RPL — fontes dos manuscritos
+# Ludify RPL — fonte dos livros
 
-Cada livro é gerado por **um único** `build.js`. Nunca existe arquivo por capítulo,
-nunca existe `_v2` ou `_final`. O histórico de versões são os commits deste repositório.
+Três livros, uma pasta cada. Dentro de cada pasta: o `.docx` pronto para ler, e `src/`
+com a fonte que o gera.
 
 ```
-core-rulebook/
-  CoreRulebook.docx        <- gerado, para ler
-  src/build.js             <- A FONTE
-  src/assets/make_figures.py   <- gera TODAS as imagens do livro
-  src/assets/*.png             <- imagens geradas
-masters-guide/
-  MastersGuide.docx
-  src/build.js             <- A FONTE (não usa imagens)
+players-guide/            O livro do ALUNO  (46 páginas)
+   PlayersGuide.docx
+   src/build.js           ← a fonte. Todo o livro está aqui dentro.
+   src/assets/            imagens + make_figures.py que as regera
+
+masters-guide/            O guia do PROFESSOR, serve as seis Portas  (32 páginas)
+   MastersGuide.docx
+   src/build.js
+
+door-fantasy/             O livro da PORTA Fantasy — só do professor  (31 páginas)
+   TallowCoast-DoorBook.docx
+   src/build.js
+   src/content.js         ← FONTE ÚNICA das tabelas do cenário
+   src/assets/
 ```
 
-## Regerar um livro
+## As duas regras que mantêm isto organizado
 
-```bash
-cd core-rulebook/src
-npm install docx                  # só na primeira vez
-python3 assets/make_figures.py    # só se as imagens sumirem
-node build.js
+**1. Um arquivo por livro.** Cada `build.js` contém o livro inteiro — todos os capítulos,
+como dado e como layout. Nunca existe arquivo por capítulo, nunca existe `_v2` ou `_final`.
+O histórico de commits deste arquivo **é** o histórico de versões do livro.
+
+**2. `content.js` é a única fonte das tabelas do cenário.** Os cinco povos, as linhagens,
+a escada de queima, os Six e as três cidades aparecem no livro do aluno *e* no livro do
+professor. Os dois `build.js` importam do mesmo arquivo:
+
+```js
+// players-guide/src/build.js
+require("../../door-fantasy/src/content.js")
 ```
 
-O Master's Guide é igual, sem o passo das imagens.
+Corrigir a descrição de um povo é corrigir em **um** lugar e reconstruir os dois livros.
+Eles saem coerentes por construção, não por disciplina.
 
-## Renomear o sistema
+⚠ **Os nomes das pastas fazem parte do código.** Renomear `door-fantasy` quebra esse
+`require`. Se um dia precisar renomear, o caminho dentro do `build.js` tem que mudar junto.
 
-Uma linha: a constante `GAME_NAME` no topo de cada `build.js`. Todas as menções
-se atualizam sozinhas, inclusive o destaque em laranja.
+## Como reconstruir
 
-## Números de página do sumário
+Precisa de Node e da biblioteca `docx`:
 
-Escritos à mão na constante `PAGES`. O processo é: gerar o livro, ver em que
-página cada capítulo abre, escrever em `PAGES`, gerar de novo. Só refazer quando
-a paginação mudar de verdade.
+```
+npm install -g docx
+node players-guide/src/build.js
+node masters-guide/src/build.js
+node door-fantasy/src/build.js
+```
 
-## Cores das caixas — sempre por função, nunca por gosto
+Cada comando regenera o `.docx` inteiro do zero, ao lado da pasta `src`.
 
-`"example"` verde (caso concreto) · `"clarify"` azul (por que a regra é assim) ·
-`"warn"` âmbar (limite, armadilha, coisa fácil de errar).
+Para regerar as imagens (só se elas mudarem — precisa de Python e Pillow):
+
+```
+python3 players-guide/src/assets/make_figures.py
+python3 door-fantasy/src/assets/make_figures.py
+```
+
+## O que NÃO precisa subir toda semana
+
+O `.docx` é gerado a partir do `build.js`. Se a fonte está no repositório, o livro é
+reconstruível. Suba o `.docx` de vez em quando, quando quiser a versão legível à mão.
