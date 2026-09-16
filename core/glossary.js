@@ -1,0 +1,101 @@
+// ============================================================================
+// LUDUS — GLOSSARY
+//
+// Every term this system uses, defined once. If a book needs to explain a term,
+// it quotes this file. If two books explain the same term differently, one of
+// them is a defect.
+//
+// Fields: [ term, definition, tag ]
+//   tag: "system" · "method" ★ (depends on the coursebook) · "table" · "world"
+// ============================================================================
+
+const glossary = [
+  // --- the system ---------------------------------------------------------
+  ["Action (language action)",
+   "One of the thirteen things a speaker does with language — identify, describe, quantify, narrate, report, plan, argue, speculate, regulate and the rest. The axis the GM uses to design a scene, because an action is something a character does, while a grammar topic is not.",
+   "method"],
+  ["Archetype",
+   "One of the four roles a character is built on: Vanguard, Diplomat, Strategist, Scout. It sets your Kit and your Signature Move. It is not a class and it does not change your dice.",
+   "system"],
+  ["Band",
+   "One of the three outcome ranges every roll falls into: 10+ Strong Hit, 7–9 Mixed Result, 6 or under Miss.",
+   "system"],
+  ["Boon",
+   "A narratively strong thing earned only at a Growth Moment — a door that opens for you, a person who owes you and knows it, an object that does one impossible thing once. It takes no Pack slot and it never adds to a roll.",
+   "system"],
+  ["Codex",
+   "The table's shared written memory of the campaign: what happened, who was met, what the players invented. Kept in the class, not in the books.",
+   "table"],
+  ["Door",
+   "A setting. Each Door is a world the same engine runs — the Tallow Coast, the Cyberpunk Door, and so on. Characters walk through a Door from the Ludus and come back out.",
+   "world"],
+  ["Door Book",
+   "The GM-only book for one Door: its people, its secret, its cast, and the four arcs of its campaign, written as suggestions rather than a script.",
+   "world"],
+  ["Focus",
+   "One of the four ratings on a character sheet — Courage, Empathy, Wit, Instinct. You add the relevant one to 2d6 when you make a Move.",
+   "system"],
+  ["Growth Level",
+   "How far a character has travelled, on a track of twelve. Everyone starts at 1. It rises when a student passes the test of the sixth unit in a block of six. It never touches the dice, and it is NOT the coursebook level.",
+   "system"],
+  ["Growth Moment",
+   "The ritual at the table when a Growth Level goes up. The moment a Boon is earned.",
+   "system"],
+  ["Kit",
+   "The four or five things your Archetype always carries in this world. Printed on the sheet the day the character is made. Never counted, never tracked, never uses a Pack slot.",
+   "system"],
+  ["Language Focus",
+   "The one structure a student is working on this week, taken from their own place in the coursebook trail. It is the only line on the sheet that is different for every player at the table.",
+   "method"],
+  ["Language Point",
+   "A reroll, earned for homework, for using your Language Focus in a scene, and for giving your presentation. Counted at the close of a session and spent in the next one. Paid for the attempt, never for the result.",
+   "system"],
+  ["Ludus",
+   "Two things at once, on purpose. In the fiction, the hall the players return to between worlds — the place the Doors open from. In Latin, both 'school' and 'game'. It is also the name of this system.",
+   "world"],
+  ["Move",
+   "One of the six things a character can do that need dice: Act Under Pressure, Face Danger, Read the Scene, Persuade or Manipulate, Parley, Help or Interfere.",
+   "system"],
+  ["Pack",
+   "Six slots for everything gathered since the story began. One thing per slot, whatever its size. To take something with a full Pack you must say in English what you are leaving behind.",
+   "system"],
+  ["Passing the Lantern",
+   "The GM handing a piece of the world to a player to invent — what this place looks like, what happened here before you arrived, what the rule is here. What the player says becomes true.",
+   "table"],
+  ["Signature Move",
+   "The one thing your Archetype does better than anyone. It grows in tiers as your Growth Level rises, and it never becomes a flat bonus.",
+   "system"],
+  ["Spotlight Token",
+   "Three per session, for everyone, reset every week. Spend one to claim an extended turn — at most one per scene. You may give one to another player by saying in English why you want to hear from them.",
+   "system"],
+  ["The Second Look",
+   "The table's permission to rewind a beat and say it again, better, in English. It costs nothing and it is never refused.",
+   "table"],
+
+  // --- the method ★ -------------------------------------------------------
+  ["A · B · C · D · X",
+   "The five stages a student walks through in one coursebook unit. A and C debut a topic; B and D repeat it with a one-minute presentation; X is the extra session that only happens if the test was not passed.",
+   "method"],
+  ["Extra session (X)",
+   "The repeat stage, entered only when the pass mark was not reached. Two in a row is a fixed trigger for a one-to-one.",
+   "method"],
+  ["Presentation",
+   "About one minute at the top of a session, in which a student explains the topic they are on. Happens in B and D sessions only.",
+   "method"],
+  ["The trail",
+   "The student's own path through the coursebook — units, lessons, tests. It runs on their clock, not the table's.",
+   "method"],
+  ["Unit Progress Test",
+   "The coursebook's own test, released at the end of a D session. Pass mark 75%, two attempts, marked by the platform. The teacher writes none of it.",
+   "method"],
+
+  // --- the tools ----------------------------------------------------------
+  ["Class Board",
+   "The read-only sheet the whole class can see: who is where on the trail, today's Language Focus, who presents, the reminder for next week. It is fed by the Panel and it holds nothing private.",
+   "table"],
+  ["Panel",
+   "The teacher's sheet, never shared. Three fields typed per student — level, unit, stage — and everything else calculated. Marks, attempts and alerts live here and only here.",
+   "table"],
+];
+
+module.exports = { glossary };

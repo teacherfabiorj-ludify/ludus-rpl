@@ -30,7 +30,7 @@ const sizeOf = (() => {
   };
 })();
 
-const GAME_NAME = "Ludify RPL"; // locked 12/08/2026 — Roleplaying Language
+const { HOUSE, GAME_NAME, BOOK_SUBTITLE, VERSION } = require("../../core/brand.js");
 // O livro do aluno. Trocar para "Player's Book" é uma linha só, quando o Fábio decidir.
 const BOOK_NAME = "Player's Guide";
 
@@ -42,7 +42,7 @@ const CRIT = "D03B3B";
 const INK = "0B0B0B";
 const INK_SECONDARY = "52514E";
 const MUTED = "898781";
-const BRAND = "D2691E"; // laranja da marca — só para "Ludify RPL"
+const BRAND = "D2691E"; // laranja da marca — só para "Ludus"
 const BOX_BG = "F2F2F0";
 const ZEBRA = "F7F7F5";
 const WHITE = "FFFFFF";
@@ -110,7 +110,7 @@ const GAME_TERMS = [
   "Read the Scene", "Face Danger", "Parley",
   // System nouns
   "Growth Moment", "Growth Level", "Growth Ledger", "Language Focus",
-  "Language Point", "Spotlight Token", "Signature Move", "Homework Bonus",
+  "Language Point", "Spotlight Token", "Signature Move",
   "Session Zero", "Cross-Training", "Focus Shift", "Legacy Boon",
   // The four Archetypes
   "Vanguard", "Diplomat", "Strategist", "Scout",
@@ -132,7 +132,7 @@ const TERM_RE = new RegExp(
 // One pass finds both the brand name and every game term, so a term can never
 // be swallowed by the brand match or vice versa.
 const MARK_RE = new RegExp(
-  "(Ludify RPL)|\\b(" + GAME_TERMS
+  "(Ludus)|\\b(" + GAME_TERMS
     .slice()
     .sort((a, b) => b.length - a.length)
     .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
@@ -316,12 +316,14 @@ function pageFooter() {
   return new Footer({
     children: [
       new Paragraph({
-        alignment: AlignmentType.RIGHT,
         spacing: { before: 120 },
         border: {
           top: { style: BorderStyle.SINGLE, size: 6, color: ACCENT, space: 6 },
         },
+        tabStops: [{ type: "right", position: 10080 }],
         children: [
+          new TextRun({ text: `${GAME_NAME} · ${BOOK_NAME} · ${VERSION}`, color: MUTED, size: 15 }),
+          new TextRun({ text: "\t" }),
           new TextRun({ children: [PageNumber.CURRENT], bold: true, color: ACCENT, size: 20 }),
         ],
       }),
@@ -338,17 +340,23 @@ function titlePage() {
   children.push(spacer(1400));
   children.push(new Paragraph({
     spacing: { after: 80 },
-    children: [ new TextRun({ text: "Ludify RPL", bold: true, color: BRAND, size: 88 }) ],
+    children: [ new TextRun({ text: GAME_NAME.toUpperCase(), bold: true, color: BRAND, size: 88, characterSpacing: 40 }) ],
   }));
   children.push(new Paragraph({
     spacing: { after: 220 },
-    children: [ new TextRun({ text: "Roleplaying Language", color: INK_SECONDARY, size: 30 }) ],
+    children: [ new TextRun({ text: BOOK_SUBTITLE, color: INK_SECONDARY, size: 30 }) ],
   }));
   children.push(new Paragraph({
     spacing: { after: 40 },
     children: [ new TextRun({ text: BOOK_NAME.toUpperCase(), bold: true, color: ACCENT, size: 26, characterSpacing: 60 }) ],
   }));
-  children.push(spacer(1800));
+  // Carimbo de versão: é assim que um aluno confere sozinho se a cópia dele
+  // é a atual, e é assim que você diz "abra a v1.2" em aula.
+  children.push(new Paragraph({
+    spacing: { before: 60 },
+    children: [ new TextRun({ text: VERSION, color: MUTED, size: 21 }) ],
+  }));
+  children.push(spacer(1740));
   children.push(new Paragraph({
     children: [ new TextRun({ text: "Ludify — Idiomas com diversão e propósito", color: MUTED, size: 20 }) ],
   }));
@@ -371,14 +379,14 @@ const PAGES = {
   "Ch. 4": "9",
   "Ch. 5": "12",
   "Ch. 6": "21",
-  "Ch. 7": "25",
-  "Ch. 8": "28",
-  "Ch. 9": "30",
-  "Ch. 10": "32",
-  "Ch. 11": "34",
-  "Ch. 12": "35",
-  "Door Section": "36",
-  "Appendix A": "44",
+  "Ch. 7": "26",
+  "Ch. 8": "29",
+  "Ch. 9": "32",
+  "Ch. 10": "34",
+  "Ch. 11": "36",
+  "Ch. 12": "37",
+  "Door Section": "38",
+  "Appendix A": "47",
 };
 
 const contentsRows = [
@@ -389,10 +397,10 @@ const contentsRows = [
   ["Ch. 5 — Archetypes & Growth", "Four Archetypes, and the twelve-level track your character climbs as you do."],
   ["Ch. 6 — What You Carry", "Your Kit, six Pack slots, Boons, money and distance — all measured in words."],
   ["Ch. 7 — Making a Character", "Ana builds hers from scratch, one decision at a time."],
-  ["Ch. 8 — Language Points & Spotlight Tokens", "How you earn them, how you spend them."],
+  ["Ch. 8 — Language Points & Spotlight Tokens", "The two things you spend at the table: rerolls, and room to talk."],
   ["Ch. 9 — The Worlds You Can Play In", "Six settings this same engine runs, at a glance."],
   ["Ch. 10 — Table Etiquette", "The four house rules that keep this a safe place to make mistakes."],
-  ["Ch. 11 — Your Responsibilities", "Homework, punctuality, showing up ready."],
+  ["Ch. 11 — Your Responsibilities", "Homework, punctuality, showing up ready — and what each one is worth."],
   ["Ch. 12 — Session Zero Checklist", "What to agree on before your very first adventure."],
   ["Door Section — The Tallow Coast", "The peoples, the gods and the plain facts of the Fantasy world — everything you need to build a character in it."],
   ["Appendix A — As Regras em Português", "The core mechanics, summarised in Portuguese, for players still starting out."],
@@ -629,10 +637,10 @@ function chapter3() {
       ["4 — Language Focus", "The grammar point or vocabulary set you are working on right now, and the Evolve unit it came from.", "Every time you finish a unit. Your GM writes it."],
       ["5 — Signature Move", "The Move that comes with your Archetype, at whatever tier your Growth Level has reached.", "At Levels 3, 7 and 12."],
       ["6 — Your Moves", "The same six Moves every player has, and which Focus each one uses.", "Never. These six are the whole game."],
-      ["7 — This session", "Spotlight Tokens and Language Points (Chapter 8).", "Every session. They reset, and they never bank forward."],
+      ["7 — This session", "Three Spotlight Tokens, and the Language Points you earned last week (Chapter 8).", "Every session. Tokens reset to three; points are whatever you earned at the last debrief."],
       ["8 — Kit and Pack", "Your Kit is the four or five things your Archetype always carries. Your Pack is six slots for everything you pick up (Chapter 6).", "Kit almost never. Pack whenever you take or drop something."],
       ["9 — Boons", "What you earned at each Growth Moment. Your GM writes these; you never add one yourself.", "Once every six units, and only sometimes."],
-      ["10 — Money and distance", "Your coins, handfuls and bags, and the four distances this game uses instead of metres (Chapter 6).", "Money, whenever you spend or earn. The four distances, never."],
+      ["10 — Money and distance", "Your coins, handfuls and bags — you start with three handfuls — and the four distances this game uses instead of metres (Chapter 6).", "Money, whenever you spend or earn. The four distances, never."],
     ],
     [2400, 5080, 2600]
   ));
@@ -799,57 +807,6 @@ function moveBlock(move) {
   return parts;
 }
 
-const moves = [
-  {
-    name: "Act Under Pressure",
-    focus: "Instinct",
-    trigger: "when you have to act fast, with no time to think it through.",
-    strong: "You do exactly what you meant to do.",
-    mixed: "You do it — but pick one: you hesitate, you're off-balance, or you reveal more than you wanted to.",
-    miss: "You freeze, panic, or act on the wrong instinct. The GM decides what happens next.",
-  },
-  {
-    name: "Face Danger",
-    focus: "Courage",
-    trigger: "when you step into harm's way, on purpose, to get something done.",
-    strong: "You handle it — clean, no cost.",
-    mixed: "You handle it — but pick one: you get hurt, you lose something, or you have to make a hard choice right now.",
-    miss: "The danger wins this round. The GM makes a move against you.",
-  },
-  {
-    name: "Read the Scene",
-    focus: "Instinct",
-    trigger: "when you stop and look closely at a person, place, or situation before acting.",
-    strong: "Ask the GM two questions from the list below. They must answer honestly.",
-    mixed: "Ask one question from the list.",
-    miss: "The GM asks you a question instead — and you have to answer it out loud, in English.",
-    note: "Questions: What's really going on here? What should I watch out for? Who's really in control here? What here isn't what it looks like?",
-  },
-  {
-    name: "Persuade or Manipulate",
-    focus: "Wit",
-    trigger: "when you work an angle on someone — flattery, logic, a clever half-truth.",
-    strong: "They buy it. They do what you want.",
-    mixed: "They're close — but they want something from you first.",
-    miss: "They catch on. Now they trust you less.",
-  },
-  {
-    name: "Parley",
-    focus: "Empathy",
-    trigger: "when you make a direct request, backed by something they actually want or need from you.",
-    strong: "They give you what you asked for — or a fair trade.",
-    mixed: "They'll do it, but there's a catch: a smaller ask, a delay, a condition.",
-    miss: "No deal. And they remember you tried.",
-  },
-  {
-    name: "Help or Interfere",
-    focus: "Empathy",
-    trigger: "when you jump in to support — or block — another player's Move, before the dice are rolled.",
-    strong: "They roll with +1. Nothing bad happens to you.",
-    mixed: "They roll with +1 — but now you're caught up in it too.",
-    miss: "You get in the way instead. They roll with −1.",
-  },
-];
 
 function chapter4() {
   const children = [];
@@ -893,73 +850,112 @@ function chapterResources() {
   children.push(chapterTitle("Language Points & Spotlight Tokens"));
 
   children.push(flavorQuote(
-    `Diego could let the moment pass — nod, say something short, move on. Or he could spend the token burning a hole in his character sheet and make the next thirty seconds entirely his.`
+    `Diego could let the moment pass — nod, say something short, move on. Or he could put the token on the table and make the next thirty seconds entirely his.`
   ));
   children.push(spacer(140));
 
   children.push(bodyPara(
-    `Under Resources on your sheet (Chapter 3) sit two small pools of currency: Spotlight Tokens and Language Points. Both refill at the start of every session. Both are entirely yours to spend, on your own timing, with no permission needed. And both exist for the same underlying reason — to put a little more control over the shape of a session, and a little more reward for stretching your English, directly in your hands.`
-  ));
-  children.push(bodyPara(
-    `They're easy to tell apart once you know what each one is for. Spotlight Tokens are about airtime — they buy you room in the scene. Language Points are about the dice — they buy you a second chance on a roll. Neither one makes your Focus rating go up, and neither one is required to play; plenty of good sessions end with tokens or points left unspent.`
+    `Under Resources on your sheet (Chapter 3) sit two small pools. They are easy to tell apart once you know what each one is for. Spotlight Tokens are about airtime — they buy you room in the scene. Language Points are about the dice — they buy you a second chance on a roll. Neither one raises a Focus, neither one is required to play, and neither one is a reward for being good at English.`
   ));
 
+  // -------------------------------------------------------------------------
   children.push(sectionHeading("Spotlight Tokens"));
   children.push(bodyPara(
-    `Every player starts each session with three Spotlight Tokens — the same three, whether you're just starting out or nearly fluent, no matter your Archetype. You don't earn more of them during play, and whatever's left over at the end of the session doesn't carry over to the next one. Spend them if the moment calls for it; don't hoard them for later.`
+    `You start every session with ${spotlightTokens.start} Spotlight Tokens — the same ${spotlightTokens.start}, whether this is your first week or your fiftieth, whatever your Archetype, whatever your English. You do not earn more during play. Whatever is left at the end of the night is gone, and next week you start with ${spotlightTokens.start} again.`
   ));
   children.push(bodyPara(
-    `Spend one Spotlight Token to claim an extended turn: a bigger beat that's fully about your character, for as long as it takes you to play it out. That might be a longer speech instead of one line, walking the table through your search of the ruins step by step instead of summarizing it, or a short flashback that explains why your character reacts the way they just did. The GM's job, once a token is on the table, is to slow down and let you have the scene.`,
+    `Spend one. ${spotlightTokens.spend} That might be a longer speech instead of one line, walking the table through your search of the ruins step by step instead of summarising it, or a short flashback that explains why your character just reacted that way.`,
     { after: 100 }
   ));
   children.push(calloutBox(
-    "In Practice",
-    `A Spotlight Token doesn't change any dice roll — it changes how much time and attention the table gives you. It's there to make room for more English, not to buy you a mechanical edge. If a Move happens during your extended turn, you still roll for it normally.`,
+    "One Per Scene",
+    `You may spend at most ${spotlightTokens.maxPerScene} token in any single scene. Three tokens are meant to last you a session, not an opening. If you burn them all in the first ten minutes you have spent your whole evening's claim on one argument at a gate.`,
     "clarify"
   ));
+  children.push(spacer(120));
 
-  children.push(sectionHeading("Language Points"));
   children.push(bodyPara(
-    `You earn a Language Point every time you nail your Language Focus (Chapter 3) in the middle of a scene — your GM awards it on the spot, out loud, the moment it happens. There's no cap on how many you can earn in a session, and like Spotlight Tokens, anything unspent when the session ends is gone; they don't bank forward.`
-  ));
-  children.push(bodyPara(
-    `Spend a Language Point to reroll a 2d6 you've already rolled for a Move. Re-add your Focus to the new roll and read the new total against the three outcome bands (Chapter 2) — even if it's worse. One point buys exactly one reroll; if you want to try again after that, it costs another point.`,
-    { after: 100 }
+    `You can also give one away. ${spotlightTokens.transferRule}`
   ));
   children.push(calloutBox(
     "Example",
-    `Diego's Language Focus this week is commenting adverbs and the future perfect. Earlier in the session he used one flawlessly while warning the party about a trap — "Fortunately, I will have checked the mechanism before anyone touches it" — and banked a Language Point on the spot. Two scenes later he rolls a Persuade or Manipulate check and lands a 5. He spends the point, rerolls, and gets an 8 instead — a Mixed Result instead of a flat Miss.`,
+    `Phillipe has two tokens left and nothing he wants them for. Juan has been quiet for twenty minutes. Phillipe slides one across: ${"“"}I give this to Juan. I want to know what his character does when nobody is watching.${"”"} Juan now has four, and an invitation he did not have to ask for.`,
     "example"
   ));
-
-  children.push(sectionHeading("Two Resources, Side by Side"));
+  children.push(spacer(120));
   children.push(bodyPara(
-    `A quick reference for both — pin this next to your sheet until it's automatic.`,
+    spotlightTokens.outOfTokensRule,
+    { italics: true }
+  ));
+  children.push(spacer(140));
+  children.push(calloutBox(
+    "In Practice",
+    `A Spotlight Token never changes a dice roll. It changes how much time and attention the table gives you. If a Move happens during your extended turn, you roll it normally.`,
+    "clarify"
+  ));
+
+  // -------------------------------------------------------------------------
+  children.push(pageBreak());
+  children.push(sectionHeading("Language Points"));
+  children.push(bodyPara(
+    `A Language Point is a reroll. You earn them for three things, and all three are counted out loud at the debrief, in the last ten minutes of the session.`,
     { after: 100 }
   ));
   children.push(threeColTable(
-    ["RESOURCE", "EARNED", "SPENT ON"],
+    ["YOU EARN A POINT FOR", "HOW MUCH"],
+    languagePoints.earn,
+    [7000, 3080]
+  ));
+  children.push(spacer(140));
+
+  children.push(bodyPara(
+    `Here is the part that surprises people: ${"“"}what you earn tonight is what you spend next week.${"”"} Points are not handed out mid-scene and spent two minutes later. They are counted at the close, written on your sheet, and they arrive in your hands at the opening of the following session, when your GM reads them back to you.`
+  ));
+  children.push(bodyPara(
+    `That is deliberate. It means the count is calm instead of constant, it means your GM is not interrupting scenes to award things, and it means you sit down next week already holding something you earned by being present last week. Points do not go any further than that: whatever you do not spend next session is gone.`,
+    { after: 100 }
+  ));
+  children.push(calloutBox(
+    "The Point Is Paid For the Attempt",
+    languagePoints.lawOfTheAttempt,
+    "warn"
+  ));
+  children.push(spacer(140));
+
+  children.push(bodyPara(
+    `Spend a Language Point and here is what you get: ${languagePoints.spend}`
+  ));
+
+  children.push(spacer(180));
+  children.push(sectionHeading("Two Resources, Side by Side"));
+  children.push(threeColTable(
+    ["RESOURCE", "WHERE IT COMES FROM", "WHAT IT BUYS"],
     [
-      ["Spotlight Tokens", "3 at the start of every session — flat, for everyone.", "Claiming an extended turn — the scene is yours for a bigger beat."],
-      ["Language Points", "1 each time you nail your Language Focus in a live scene.", "Rerolling a 2d6 you've already rolled for a Move."],
+      ["Spotlight Tokens",
+       `${spotlightTokens.start} at the start of every session — flat, for everyone. Transferable.`,
+       `An extended turn. One per scene.`],
+      ["Language Points",
+       `Counted at the debrief: homework, using your Language Focus, your presentation. Up to ${languagePoints.maxPerSession}.`,
+       `One reroll each — spent in the session after the one that earned them.`],
     ],
     [2600, 3980, 3500]
   ));
   children.push(spacer(100));
   children.push(bodyPara(
-    "Neither pool carries over between sessions — both reset to their starting state (three tokens, zero points) the next time you sit down to play.",
+    "Neither pool banks forward. Tokens reset to three every week. Points last exactly one session and then expire.",
     { italics: true }
   ));
 
+  // -------------------------------------------------------------------------
   children.push(spacer(180));
   children.push(sectionHeading("A Turn, With a Language Point in Play"));
   children.push(bodyPara(
-    `Picking up right where Diego's example above left off — here's the full turn at the table, start to finish.`,
+    `Diego earned three points last week — homework done, his Language Focus used in a scene, and his one-minute presentation given. Tonight he is holding all three.`,
     { after: 100 }
   ));
   children.push(flavorQuote([
     `GM: "The quartermaster crosses his arms. 'I've heard every sob story in this camp, mage. Why should your lot get the last of the healing draughts?'"`,
-    `Diego: "Because when the wounded start arriving tonight, you'll have wished you'd have given them to us instead of watched us fail to save someone who will have been beyond saving otherwise."`,
+    `Diego: "Because when the wounded start arriving tonight, you'll have wished you'd given them to us instead of watching us fail to save someone."`,
     `GM: "That's Persuade or Manipulate — roll it."`,
   ]));
   children.push(spacer(100));
@@ -968,15 +964,15 @@ function chapterResources() {
     { after: 80 }
   ));
   children.push(bodyPara(
-    `Step 2 — Spend: Diego has a Language Point banked from earlier in the session. He spends it to reroll.`,
+    `Step 2 — Spend: he spends one of last week's three points to reroll. Two left.`,
     { after: 80 }
   ));
   children.push(bodyPara(
-    `Step 3 — Reroll: New 2d6 comes up 6, plus his +2 Wit. New total: 8 — a Mixed Result. The GM narrates the cost: "Fine. Take two — but the healer's watching you both, and she's not the forgiving type." Diego's future-perfect line is what earned him the point in the first place; spending it is what turned a flat Miss into a Mixed Result that keeps the scene moving forward.`,
+    `Step 3 — Reroll: new 2d6 comes up 6, plus his +2 Wit. New total: 8 — a Mixed Result. The GM narrates the cost: "Fine. Take two — but the healer's watching you both, and she's not the forgiving type."`,
     { after: 80 }
   ));
   children.push(bodyPara(
-    `That's the loop this whole chapter is built on: play your Language Focus well, and the game hands you a tool that makes your next roll a little less likely to go against you. Nobody has to remind you to practice — the incentive is already sitting on your sheet.`,
+    `That is the loop the whole chapter is built on. Do the work, reach for the structure you are learning, show up and present — and next week the game hands you a way to make a bad roll less final. Nobody has to remind you to practise. The incentive is sitting on your sheet a week in advance.`,
     { italics: true }
   ));
 
@@ -1064,14 +1060,18 @@ function chapterResponsibilities() {
     `${GAME_NAME} only works if you bring a little bit of yourself to the table every time — not talent, just preparation and presence. This chapter covers the three things that are entirely on you, none of which take more than a few minutes.`
   ));
 
-  children.push(sectionHeading("Homework Bonus"));
+  children.push(sectionHeading("Homework"));
   children.push(bodyPara(
-    `Your regular coursework and your character sheet are connected on purpose. Complete whatever homework you were assigned in your regular class before a session, and check the Homework Bonus box in the Progress section of your sheet (Chapter 3). Once per session, spend it to add +1 to the total of any single roll, after the dice land — enough to turn a Miss into a Mixed Result, or a Mixed Result into a Strong Hit, at exactly the moment you need it.`,
+    `Your coursework and your character sheet are connected on purpose. Do the homework your course set you before the session, and at the debrief that night it is worth one Language Point — a reroll, in your hands at the top of next week's session (Chapter 8).`,
+    { after: 100 }
+  ));
+  children.push(bodyPara(
+    `That is the whole mechanism, and notice what it is not: it is not a bonus to a roll. Nothing in this game adds a flat +1 to anything, and homework is no exception. What studying buys you is a second chance at the dice, not better dice.`,
     { after: 100 }
   ));
   children.push(calloutBox(
     "Example",
-    `Ana finished her homework the night before. Mid-session, she rolls a 8 on Parley — 2d6 came up 7, plus her Empathy of +1 — a Mixed Result, but she wanted more. She checks her Homework Bonus box, adds +1, and the total becomes 9... still short. She only gets one shot at it per session, so she banks the lesson for next time: save it for a roll that's already close to 10+.`,
+    `Ana did her unit exercises on Thursday. At the debrief on Saturday her GM counts it out loud: homework, one point. She also used her Language Focus in the scene at the docks, so that is two. She writes 2 at the top of her sheet, and next Saturday she sits down with two rerolls already in hand — earned the week before, for work nobody had to nag her about.`,
     "example"
   ));
 
@@ -1096,7 +1096,7 @@ function chapterResponsibilities() {
   children.push(threeColTable(
     ["RESPONSIBILITY", "IN ONE LINE"],
     [
-      ["Homework Bonus", "+1 to one roll this session, unlocked by finishing your regular coursework."],
+      ["Homework", "One Language Point at the debrief — a reroll you carry into next week."],
       ["Punctuality", "Message your GM ahead of time if you'll be late — the table waits for no one."],
       ["Showing Up Ready", "Know your Language Focus, remember last session, phone away."],
     ],
@@ -1133,7 +1133,7 @@ function chapterSessionZero() {
       ["Language Focus", "Your GM assigns each player's starting Language Focus, pulled from whatever you're covering in regular class."],
       ["Schedule & Attendance", "Confirm the session day and time, and revisit the Punctuality expectation (Chapter 11)."],
       ["Table Etiquette Recap", "A quick read-through of the four rules in Chapter 10, out loud, together."],
-      ["Resources", "Confirm that Spotlight Tokens and Language Points (Chapter 8) reset every session, and how the Homework Bonus (Chapter 11) works."],
+      ["Resources", "Confirm how Spotlight Tokens work — three each, one per scene, and you can give one away — and that Language Points are counted at the end of a session and spent in the next one (Chapter 8)."],
       ["Comfort Check-In", `Agree on a simple word — "pause" works fine — that any player can say to skip or soften content that's making them uncomfortable. No explanation required in the moment.`],
       ["First Scene", "Agree on the opening image: where the story starts, and who's there."],
     ],
@@ -1182,7 +1182,7 @@ const archetypes = [
       ["Tier 1 — Level 1", "Read the Room", "Before you decide what to offer in a Parley, you may ask your GM what the other party actually wants — they answer honestly."],
       ["Tier 2 — Level 3", "Read the Room", "As Tier 1, and you may instead ask what the other party is afraid of. Your choice, one question, answered honestly before you commit."],
       ["Tier 3 — Level 7", "Everyone Has a Price", "As Tier 2, and once per session, treat a 7–9 on Parley as a 10+ instead."],
-      ["Tier 4 — Level 12", "Speak for the Table", "As Tier 3, and when you Parley on behalf of another player's character rather than your own — and they narrate their half of the offer in English too — you both earn a Language Point, whatever the dice say."],
+      ["Tier 4 — Level 12", "Speak for the Table", "As Tier 3, and when you Parley on behalf of another player's character rather than your own — and they narrate their half of the offer in English too — you both earn a Language Point for next week, whatever the dice say."],
     ],
   },
   {
@@ -1269,7 +1269,7 @@ const guardrails = [
   ["Focus numbers never go up.", "The only thing that ever happens to your array is a Focus Shift, which moves a number without creating one. A Level 12 character and a Level 1 character roll against exactly the same odds. This is the promise from Chapter 2, kept all the way to the end of the track."],
   ["You only ever have one Archetype Signature Move.", "Tiers replace each other. Your sheet at Level 12 is not four Moves deep — it is one Move, four times sharper."],
   ["Cross-Training stays at Tier 1, twice, forever.", "Borrowed Moves give you range, not depth. Two of them, from two different Archetypes, and neither one ever upgrades."],
-  ["Nothing may add a flat bonus to a roll.", "No growth in this game ever hands you a +1. The Homework Bonus (Chapter 11) is the only bonus of its kind that exists, it comes from studying, and it is capped at once per session."],
+  ["Nothing may add a flat bonus to a roll.", "No growth in this game ever hands you a +1, and neither does anything else. There is no exception anywhere in this book. What effort buys you is a reroll — a second chance at the same dice — never better dice."],
   ["One session is still one session.", "Almost every Signature Move is once per session. A Level 12 character holding three once-per-session tools still only gets three moments of leverage in a two-hour game. What grows is the number of interesting choices, not the size of the numbers."],
 ];
 
@@ -1467,20 +1467,7 @@ function chapterArchetypes() {
 // things changes what is POSSIBLE, never what is PROBABLE.
 // ---------------------------------------------------------------------------
 
-const priceExamples = [
-  ["A hot meal, a bed for the night", "a coin"],
-  ["A good rope, a lantern, a warm coat", "a coin"],
-  ["A decent weapon, a week of lodging", "a handful"],
-  ["A horse, a forged document, a bribe that works", "a bag"],
-  ["A house, a ship, a name that opens doors", "a chest"],
-];
 
-const distanceLadder = [
-  ["Within reach", "Close enough to touch. You can hand something over, or grab it."],
-  ["Nearby", "Same room, a few steps away. You can speak normally and be heard."],
-  ["Far away", "Across the hall, the street, the clearing. You have to move to get there."],
-  ["Out of sight", "Behind a door, around the corner, gone. You cannot act on it at all."],
-];
 
 function chapterGear() {
   const children = [];
@@ -1568,18 +1555,20 @@ function chapterGear() {
   ));
   children.push(threeColTable(
     ["STEP", "WHAT IT MEANS"],
-    [
-      ["A coin", "Enough for a meal, a bed, or one ordinary useful thing."],
-      ["A handful", "Ten coins. Enough to matter for a week."],
-      ["A bag", "Ten handfuls. Enough to change what you are able to attempt."],
-      ["A chest", "Ten bags — and as much as any one person can carry. Spend it, store it, or give it away."],
-    ],
+    moneyLadder,
     [3000, 7080]
   ));
   children.push(spacer(160));
   children.push(bodyPara(
     `Mark the boxes on your sheet as you go. When ten coins fill up, rub them out and mark one handful instead — the same way ten of anything becomes one of the next thing up, in any language you have ever counted in.`
   ));
+  children.push(spacer(120));
+  children.push(calloutBox(
+    "What You Start With",
+    `Every character begins with ${startingMoney.amount} — the same amount, whoever you are and whatever your Archetype. It is enough that nobody has to worry about a meal or a bed, and nowhere near the bag that a horse or a bribe that works costs. You cannot buy your way out of your first real problem, and that is the point.`,
+    "clarify"
+  ));
+  children.push(spacer(120));
   children.push(bodyPara(
     `Prices are spoken in steps, never calculated. Nothing in this game costs one hundred and thirty-seven of anything. A merchant says a sword costs two handfuls; you say that is too expensive; the two of you find out who is more stubborn. That conversation is the point of having money at all.`
   ));
@@ -1650,7 +1639,8 @@ const anaSheet = [
   ["Kit", "A sealed letter · a silver ring · a warm cloak · a small mirror"],
   ["Pack", "Six slots, all empty — she has not been anywhere yet"],
   ["Growth Level", "1 — her first day here"],
-  ["Resources", "3 Spotlight Tokens · 0 Language Points · Homework Bonus unchecked"],
+  ["Resources", "3 Spotlight Tokens · 0 Language Points — she has not played a session yet"],
+  ["Money", "Three handfuls"],
 ];
 
 function chapterAna() {
@@ -1730,11 +1720,20 @@ function chapterAna() {
     `She reads the four items and does what every good player does with a Kit: she asks who the letter is addressed to. Her GM does not know yet. Neither does she. That is now a thing the campaign owes both of them.`,
     { italics: true }
   ));
+  children.push(spacer(140));
+  children.push(bodyPara(
+    `Her money is already written too — ${startingMoney.amount}, the same as everyone else at the table. So her GM asks the one question that comes with it: ${"\u201C"}${startingMoney.question}${"\u201D"}`
+  ));
+  children.push(calloutBox(
+    "Example",
+    `Ana thinks for a second. ${"\u201C"}My family gave it to me when I left. They think I am coming back.${"\u201D"} Nobody wrote that on a sheet, and it took eight seconds. The campaign now owes her a family, and the GM has a thread to pull in about three sessions.`,
+    "example"
+  ));
 
   children.push(pageBreak());
   children.push(sectionHeading("Step 8 — Fill In the Rest and Stop"));
   children.push(bodyPara(
-    `Three Spotlight Tokens, zero Language Points, Homework Bonus box empty until she earns it. Growth Level 1, and a brand new Growth Ledger with nothing on it yet. Done — she is finished before half the table has decided on a name.`,
+    `Three Spotlight Tokens. Zero Language Points, because points are earned at the end of a session and she has not played one yet. Three handfuls of coins. Growth Level 1, and a brand new Growth Ledger with nothing on it yet. Done — she is finished before half the table has decided on a name.`,
     { after: 100 }
   ));
   children.push(threeColTable(
@@ -1872,13 +1871,22 @@ function chapterSettings() {
 // Fonte única futura: doors/fantasy/content.js (public: true).
 // ---------------------------------------------------------------------------
 
+// ---- Shared SYSTEM data: the Moves and the two universal ladders ----------
+// Also rendered in QuickReference. Edit system.js, never here.
+const {
+  moves, priceExamples, distanceLadder,
+  moneyLadder, startingMoney, packFullRule,
+  languagePoints, spotlightTokens,
+} = require("../../core/system.js");
+
 // ---- Shared setting data: the ONE source of truth for the Tallow Coast ----
 // These same tables are rendered in the GM's Door Book (Appendix B). They are
 // never retyped in either build script — edit door-fantasy/src/content.js and
 // rebuild both books. See the header of that file for the reasoning.
 const {
   coastPlaces, burnLadder, peopleQuickRef, humanLineages, lineageNote, theSix,
-} = require("../../door-fantasy/src/content.js");
+  archetypeKits,
+} = require("../../core/doors/tallow-coast.js");
 
 function chapterDoorTallowCoast() {
   const children = [];
@@ -2127,6 +2135,27 @@ function chapterDoorTallowCoast() {
     `Money and burning are yours to spend and to argue about. The four distances never change, in any world this game runs — they are how everyone at this table describes where things are, for as long as you play.`
   ));
 
+  // ---- Starting Kits. Chapter 6 promises these and, until now, this book
+  // never printed them — so a table building characters had nothing to copy.
+  // Os quatro Kits ficam na mesma página: um aluno copiando o dele não deve
+  // ter que virar folha no meio da tabela.
+  children.push(pageBreak());
+  children.push(sectionHeading("Your Kit on This Coast"));
+  children.push(bodyPara(
+    `Chapter 6 told you that your Kit comes from your Archetype and from the world you are playing in. Here is the world half. Find your Archetype, copy the four things onto your sheet, and stop — you do not choose these and you do not add to them.`
+  ));
+  children.push(threeColTable(
+    ["ARCHETYPE", "WHAT YOU ALWAYS HAVE"],
+    archetypeKits,
+    [2200, 7880]
+  ));
+  children.push(spacer(140));
+  children.push(calloutBox(
+    "The question every Kit is hiding",
+    `One item in most Kits is there to be asked about. Who is the letter addressed to? Whose name did you write down? What does the key open? Your GM does not know yet either — and the moment you ask, the campaign owes you both an answer.`,
+    "clarify"
+  ));
+
   return children;
 }
 
@@ -2162,11 +2191,12 @@ const ptMoves = [
 ];
 
 const ptSheet = [
-  ["Language Focus", "O ponto de gramática que você está estudando esta semana. É só seu. Use bem numa cena e você ganha um Language Point."],
-  ["Language Point", "Ganho quando você acerta o seu Language Focus em cena. Gasta para rolar 2d6 de novo."],
-  ["Spotlight Token", "Compra espaço na cena para você. Zera a cada sessão — não acumula."],
+  ["Language Focus", "O ponto de gramática que você está estudando esta semana. É só seu. Tente usar numa cena e você ganha um Language Point — mesmo que saia torto."],
+  ["Language Point", "Uma rerrolagem. Ganha três coisas: lição de casa feita, Language Focus tentado em cena, apresentação dada. Contados no fim da sessão e gastos na SESSÃO SEGUINTE. Paga-se pela tentativa, não pelo acerto."],
+  ["Spotlight Token", "Três por sessão, um por cena. Compra espaço na cena para você. Dá para passar um a outro aluno, dizendo em inglês por quê. Zera a cada sessão — não acumula."],
   ["Kit", "Os 4 ou 5 itens que seu personagem sempre carrega. Vêm do Archetype. Não gasta, não conta."],
-  ["Pack", "Seis espaços para o que você pegar pelo caminho. Cheio, tem que largar algo para pegar outra coisa."],
+  ["Pack", "Seis espaços para o que você pegar pelo caminho. Cheio, tem que dizer em inglês o que larga para pegar outra coisa."],
+  ["Dinheiro", "Coin · handful · bag · chest. Dez de um faz um do seguinte. Você começa com três handfuls."],
   ["Boon", "Recompensa de Growth Moment. Abre porta na história — nunca dá bônus no dado."],
   ["Growth Level", "Sobe 1 a cada 6 unidades do seu curso terminadas aqui. Todo mundo começa no 1, seja qual for o seu inglês."],
 ];

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Ludify RPL — Door Book: The Tallow Coast — figures.
+Ludus — Door Book: The Tallow Coast — figures.
 
 Same visual system as players-guide/src/assets/make_figures.py: the palette is
 identical to the one in build.js, DejaVu for glyph coverage, 3x supersampling

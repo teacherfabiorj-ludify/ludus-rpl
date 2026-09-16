@@ -30,7 +30,8 @@ const sizeOf = (() => {
   };
 })();
 
-const GAME_NAME = "Ludify RPL"; // locked 12/08/2026 — Roleplaying Language
+const BOOK_NAME = "Master's Guide";
+const { GAME_NAME, HOUSE, BOOK_SUBTITLE, VERSION } = require("../../core/brand.js");
 
 // ---- Palette (shared across Player's Guide AND Master's Guide for visual consistency) ----
 const ACCENT = "2A78D6";
@@ -40,7 +41,7 @@ const CRIT = "D03B3B";
 const INK = "0B0B0B";
 const INK_SECONDARY = "52514E";
 const MUTED = "898781";
-const BRAND = "D2691E"; // laranja da marca — só para "Ludify RPL"
+const BRAND = "D2691E"; // laranja da marca — só para "Ludus"
 const BOX_BG = "F2F2F0";
 const ZEBRA = "F7F7F5";
 const WHITE = "FFFFFF";
@@ -108,7 +109,7 @@ const GAME_TERMS = [
   "Read the Scene", "Face Danger", "Parley",
   // System nouns
   "Growth Moment", "Growth Level", "Growth Ledger", "Language Focus",
-  "Language Point", "Spotlight Token", "Signature Move", "Homework Bonus",
+  "Language Point", "Spotlight Token", "Signature Move",
   "Session Zero", "Cross-Training", "Focus Shift", "Legacy Boon",
   // The four Archetypes
   "Vanguard", "Diplomat", "Strategist", "Scout",
@@ -133,7 +134,7 @@ const TERM_RE = new RegExp(
 // One pass finds both the brand name and every game term, so a term can never
 // be swallowed by the brand match or vice versa.
 const MARK_RE = new RegExp(
-  "(Ludify RPL)|\\b(" + GAME_TERMS
+  "(Ludus)|\\b(" + GAME_TERMS
     .slice()
     .sort((a, b) => b.length - a.length)
     .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
@@ -317,12 +318,14 @@ function pageFooter() {
   return new Footer({
     children: [
       new Paragraph({
-        alignment: AlignmentType.RIGHT,
         spacing: { before: 120 },
         border: {
           top: { style: BorderStyle.SINGLE, size: 6, color: ACCENT, space: 6 },
         },
+        tabStops: [{ type: "right", position: 10080 }],
         children: [
+          new TextRun({ text: `${GAME_NAME} · ${BOOK_NAME} · ${VERSION}`, color: MUTED, size: 15 }),
+          new TextRun({ text: "\t" }),
           new TextRun({ children: [PageNumber.CURRENT], bold: true, color: ACCENT, size: 20 }),
         ],
       }),
@@ -339,11 +342,11 @@ function titlePage() {
   children.push(spacer(1400));
   children.push(new Paragraph({
     spacing: { after: 80 },
-    children: [ new TextRun({ text: "Ludify RPL", bold: true, color: BRAND, size: 88 }) ],
+    children: [ new TextRun({ text: GAME_NAME.toUpperCase(), bold: true, color: BRAND, size: 88, characterSpacing: 40 }) ],
   }));
   children.push(new Paragraph({
     spacing: { after: 220 },
-    children: [ new TextRun({ text: "Roleplaying Language", color: INK_SECONDARY, size: 30 }) ],
+    children: [ new TextRun({ text: BOOK_SUBTITLE, color: INK_SECONDARY, size: 30 }) ],
   }));
   children.push(new Paragraph({
     spacing: { after: 40 },
@@ -410,7 +413,7 @@ function chapter1() {
   children.push(spacer(140));
 
   children.push(bodyPara(
-    `Ludify RPL is an English course that happens to be a tabletop roleplaying game, and a tabletop roleplaying game that happens to be an English course. Both halves are real. If you run it as a game and forget the course, students have fun and stop progressing. If you run it as a course and forget the game, they progress for six weeks and then stop coming.`
+    `Ludus is an English course that happens to be a tabletop roleplaying game, and a tabletop roleplaying game that happens to be an English course. Both halves are real. If you run it as a game and forget the course, students have fun and stop progressing. If you run it as a course and forget the game, they progress for six weeks and then stop coming.`
   ));
   children.push(bodyPara(
     `This guide exists so you never have to choose. Every mechanic in the Player's Guide was built to make the pedagogically correct move also the most fun move at the table. Your job is not to balance the two. Your job is to run the game properly and let the design do the balancing.`
@@ -440,7 +443,7 @@ function chapter1() {
 
   children.push(sectionHeading("What You Are Optimising For"));
   children.push(bodyPara(
-    `A session of Ludify RPL succeeds or fails on one number, and it is not how good your story was. It is how much English your students produced.`
+    `A session of Ludus succeeds or fails on one number, and it is not how good your story was. It is how much English your students produced.`
   ));
   children.push(bodyPara(
     `This is worth sitting with, because it runs against every instinct a good storyteller has. You will have a beautiful description ready. You will have a villain speech you are proud of. Every minute you spend delivering those is a minute no student is speaking. The best sessions of this game are often the ones where you said the least.`
@@ -618,7 +621,7 @@ function chapter3() {
 
   children.push(sectionHeading("What a Study Track Has to Do"));
   children.push(bodyPara(
-    `This system is not built around any one course book. It is built around a study track with four properties. Any material that has all four will run Ludify RPL correctly; any material missing one of them will need something built on top.`,
+    `This system is not built around any one course book. It is built around a study track with four properties. Any material that has all four will run Ludus correctly; any material missing one of them will need something built on top.`,
     { after: 100 }
   ));
   children.push(threeColTable(
@@ -1503,7 +1506,7 @@ function chapter8() {
   children.push(spacer(140));
 
   children.push(bodyPara(
-    `A teacher who has read this guide cover to cover and never sat at a Ludify RPL table will run a bad first session. Not because they misunderstood anything, but because the skill is physical: waiting four seconds without filling the silence, cutting away from a scene at its high point, letting an error go past. None of that is knowledge. All of it is habit.`
+    `A teacher who has read this guide cover to cover and never sat at a Ludus table will run a bad first session. Not because they misunderstood anything, but because the skill is physical: waiting four seconds without filling the silence, cutting away from a scene at its high point, letting an error go past. None of that is knowledge. All of it is habit.`
   ));
   children.push(bodyPara(
     `So the training is built in three layers — feel it, see the machinery, run it with a net — across five meetings. Each step removes some of the support.`

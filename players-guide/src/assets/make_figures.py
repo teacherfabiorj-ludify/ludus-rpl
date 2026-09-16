@@ -178,7 +178,7 @@ def sheet_annotated():
         bb = d.textbbox((0, 0), t, font=fb(18))
         d.text((x - (bb[2] - bb[0]) / 2, y - (bb[3] - bb[1]) / 2 - 3), t, font=fb(18), fill=WHITE)
 
-    d.text((60, 26), "Ludify RPL", font=fb(30), fill=BRAND)
+    d.text((60, 26), "Ludus", font=fb(30), fill=BRAND)
     d.text((285, 36), "·  CHARACTER SHEET", font=fb(20), fill=BLACK)
     LX, RX, CW = 90, 900, 700
 

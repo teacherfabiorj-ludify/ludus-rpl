@@ -31,14 +31,14 @@ const { readFileSync, writeFileSync, existsSync } = require("fs");
 // tables are never retyped in either build script.
 const {
   coastPlaces, burnLadder, peopleQuickRef, humanLineages, lineageNote, theSix,
-} = require("./content.js");
+} = require("../../core/doors/tallow-coast.js");
 
 const sizeOf = (path) => {
   const buf = readFileSync(path);
   return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
 };
 
-const GAME_NAME = "Ludify RPL";
+const { GAME_NAME, HOUSE, BOOK_SUBTITLE, VERSION } = require("../../core/brand.js");
 const BOOK_NAME = "Door Book";
 const DOOR_NAME = "The Tallow Coast";
 
@@ -52,7 +52,7 @@ const CRIT = "D03B3B";
 const INK = "0B0B0B";
 const INK_SECONDARY = "52514E";
 const MUTED = "898781";
-const BRAND = "D2691E"; // laranja da marca — só para "Ludify RPL"
+const BRAND = "D2691E"; // laranja da marca — só para "Ludus"
 const BOX_BG = "F2F2F0";
 const ZEBRA = "F7F7F5";
 const WHITE = "FFFFFF";
@@ -142,7 +142,7 @@ const GAME_TERMS = [
 ];
 
 const MARK_RE = new RegExp(
-  "(Ludify RPL)|\\b(" + GAME_TERMS
+  "(Ludus)|\\b(" + GAME_TERMS
     .slice().sort((a, b) => b.length - a.length)
     .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
     .join("|") + ")(s\\b|\\b)", "g"
@@ -421,9 +421,13 @@ function runningHeader(partLabel, chapterLabel) {
 function pageFooter() {
   return new Footer({
     children: [new Paragraph({
-      alignment: AlignmentType.RIGHT,
       spacing: { before: 120 },
-      children: [new TextRun({ children: [PageNumber.CURRENT], bold: true, color: ACCENT, size: 20 })],
+      tabStops: [{ type: "right", position: CONTENT_W }],
+      children: [
+        new TextRun({ text: `${GAME_NAME} · ${BOOK_NAME} · ${DOOR_NAME} · ${VERSION}`, color: MUTED, size: 15 }),
+        new TextRun({ text: "\t" }),
+        new TextRun({ children: [PageNumber.CURRENT], bold: true, color: ACCENT, size: 20 }),
+      ],
     })],
   });
 }
@@ -648,7 +652,11 @@ function titlePage() {
       children: [new TextRun({ text: DOOR_NAME, bold: true, color: INK, size: 92 })],
     }),
     new Paragraph({
-      spacing: { after: 900 },
+      spacing: { after: 40 },
+      children: [new TextRun({ text: VERSION, color: MUTED, size: 21 })],
+    }),
+    new Paragraph({
+      spacing: { after: 860 },
       border: { top: { style: BorderStyle.SINGLE, size: 12, color: ACCENT, space: 10 } },
       children: [new TextRun({
         text: "A four-arc campaign for the Fantasy Door — the secret, the schedule and the scenes.",
@@ -749,7 +757,7 @@ function chapter1() {
     ["BOOK", "WHO READS IT", "WHAT YOU GO THERE FOR"],
     [
       ["Player's Guide", "Students and you", "How the dice work, character creation, the four Archetypes, and the public description of this world."],
-      ["Master's Guide", "You", "How to run any Ludify RPL table: correcting without breaking a scene, the two clocks, Passing the Lantern, the Ludus. Nothing in it is specific to this Door."],
+      ["Master's Guide", "You", "How to run any Ludus table: correcting without breaking a scene, the two clocks, Passing the Lantern, the Ludus. Nothing in it is specific to this Door."],
       ["This book", "You only", "The secret, the schedule and the scenes of this Door. One of these exists per Door."],
     ], [2400, 2200, CONTENT_W - 4600]));
   c.push(spacer(160));
