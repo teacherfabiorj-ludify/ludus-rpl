@@ -27,7 +27,11 @@ door-fantasy/             O livro da PORTA Fantasy — só do professor  (31 pá
    TallowCoast-DoorBook.docx · src/build.js · src/assets/
 
 planilhas/                Painel, Quadro, ficha e catálogo
-   src/build_{ficha,painel,catalogo,preparacao}.py
+   Painel-Turma-LUDUS.xlsx      do PROFESSOR — nunca compartilhado
+   Quadro-Turma-LUDUS.xlsx      a turma vê, somente leitura
+   Ficha-Personagem-LUDUS.xlsx  MODELO — uma cópia por aluno
+   Catalogo-Etiquetas-Evolve.xlsx   ★ fonte das 72 unidades
+   src/_common.py · src/build_{painel,quadro,ficha,catalogo}.py
 ```
 
 ## A lei deste repositório
@@ -72,11 +76,18 @@ node door-fantasy/src/build.js
 E as planilhas (precisa de Python e openpyxl):
 
 ```
-python3 planilhas/src/build_catalogo.py     # roda primeiro: é a fonte
-python3 planilhas/src/build_preparacao.py
+node core/export.js                         # PRIMEIRO: gera core/core.json
+python3 planilhas/src/build_catalogo.py     # o catálogo é a fonte da REFERENCIA
 python3 planilhas/src/build_painel.py
+python3 planilhas/src/build_quadro.py
 python3 planilhas/src/build_ficha.py
 ```
+
+⚠ **`core/core.json` é a ponte.** Os livros são JavaScript, as planilhas são Python, e Python
+não dá `require` num `.js`. `node core/export.js` despeja `core/*.js` num JSON que os
+`build_*.py` leem. Se o JSON estiver mais velho que os `.js`, as planilhas estão sendo geradas
+de uma verdade vencida — rode o export antes. É por isso que a ficha não pode contradizer o
+livro: os dois leem o mesmo arquivo.
 
 Para regerar as imagens (só se elas mudarem — precisa de Python e Pillow):
 

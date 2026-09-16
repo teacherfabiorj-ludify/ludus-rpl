@@ -1,332 +1,246 @@
-#!/usr/bin/env python3
 """
-Ludify RPL — Painel da Turma  →  Painel-Turma-RPL.xlsx
+LUDUS — Painel da Turma  (o arquivo do professor · NUNCA compartilhado)
 
-O arquivo do PROFESSOR. Nunca é compartilhado com aluno nenhum.
+    node core/export.js            ← rode antes
+    python3 planilhas/src/build_painel.py
 
-Reconstruído em 11/09/2026 a partir da especificação da seção 7 de
-`rpg-cronograma-operacao.md`, depois que a versão de 12/08 se perdeu do
-workspace.
+Abas:  LEIA-ME · PAINEL · QUADRO · REFERENCIA
 
-DIVISÃO DE TERRITÓRIO — a regra que evita duplicar dado:
-  Cambridge One  → território do ALUNO: trilha, Unit Progress Test, notas
-  Painel         → território do PROFESSOR: em que etapa do ciclo cada aluno
-                   está. Essa informação só existe porque ele conduziu as
-                   sessões, e não existe em lugar nenhum além daqui.
-
-FONTE ÚNICA: a aba REFERENCIA é gerada a partir de Catalogo-Etiquetas-Evolve.xlsx.
-As 72 unidades, os títulos, a gramática e as ações não são redigitados aqui.
-
-Rodar de qualquer lugar:  python3 build_painel.py
+PAINEL   dez colunas digitadas, onze calculadas. O professor digita nível,
+         unidade e lição do ciclo, e o Language Focus, as ações, quem
+         apresenta, a próxima lição e o lembrete saem sozinhos da REFERENCIA.
+QUADRO   o bloco público. É a ÚNICA aba que sai deste arquivo: o Quadro da
+         Turma lê QUADRO!A1:I5 por IMPORTRANGE. Nota, tentativa e alerta
+         ficam no PAINEL e não aparecem aqui.
+REFERENCIA  as 72 unidades do Evolve, geradas do Catalogo-Etiquetas-Evolve.
 """
+
 import os
-from openpyxl import Workbook, load_workbook
-from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
-from openpyxl.worksheet.datavalidation import DataValidation
-from openpyxl.utils import get_column_letter
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-CATALOGO = os.path.join(HERE, "..", "Catalogo-Etiquetas-Evolve.xlsx")
-OUT = os.path.join(HERE, "..", "Painel-Turma-RPL.xlsx")
+import openpyxl
+from openpyxl import Workbook
 
-# ---- paleta, a mesma dos livros -------------------------------------------
-ACCENT, GOOD, WARN, CRIT = "2A78D6", "0CA30C", "FAB219", "D03B3B"
-INK, INK2, MUTED = "0B0B0B", "52514E", "898781"
-YELLOW, GREY, BLUE, ZEBRA = "FFF6DA", "EDEDEA", "E8F1FD", "F7F7F5"
+from _common import (BORDER, FILL_CALC, FILL_NOTE, FILL_PRIV, FILL_TYPE,
+                     F_BODY, F_LABEL, F_SMALL, HERE, OUT, WRAP, core,
+                     freeze, header_row, leia_me, note, paint, title, widths)
 
-F_H1 = Font(name="Calibri", size=17, bold=True, color=INK)
-F_SUB = Font(name="Calibri", size=10, italic=True, color=MUTED)
-F_ACC = Font(name="Calibri", size=10, bold=True, color=ACCENT)
-F_HEAD = Font(name="Calibri", size=9, bold=True, color="FFFFFF")
-F_BODY = Font(name="Calibri", size=10, color=INK)
-F_SMALL = Font(name="Calibri", size=9, color=INK2)
-F_NAME = Font(name="Calibri", size=11, bold=True, color=INK)
+C = core()
+GAME = C["brand"]["GAME_NAME"]
+VERSION = C["brand"]["VERSION"]
+CYCLE = C["method"]["lessonCycle"]
+PASS = C["method"]["PASS_MARK"]
+ATTEMPTS = C["method"]["MAX_ATTEMPTS"]
+LP = C["system"]["languagePoints"]
 
-THIN = Side(style="thin", color="D8D7D1")
-BOX = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
-
-STAGES = ["A", "B", "C", "D", "X"]
-NAMES = ["Aluno 1", "Aluno 2", "Aluno 3", "Aluno 4"]
+ROWS = 4          # quatro alunos
+R0 = 4            # primeira linha de aluno na aba PAINEL
+REF0 = 2          # primeira linha de dado na REFERENCIA
 
 
-def head_row(ws, row, labels, widths, fill=ACCENT):
-    for i, (lab, w) in enumerate(zip(labels, widths), start=2):
-        c = ws.cell(row=row, column=i, value=lab)
-        c.font = F_HEAD
-        c.fill = PatternFill("solid", fgColor=fill)
-        c.alignment = Alignment(vertical="center", wrap_text=True)
-        c.border = BOX
-        ws.column_dimensions[get_column_letter(i)].width = w
-    ws.row_dimensions[row].height = 26
-
-
-# ---------------------------------------------------------------- REFERENCIA
-def load_units():
-    """As 72 unidades, lidas do catálogo. Nada é redigitado."""
-    wb = load_workbook(CATALOGO, data_only=True)
+# ---------------------------------------------------------------------------
+# REFERENCIA — as 72 unidades, do catálogo
+# ---------------------------------------------------------------------------
+def read_catalogue():
+    p = os.path.join(OUT, "Catalogo-Etiquetas-Evolve.xlsx")
+    wb = openpyxl.load_workbook(p)
     ws = wb["MAPA"]
-    header = None
-    units = []
-    for row in ws.iter_rows(values_only=True):
-        vals = [v for v in row if v is not None]
-        if not vals:
+    out = []
+    for r in range(5, ws.max_row + 1):
+        ev = ws.cell(r, 2).value
+        if ev is None:
             continue
-        if header is None:
-            if "NÍVEL" in [str(v).upper() for v in vals]:
-                header = True
-            continue
-        # NÍVEL | EVOLVE | UN. | TÍTULO | GRAMÁTICA | AÇÃO 1 | AÇÃO 2 | DOMÍNIO | VOCAB
-        row = [v for v in row if v is not None or True]
-        cells = list(row)
-        cells = [c for c in cells if c is not None] if len(cells) < 9 else cells
-        if len(cells) < 8:
-            continue
-        nivel, evolve, un, titulo, gram, a1, a2, dom = cells[:8]
-        if not isinstance(evolve, int) or not isinstance(un, int):
-            continue
-        units.append(dict(nivel=nivel, evolve=evolve, un=un, titulo=titulo,
-                          gram=gram or "", a1=a1 or "", a2=a2 or "", dom=dom or ""))
-    return units
-
-
-def split_topics(gram):
-    """Divide a gramática da unidade entre a lição 1 e a lição 2.
-
-    ⚠ INFERÊNCIA. O Evolve traz dois tópicos por unidade, geralmente separados
-    por ponto e vírgula, mas a divisão exata só se confirma abrindo o livro.
-    Regra usada: o primeiro segmento é a lição 1, o resto é a lição 2. A coluna
-    CONFERIDO marca o que ainda não foi verificado — corrigir é editar a célula.
-    """
-    parts = [p.strip() for p in str(gram).split(";") if p.strip()]
-    if not parts:
-        return "", ""
-    if len(parts) == 1:
-        # O catálogo trouxe um tópico só para a unidade inteira. Duplicar nas duas
-        # lições seria mentira silenciosa; melhor mandar o professor ao livro.
-        return parts[0], "⚠ conferir no livro — o catálogo traz um tópico só"
-    return parts[0], "; ".join(parts[1:])
-
-
-# Únicas unidades conferidas contra o livro físico (registro de 12/08/2026).
-CONFERIDAS = {(1, 8), (2, 8), (3, 2)}
-
-
-def build_referencia(ws, units):
-    ws.sheet_view.showGridLines = False
-    ws["B2"] = "REFERENCIA — as 72 unidades do Evolve"
-    ws["B2"].font = F_H1
-    ws["B3"] = ("Gerada a partir de Catalogo-Etiquetas-Evolve.xlsx. A divisão entre lição 1 e lição 2 é "
-                "INFERIDA — confira contra o livro na primeira vez que usar cada unidade e corrija a célula.")
-    ws["B3"].font = F_SUB
-    labels = ["CHAVE", "NÍVEL", "EVOLVE", "UN.", "TÍTULO", "TÓPICO — LIÇÃO 1", "TÓPICO — LIÇÃO 2",
-              "AÇÃO 1", "AÇÃO 2", "CONFERIDO?"]
-    widths = [9, 7, 8, 6, 26, 40, 40, 17, 17, 12]
-    head_row(ws, 5, labels, widths)
-    r = 6
-    for u in units:
-        l1, l2 = split_topics(u["gram"])
-        conf = "conferida" if (u["evolve"], u["un"]) in CONFERIDAS else "inferida"
-        vals = [f'{u["evolve"]}|{u["un"]}', u["nivel"], u["evolve"], u["un"], u["titulo"],
-                l1, l2, u["a1"], u["a2"], conf]
-        for i, v in enumerate(vals, start=2):
-            c = ws.cell(row=r, column=i, value=v)
-            c.font = F_SMALL
-            c.alignment = Alignment(vertical="top", wrap_text=(i in (6, 7, 8)))
-            c.border = BOX
-            if r % 2 == 0:
-                c.fill = PatternFill("solid", fgColor=ZEBRA)
-            if i == 11 and conf == "conferida":
-                c.font = Font(name="Calibri", size=9, bold=True, color=GOOD)
-        r += 1
-    ws.freeze_panes = "B6"
-    ws.auto_filter.ref = f"B5:K{r-1}"
-    return r - 1
-
-
-# ---------------------------------------------------------------- PAINEL
-def build_painel(ws, last_ref_row):
-    ws.sheet_view.showGridLines = False
-    ws["B2"] = "Painel da Turma — Ludify RPL"
-    ws["B2"].font = F_H1
-    ws["B3"] = ("Abra isto 10 minutos antes da sessão e leia as quatro linhas. "
-                "Amarelo você preenche · azul se calcula sozinho · nada aqui é do aluno.")
-    ws["B3"].font = F_SUB
-
-    labels = ["ALUNO", "EV.", "UN.", "ETAPA", "TÍTULO DA UNIDADE", "O TÓPICO A PREPARAR HOJE",
-              "APRESENTA?", "AÇÕES DA LÍNGUA", "TENT.", "NOTA %", "STATUS DO TESTE",
-              "EXTRAS SEG.", "ALERTA", "GROWTH"]
-    widths = [14, 6, 6, 8, 24, 42, 11, 22, 7, 8, 26, 11, 28, 8]
-    head_row(ws, 5, labels, widths)
-
-    R = f"REFERENCIA!$B$6:$K${last_ref_row}"
-    first = 6
-    for i, name in enumerate(NAMES):
-        r = first + i
-        key = f'$C{r}&"|"&$D{r}'
-        ws.cell(row=r, column=2, value=name).font = F_NAME
-        ws.cell(row=r, column=3, value=1)          # Evolve
-        ws.cell(row=r, column=4, value=1)          # Unidade
-        ws.cell(row=r, column=5, value="A")        # Etapa
-        # 5 = título, 6 = tópico do dia, 7 = apresenta, 8 = ações
-        ws.cell(row=r, column=6, value=f'=IFERROR(INDEX({R},MATCH({key},REFERENCIA!$B$6:$B${last_ref_row},0),5)&"","")')
-        ws.cell(row=r, column=7, value=(
-            f'=IFERROR(IF($E{r}="X",'
-            f'INDEX({R},MATCH({key},REFERENCIA!$B$6:$B${last_ref_row},0),6)&"  +  "&INDEX({R},MATCH({key},REFERENCIA!$B$6:$B${last_ref_row},0),7),'
-            f'IF(OR($E{r}="A",$E{r}="B"),'
-            f'INDEX({R},MATCH({key},REFERENCIA!$B$6:$B${last_ref_row},0),6),'
-            f'INDEX({R},MATCH({key},REFERENCIA!$B$6:$B${last_ref_row},0),7)))&"","")'))
-        ws.cell(row=r, column=8, value=f'=IF(OR($E{r}="B",$E{r}="D"),"SIM — 1 min","—")')
-        ws.cell(row=r, column=9, value=(
-            f'=IFERROR(INDEX({R},MATCH({key},REFERENCIA!$B$6:$B${last_ref_row},0),8)&" · "&'
-            f'INDEX({R},MATCH({key},REFERENCIA!$B$6:$B${last_ref_row},0),9),"")'))
-        ws.cell(row=r, column=10, value=0)         # tentativas
-        ws.cell(row=r, column=11, value=None)      # nota
-        ws.cell(row=r, column=12, value=(
-            f'=IF($K{r}="","—",IF($K{r}>=75,"Passou · avança e volta ao A",'
-            f'IF($J{r}>=2,"Esgotou as 2 · você decide","Pode tentar de novo")))'))
-        ws.cell(row=r, column=13, value=0)         # extras seguidos
-        ws.cell(row=r, column=14, value=f'=IF($M{r}>=2,"⚠ Conversa individual de 15 min","")')
-        ws.cell(row=r, column=15, value=1)         # growth
-
-        for col in range(2, 16):
-            c = ws.cell(row=r, column=col)
-            c.border = BOX
-            c.alignment = Alignment(vertical="center", wrap_text=(col in (6, 7, 9, 12, 14)))
-            if col in (3, 4, 5, 10, 11, 13, 15):
-                c.fill = PatternFill("solid", fgColor=YELLOW)
-                if col != 11:
-                    c.font = F_BODY
-            elif col in (6, 7, 8, 9, 12):
-                c.fill = PatternFill("solid", fgColor=BLUE)
-                c.font = F_SMALL
-            elif col == 14:
-                c.font = Font(name="Calibri", size=10, bold=True, color=CRIT)
-        ws.row_dimensions[r].height = 34
-
-    last = first + len(NAMES) - 1
-    dv = DataValidation(type="list", formula1='"A,B,C,D,X"', allow_blank=True)
-    ws.add_data_validation(dv); dv.add(f"E{first}:E{last}")
-    dv2 = DataValidation(type="list", formula1='"0,1,2"', allow_blank=True)
-    ws.add_data_validation(dv2); dv2.add(f"J{first}:J{last}")
-
-    # a rotina, impressa embaixo para não virar conhecimento tribal
-    r = last + 3
-    ws.cell(row=r, column=2, value="A ROTINA DA SEMANA").font = F_ACC; r += 1
-    for t in [
-        "10 min antes da sessão — abra este painel e leia as quatro linhas. É a preparação inteira.",
-        "Logo depois da sessão — marque a etapa de cada um (A→B→C→D). Quem fechou D, libere o Unit Progress Test no Cambridge One.",
-        "1×/semana — lance tentativas e notas lendo o relatório do Cambridge One. Decida os casos de quem esgotou as duas tentativas.",
-        "O aluno não preenche nada aqui. Marcar A/B/C/D é registro de sessão que você conduziu — 30 segundos para quatro alunos, e mais confiável que memória de aluno.",
-    ]:
-        c = ws.cell(row=r, column=2, value="•  " + t)
-        c.font = F_SMALL
-        c.alignment = Alignment(vertical="top", wrap_text=True)
-        ws.row_dimensions[r].height = max(14, 13 * (len(t) // 118 + 1))
-        r += 1
-
-    r += 1
-    ws.cell(row=r, column=2, value="O CICLO DE UMA UNIDADE").font = F_ACC; r += 1
-    for t in [
-        "A — estreia o tópico da lição 1. O aluno usa em cena pela primeira vez.",
-        "B — mesmo tópico, e o aluno abre a sessão com a apresentação de ~1 min.",
-        "C — estreia o tópico da lição 2.",
-        "D — mesmo tópico, com apresentação. No fim desta sessão você libera o teste.",
-        "X — aula extra. Só quem não chegou a 75%. Revisa os dois tópicos.",
-    ]:
-        c = ws.cell(row=r, column=2, value="•  " + t)
-        c.font = F_SMALL
-        r += 1
-
-    ws.freeze_panes = "C6"
-
-
-# ---------------------------------------------------------------- aba do aluno
-def build_student(ws, name):
-    ws.sheet_view.showGridLines = False
-    ws["B2"] = name
-    ws["B2"].font = F_H1
-    ws["B3"] = "Uma linha por sessão. É daqui que sai a conversa de semestre e a resposta quando alguém perguntar se isto é aula."
-    ws["B3"].font = F_SUB
-    head_row(ws, 5, ["DATA", "EV.", "UN.", "ETAPA", "APRESENTOU?", "USOU O TÓPICO EM CENA?",
-                     "NOTA DO TESTE", "OBSERVAÇÃO DA SESSÃO"],
-             [11, 6, 6, 8, 13, 24, 13, 56])
-    for r in range(6, 50):
-        for col in range(2, 10):
-            c = ws.cell(row=r, column=col)
-            c.border = BOX
-            c.fill = PatternFill("solid", fgColor=YELLOW if r % 2 else "FFFCF2")
-            c.font = F_SMALL
-            c.alignment = Alignment(vertical="top", wrap_text=(col == 9))
-    dv = DataValidation(type="list", formula1='"A,B,C,D,X"', allow_blank=True)
-    ws.add_data_validation(dv); dv.add("E6:E49")
-    dv2 = DataValidation(type="list", formula1='"sim,não,parcial"', allow_blank=True)
-    ws.add_data_validation(dv2); dv2.add("F6:G49")
-    ws.freeze_panes = "B6"
-
-
-# ---------------------------------------------------------------- LEIA-ME
-def build_readme(ws):
-    ws.column_dimensions["A"].width = 3
-    ws.column_dimensions["B"].width = 108
-    ws.sheet_view.showGridLines = False
-    r = 2
-    ws.cell(row=r, column=2, value="Painel da Turma — Ludify RPL").font = F_H1; r += 1
-    ws.cell(row=r, column=2, value="O arquivo do professor · v2.0 · 11/09/2026").font = F_SUB
-    r += 2
-    TXT = [
-        ("P", "⚠ ESTE ARQUIVO NUNCA É COMPARTILHADO COM ALUNO"),
-        ("t", "Nem por um minuto, nem \"só para ele ver a nota dele\". Esconder aba no Planilhas Google não é segurança: quem edita desesconde, e quem só lê extrai pelo código-fonte. Proteger controla quem edita, nunca quem lê. Por isso a ficha do aluno e este painel são arquivos separados — e é por isso que este mora na pasta Ludify RPL — GM, fora da turma."),
-        ("", ""),
-        ("P", "A DIVISÃO DE TERRITÓRIO"),
-        ("t", "Cambridge One é território do aluno: a trilha de exercícios, o Unit Progress Test, as notas. O Painel é território do professor: em que etapa do ciclo cada aluno está. Essa informação só existe porque você conduziu as sessões, e não está em lugar nenhum além daqui. Nada é digitado duas vezes."),
-        ("", ""),
-        ("P", "AS ABAS"),
-        ("t", "PAINEL — a única que você abre antes de jogar. Quatro linhas, e a preparação da sessão está feita."),
-        ("t", "Aluno 1 a Aluno 4 — o histórico, uma linha por sessão. Renomeie com o nome real de cada um."),
-        ("t", "MODELO — aba em branco, para quando entrar um quinto aluno. Copie e renomeie."),
-        ("t", "REFERENCIA — as 72 unidades do Evolve. Consulta; as fórmulas do PAINEL leem daqui."),
-        ("", ""),
-        ("P", "AS DUAS CORES"),
-        ("t", "Amarelo — você preenche.  Azul — calcula sozinho, não digite nada."),
-        ("", ""),
-        ("P", "⚠ A DIVISÃO LIÇÃO 1 / LIÇÃO 2 É INFERIDA"),
-        ("t", "Cada unidade do Evolve tem duas lições com tópicos diferentes. A REFERENCIA separa os dois a partir da gramática do catálogo, cortando no primeiro ponto e vírgula — o que acerta na maioria e erra em algumas. A coluna CONFERIDO mostra o que já foi checado contra o livro (hoje: Evolve 1-U8, 2-U8 e 3-U2)."),
-        ("t", "Na primeira vez que usar uma unidade, confira e corrija a célula. Leva dez segundos e a correção fica para sempre — o PAINEL passa a ler o valor certo sozinho."),
-        ("", ""),
-        ("P", "O QUE AS FÓRMULAS FAZEM"),
-        ("t", "A partir do nível, da unidade e da etapa, o PAINEL devolve o título da unidade, o tópico exato a preparar naquele dia, se o aluno apresenta, e as ações da língua que aquela unidade puxa. Se a nota e as tentativas estiverem lançadas, o status do teste também. Nada de ARRAYFORMULA: roda em Planilhas Google, Excel e LibreOffice, na máquina de qualquer professor parceiro."),
-        ("", ""),
-        ("P", "ONDE ISTO FICA GUARDADO"),
-        ("t", "Pasta Ludify RPL — GM no seu Drive, e no GitHub em planilhas/. A fonte é build_painel.py: para regerar o arquivo do zero, rode o script. O que é gerado na conversa não fica salvo em lugar nenhum permanente."),
-    ]
-    for kind, text in TXT:
-        c = ws.cell(row=r, column=2, value=text)
-        if kind == "P":
-            c.font = F_ACC
+        lvl = ws.cell(r, 1).value
+        un = int(ws.cell(r, 3).value)
+        tit = ws.cell(r, 4).value or ""
+        gram = (ws.cell(r, 5).value or "").strip()
+        a1 = ws.cell(r, 6).value or "—"
+        a2 = ws.cell(r, 7).value or "—"
+        if ";" in gram:
+            i = gram.index(";")
+            l1, l2 = gram[:i].strip(), gram[i + 1:].strip()
+            conf = "inferida"
         else:
-            c.font = F_BODY
-            c.alignment = Alignment(vertical="top", wrap_text=True)
-            ws.row_dimensions[r].height = max(15, 14.5 * (len(text) // 104 + 1))
-        r += 1
+            l1, l2 = gram, "⚠ conferir no livro — o catálogo traz um tópico só"
+            conf = "⚠ CONFERIR"
+        out.append([f"E{int(ev)}-U{un}", lvl, int(ev), un, tit, l1, l2, a1, a2, conf])
+    return out
 
 
-# ---------------------------------------------------------------- build
-units = load_units()
-assert len(units) == 72, f"esperava 72 unidades, li {len(units)}"
+CAT = read_catalogue()
+REF_LAST = REF0 + len(CAT) - 1
 
-wb = Workbook()
-build_readme(wb.active)
-wb.active.title = "LEIA-ME"
 
-painel = wb.create_sheet("PAINEL")
-for n in NAMES:
-    build_student(wb.create_sheet(n), n)
-build_student(wb.create_sheet("MODELO"), "MODELO — copie esta aba para um aluno novo")
-ref = wb.create_sheet("REFERENCIA")
-last = build_referencia(ref, units)
-build_painel(painel, last)
+def ref(col):
+    """Intervalo absoluto de uma coluna da REFERENCIA."""
+    return f"REFERENCIA!${col}${REF0}:${col}${REF_LAST}"
 
-wb.save(OUT)
-print("ok —", os.path.basename(OUT))
-print("abas:", wb.sheetnames)
-print("unidades na REFERENCIA:", len(units))
+
+# ---------------------------------------------------------------------------
+def sheet_painel(wb):
+    ws = wb.create_sheet("PAINEL")
+    widths(ws, {"A": 16, "B": 8, "C": 9, "D": 8, "E": 8, "F": 11, "G": 11,
+                "H": 11, "I": 10, "J": 8, "K": 22, "L": 30, "M": 30, "N": 30,
+                "O": 22, "P": 13, "Q": 11, "R": 46, "S": 9, "T": 28, "U": 7})
+    r = title(ws, 1, f"PAINEL DA TURMA · {GAME}",
+              "Amarelo você digita. Azul se calcula. Vermelho é privado e nunca sai deste arquivo.")
+
+    head = ["ALUNO", "EVOLVE", "UNIDADE", "LIÇÃO", "GROWTH",
+            "LIÇÃO DE CASA?", "USOU O FOCUS?", "APRESENTOU?", "TENT.", "NOTA %",
+            "TÍTULO DA UNIDADE", "LIÇÃO 1 (tópico)", "LIÇÃO 2 (tópico)",
+            "LANGUAGE FOCUS DE HOJE", "AÇÕES", "APRESENTA?", "PRÓX. LIÇÃO",
+            "LEMBRETE — PRÓXIMA AULA", "LP", "ALERTA — PRIVADO", "motor"]
+    header_row(ws, 3, head)
+
+    for i in range(ROWS):
+        r = R0 + i
+        ws.cell(r, 1, f"Aluno {i + 1}")
+        ws.cell(r, 2, 1)
+        ws.cell(r, 3, 1)
+        ws.cell(r, 4, "A")
+        ws.cell(r, 5, 1)
+        for col in ("F", "G", "H"):
+            ws[f"{col}{r}"] = "não"
+        ws.cell(r, 9, 0)
+
+        m = f"$U{r}"
+        ws[f"U{r}"] = f'=IFERROR(MATCH("E"&$B{r}&"-U"&$C{r},{ref("A")},0),0)'
+        ws[f"K{r}"] = f'=IF({m}=0,"⚠ unidade não encontrada",INDEX({ref("E")},{m}))'
+        ws[f"L{r}"] = f'=IF({m}=0,"—",INDEX({ref("F")},{m}))'
+        ws[f"M{r}"] = f'=IF({m}=0,"—",INDEX({ref("G")},{m}))'
+        ws[f"N{r}"] = (f'=IF($D{r}="X",$L{r}&"   +   "&$M{r},'
+                       f'IF(OR($D{r}="A",$D{r}="B"),$L{r},$M{r}))')
+        ws[f"O{r}"] = (f'=IF({m}=0,"—",IF(INDEX({ref("I")},{m})="—",INDEX({ref("H")},{m}),'
+                       f'INDEX({ref("H")},{m})&" / "&INDEX({ref("I")},{m})))')
+        ws[f"P{r}"] = f'=IF(OR($D{r}="B",$D{r}="D"),"SIM — 1 min","não")'
+        ws[f"Q{r}"] = (f'=IF($D{r}="A","B",IF($D{r}="B","C",IF($D{r}="C","D",'
+                       f'IF(OR($D{r}="D",$D{r}="X"),"A (unidade seguinte)","—"))))')
+        ws[f"R{r}"] = (
+            f'=IF($D{r}="A","Próxima aula do ciclo: B — você apresenta ~1 min sobre: "&$L{r},'
+            f'IF($D{r}="B","Próxima aula do ciclo: C — tópico novo: "&$M{r},'
+            f'IF($D{r}="C","Próxima aula do ciclo: D — você apresenta ~1 min sobre: "&$M{r},'
+            f'IF($D{r}="D","Próxima aula: unidade nova, lição A. O teste desta unidade é liberado hoje.",'
+            f'IF($D{r}="X","Aula extra: revisão dos dois tópicos desta unidade.","—")))))')
+        ws[f"S{r}"] = (f'=IF($F{r}="sim",1,0)+IF($G{r}="sim",1,0)+IF($H{r}="sim",1,0)')
+        ws[f"T{r}"] = (
+            f'=IF($J{r}="","—",IF($J{r}>={PASS},"ok — avança e volta ao A",'
+            f'IF($I{r}>={ATTEMPTS},"⚠ esgotou as {ATTEMPTS} tentativas — você libera",'
+            f'"abaixo de {PASS} — cabe 2ª tentativa")))')
+
+        paint(ws, r, list("ABCDEFGHIJ"), FILL_TYPE)
+        paint(ws, r, list("KLMNOPQRS"), FILL_CALC)
+        paint(ws, r, ["T"], FILL_PRIV)
+        paint(ws, r, ["U"], FILL_NOTE)
+        ws.row_dimensions[r].height = 46
+
+    n = R0 + ROWS + 1
+    n = note(ws, n, "COMO USAR — dez minutos antes da sessão", F_LABEL)
+    for line in [
+        "Digite três coisas por aluno: EVOLVE, UNIDADE e LIÇÃO do ciclo (A, B, C, D ou X). Tudo de K a S se calcula.",
+        "Depois da sessão, no debrief: marque sim/não em LIÇÃO DE CASA, USOU O FOCUS e APRESENTOU. A coluna LP é o que o aluno terá para gastar NA PRÓXIMA sessão.",
+        f"O LP é pago pela TENTATIVA, nunca pelo acerto. {LP['lawOfTheAttempt']}",
+        "Uma vez por semana, lance TENTATIVAS e NOTA lendo o relatório do Cambridge One.",
+        "",
+        "GRUPOS DE UM ENCONTRO POR SEMANA cobrem DUAS lições do ciclo por encontro: avance a coluna LIÇÃO duas vezes.",
+        "GRUPOS DE DOIS ENCONTROS cobrem UMA lição por encontro: avance uma vez. O ciclo conta lições, não dias.",
+        "",
+        "NADA das colunas I, J e T sai deste arquivo. O Quadro da Turma só enxerga a aba QUADRO.",
+    ]:
+        n = note(ws, n, line, F_BODY if line else F_SMALL)
+    freeze(ws, "B4")
+    return ws
+
+
+# ---------------------------------------------------------------------------
+def sheet_quadro(wb):
+    ws = wb.create_sheet("QUADRO")
+    widths(ws, {"A": 16, "B": 9, "C": 34, "D": 8, "E": 32, "F": 13, "G": 24,
+                "H": 9, "I": 48})
+    header_row(ws, 1, ["ALUNO", "GROWTH", "ONDE VOCÊ ESTÁ", "LIÇÃO",
+                       "LANGUAGE FOCUS DE HOJE", "APRESENTA HOJE?", "AÇÕES",
+                       "LANG. POINTS", "LEMBRETE — PRÓXIMA AULA"])
+    for i in range(ROWS):
+        q, p = 2 + i, R0 + i
+        ws.cell(q, 1, f"=PAINEL!A{p}")
+        ws.cell(q, 2, f"=PAINEL!E{p}")
+        ws.cell(q, 3, f'="Evolve "&PAINEL!B{p}&" · Unit "&PAINEL!C{p}&" — "&PAINEL!K{p}')
+        ws.cell(q, 4, f"=PAINEL!D{p}")
+        ws.cell(q, 5, f"=PAINEL!N{p}")
+        ws.cell(q, 6, f"=PAINEL!P{p}")
+        ws.cell(q, 7, f"=PAINEL!O{p}")
+        ws.cell(q, 8, f"=PAINEL!S{p}")
+        ws.cell(q, 9, f"=PAINEL!R{p}")
+        paint(ws, q, list("ABCDEFGHI"), FILL_CALC)
+        ws.row_dimensions[q].height = 40
+
+    n = ROWS + 4
+    n = note(ws, n, "ESTA É A ÚNICA ABA QUE SAI DESTE ARQUIVO", F_LABEL)
+    for line in [
+        "O Quadro da Turma lê exatamente QUADRO!A1:I5 por IMPORTRANGE. Nada fora deste retângulo é alcançável a partir de uma ficha de aluno.",
+        "Não tem nota. Não tem tentativa. Não tem alerta. Por construção, não por disciplina.",
+        "Não digite nada aqui: as nove colunas são espelho do PAINEL.",
+    ]:
+        n = note(ws, n, line, F_BODY)
+    return ws
+
+
+# ---------------------------------------------------------------------------
+def sheet_referencia(wb):
+    ws = wb.create_sheet("REFERENCIA")
+    widths(ws, {"A": 10, "B": 7, "C": 8, "D": 6, "E": 26, "F": 44, "G": 44,
+                "H": 18, "I": 18, "J": 12})
+    header_row(ws, 1, ["CHAVE", "NÍVEL", "EVOLVE", "UN.", "TÍTULO",
+                       "LIÇÃO 1 (tópico)", "LIÇÃO 2 (tópico)", "AÇÃO 1",
+                       "AÇÃO 2", "CONFERIDO?"])
+    for i, row in enumerate(CAT):
+        r = REF0 + i
+        for j, v in enumerate(row):
+            c = ws.cell(r, j + 1, v)
+            c.font, c.alignment, c.border = F_BODY, WRAP, BORDER
+    freeze(ws, "A2")
+    return ws
+
+
+# ---------------------------------------------------------------------------
+def build():
+    wb = Workbook()
+    wb.remove(wb.active)
+    sheet_painel(wb)
+    sheet_quadro(wb)
+    sheet_referencia(wb)
+
+    leia_me(wb, [
+        f"{VERSION}  ·  gerado de core/core.json por planilhas/src/build_painel.py",
+        "",
+        "## O que é este arquivo",
+        "O painel do professor. Ele NUNCA é compartilhado com aluno nenhum, e não precisa ser: dele sai um bloco público (a aba QUADRO) que alimenta o Quadro da Turma, e é o Quadro que as fichas leem.",
+        "",
+        "## A corrente",
+        "PAINEL  →  QUADRO (aba deste arquivo)  →  Quadro da Turma (arquivo separado, somente leitura)  →  ficha de cada aluno",
+        "",
+        "Nenhum arquivo que um aluno consiga editar aponta para este. É essa a trava: o IMPORTRANGE é autorizado por arquivo inteiro, então bastaria um aluno trocar o intervalo para ler tudo.",
+        "",
+        "## Montagem, uma vez só",
+        "1. Suba este arquivo no Drive, na pasta do GM, e abra-o.",
+        "2. Arquivo → Salvar como Planilhas Google. Sem isso não existe IMPORTRANGE.",
+        "3. Troque Aluno 1–4 pelos nomes reais, na coluna A da aba PAINEL.",
+        "4. Copie o link. É ele que vai na célula amarela do Quadro da Turma.",
+        "",
+        "## Toda semana",
+        "Antes da sessão: EVOLVE, UNIDADE e LIÇÃO de cada aluno. Três células por aluno.",
+        "No debrief: sim/não em lição de casa, uso do Focus e apresentação. Sai o LP da próxima sessão.",
+        "Uma vez por semana: tentativas e nota, lendo o Cambridge One.",
+        "",
+        "## Formato do grupo",
+        "O ciclo conta LIÇÕES, não dias. Um grupo de um encontro por semana cobre duas lições por encontro; um grupo de dois encontros cobre uma por encontro. Nos dois casos, uma unidade leva duas semanas.",
+        "",
+        "## ⚠ A divisão lição 1 / lição 2 é inferida",
+        "O catálogo traz a gramática por unidade, não por lição. A REFERENCIA corta no primeiro ponto e vírgula. A coluna CONFERIDO? marca o que ainda não foi checado no livro. Corrigir é editar uma célula da REFERENCIA — o PAINEL passa a ler o valor certo sozinho.",
+    ], f"Painel da Turma · {GAME}", "O arquivo do professor. Nunca compartilhado.")
+
+    out = os.path.join(OUT, "Painel-Turma-LUDUS.xlsx")
+    wb.save(out)
+    print("escrito:", out, f"· {len(CAT)} unidades na REFERENCIA")
+
+
+if __name__ == "__main__":
+    build()

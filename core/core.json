@@ -1,0 +1,716 @@
+{
+  "_generated": "2026-09-16T11:21:50.117Z",
+  "_warning": "GENERATED FILE — do not edit. Edit core/*.js and run: node core/export.js",
+  "brand": {
+    "HOUSE": "Ludify",
+    "GAME_NAME": "Ludus",
+    "METHOD": "RPL",
+    "VERSION": "v2.0 · September 2026",
+    "BOOK_SUBTITLE": "A Ludify language roleplaying system",
+    "TAGLINE_PT": "Entre no Ludus. Saia falando inglês."
+  },
+  "system": {
+    "moves": [
+      {
+        "name": "Act Under Pressure",
+        "focus": "Instinct",
+        "trigger": "when you have to act fast, with no time to think it through.",
+        "strong": "You do exactly what you meant to do.",
+        "mixed": "You do it — but pick one: you hesitate, you're off-balance, or you reveal more than you wanted to.",
+        "miss": "You freeze, panic, or act on the wrong instinct. The GM decides what happens next."
+      },
+      {
+        "name": "Face Danger",
+        "focus": "Courage",
+        "trigger": "when you step into harm's way, on purpose, to get something done.",
+        "strong": "You handle it — clean, no cost.",
+        "mixed": "You handle it — but pick one: you get hurt, you lose something, or you have to make a hard choice right now.",
+        "miss": "The danger wins this round. The GM makes a move against you."
+      },
+      {
+        "name": "Read the Scene",
+        "focus": "Instinct",
+        "trigger": "when you stop and look closely at a person, place, or situation before acting.",
+        "strong": "Ask the GM two questions from the list below. They must answer honestly.",
+        "mixed": "Ask one question from the list.",
+        "miss": "The GM asks you a question instead — and you have to answer it out loud, in English.",
+        "note": "Questions: What's really going on here? What should I watch out for? Who's really in control here? What here isn't what it looks like?"
+      },
+      {
+        "name": "Persuade or Manipulate",
+        "focus": "Wit",
+        "trigger": "when you work an angle on someone — flattery, logic, a clever half-truth.",
+        "strong": "They buy it. They do what you want.",
+        "mixed": "They're close — but they want something from you first.",
+        "miss": "They catch on. Now they trust you less."
+      },
+      {
+        "name": "Parley",
+        "focus": "Empathy",
+        "trigger": "when you make a direct request, backed by something they actually want or need from you.",
+        "strong": "They give you what you asked for — or a fair trade.",
+        "mixed": "They'll do it, but there's a catch: a smaller ask, a delay, a condition.",
+        "miss": "No deal. And they remember you tried."
+      },
+      {
+        "name": "Help or Interfere",
+        "focus": "Empathy",
+        "trigger": "when you jump in to support — or block — another player's Move, before the dice are rolled.",
+        "strong": "They roll with +1. Nothing bad happens to you.",
+        "mixed": "They roll with +1 — but now you're caught up in it too.",
+        "miss": "You get in the way instead. They roll with −1."
+      }
+    ],
+    "priceExamples": [
+      [
+        "A hot meal, a bed for the night",
+        "a coin"
+      ],
+      [
+        "A good rope, a lantern, a warm coat",
+        "a coin"
+      ],
+      [
+        "A decent weapon, a week of lodging",
+        "a handful"
+      ],
+      [
+        "A horse, a forged document, a bribe that works",
+        "a bag"
+      ],
+      [
+        "A house, a ship, a name that opens doors",
+        "a chest"
+      ]
+    ],
+    "distanceLadder": [
+      [
+        "Within reach",
+        "Close enough to touch. You can hand something over, or grab it."
+      ],
+      [
+        "Nearby",
+        "Same room, a few steps away. You can speak normally and be heard."
+      ],
+      [
+        "Far away",
+        "Across the hall, the street, the clearing. You have to move to get there."
+      ],
+      [
+        "Out of sight",
+        "Behind a door, around the corner, gone. You cannot act on it at all."
+      ]
+    ],
+    "focuses": [
+      [
+        "Courage",
+        "Direct action, physical, confrontation",
+        "You step toward danger instead of away from it."
+      ],
+      [
+        "Empathy",
+        "Social connection, persuasion, reading people",
+        "You deal with another person directly."
+      ],
+      [
+        "Wit",
+        "Problem-solving, cleverness, investigation",
+        "You outthink the situation."
+      ],
+      [
+        "Instinct",
+        "Perception, reaction, reflex",
+        "You have to trust your gut, right now."
+      ]
+    ],
+    "outcomeBands": [
+      [
+        "10+",
+        "good",
+        "Strong Hit",
+        "You get what you wanted. No cost."
+      ],
+      [
+        "7–9",
+        "warn",
+        "Mixed Result",
+        "You get it, but it costs you something — the Move says what."
+      ],
+      [
+        "6−",
+        "crit",
+        "Miss",
+        "It does not work. The GM makes a move against you."
+      ]
+    ],
+    "moneyLadder": [
+      [
+        "A coin",
+        "A meal, a bed for the night, a good rope."
+      ],
+      [
+        "A handful",
+        "Ten coins. A decent weapon, a week of lodging. Enough to matter for a week."
+      ],
+      [
+        "A bag",
+        "Ten handfuls. A horse, a forged document, a bribe that works."
+      ],
+      [
+        "A chest",
+        "Ten bags. A house, a ship, a name that opens doors. The ceiling."
+      ]
+    ],
+    "startingMoney": {
+      "amount": "three handfuls",
+      "equalForAll": true,
+      "question": "Where did this money come from?"
+    },
+    "carryRows": [
+      [
+        "Kit",
+        "Four or five items from your Archetype and setting. Always with you. Never tracked, never counted. Does not use slots."
+      ],
+      [
+        "Pack",
+        "Six slots for everything you have gathered since the story began. One thing per slot, whatever its size."
+      ],
+      [
+        "Boons",
+        "Earned at Growth Moments only. No slots. Narratively strong. They follow you into new worlds."
+      ],
+      [
+        "Money",
+        "A coin, a handful, a bag, a chest. Ten of each makes one of the next. You start with three handfuls."
+      ]
+    ],
+    "PACK_SLOTS": 6,
+    "packFullRule": "When your Pack is full and you want something new, say out loud — in English — what you are leaving behind and where you are leaving it. Then take the new thing.",
+    "languagePoints": {
+      "countedAt": "the closing block of the session",
+      "spendableAt": "the next session",
+      "carriesForward": false,
+      "earn": [
+        [
+          "Homework done before the session",
+          "1 point"
+        ],
+        [
+          "You used your Language Focus in a scene",
+          "1 point"
+        ],
+        [
+          "You gave your one-minute presentation",
+          "1 point — only in a B or D session"
+        ]
+      ],
+      "lawOfTheAttempt": "The point is paid for the attempt, never for the result. If you reached for the structure you are working on and it came out crooked, you earned it. Getting it right is better. It is not what is being paid for.",
+      "spend": "Reroll one 2d6 you have already rolled for a Move. Re-add your Focus and read the new total, even if it is worse. One point, one reroll.",
+      "maxPerSession": 3
+    },
+    "spotlightTokens": {
+      "start": 3,
+      "resetsEverySession": true,
+      "carriesForward": false,
+      "maxPerScene": 1,
+      "transferable": true,
+      "spend": "Claim an extended turn — a bigger beat that is fully yours, for as long as it takes to play it out. The GM slows down and gives you the scene.",
+      "transferRule": "You may hand a token to another player, saying in English why you want to hear from them. A given token is spent by its new owner in the same session.",
+      "outOfTokensRule": "Running out never means silence. You lose the right to claim a scene, not the right to play. You speak whenever the GM turns to you, like everybody else.",
+      "purpose": "The GM distributes the invitation, not the minutes. Tokens are the brake on the player who would take every scene, and the invitation the quiet player can hand across the table."
+    },
+    "laws": [
+      [
+        "Nothing changes the dice.",
+        "Not your Kit, not a Boon, not a chest full of gold, not your Growth Level, not your English. There is no flat +1 anywhere in this system and there never will be."
+      ],
+      [
+        "Two clocks, never synchronised.",
+        "The campaign runs on the table's clock. The coursebook trail runs on each student's own. Four players on four different units is the normal state of a healthy table."
+      ],
+      [
+        "Everyone starts at Growth 1.",
+        "Growth Level is time at the table, not proficiency. A C1 speaker and an A1 speaker sit down at the same level. There is no formula converting one into the other."
+      ],
+      [
+        "Distribute the invitation, not the minutes.",
+        "The GM's job is to make sure everyone is asked, not to hold a stopwatch. Spotlight Tokens are what the table uses to correct itself when someone takes more than their share."
+      ],
+      [
+        "The point is paid for the attempt.",
+        "A student who reaches for the target structure and mangles it has done the thing the system is built to reward. Accuracy is better. It is not the price of entry."
+      ],
+      [
+        "English at the table, with two conscious exceptions.",
+        "Safety, and a word nobody can find. Everything else is played in English, including the arguing, the joking and the complaining."
+      ],
+      [
+        "Nothing above 13+.",
+        "Tone ceiling for every Door, every arc and every NPC. It is a design constraint, not a warning label."
+      ]
+    ]
+  },
+  "method": {
+    "sessionFormats": [
+      [
+        "One meeting a week",
+        "About two hours in one sitting",
+        "The meeting covers TWO lessons of the cycle, back to back.",
+        "The pilot group."
+      ],
+      [
+        "Two meetings a week",
+        "About an hour each, on separate days",
+        "Each meeting covers ONE lesson of the cycle — A on Tuesday, B on Thursday.",
+        "The default as new groups open."
+      ]
+    ],
+    "formatNeutrality": "No student-facing document names a day, a time or a number of meetings. The timetable lives in the group's Classroom, under Start Here, and nowhere else. Documents speak of 'your next session' and 'the next lesson of the cycle', never of Saturday.",
+    "COURSEBOOK": "Evolve",
+    "COURSEBOOK_PLATFORM": "Cambridge One",
+    "TEST_NAME": "Unit Progress Test",
+    "PASS_MARK": 75,
+    "MAX_ATTEMPTS": 2,
+    "twoClocks": [
+      [
+        "The table's clock",
+        "The campaign. Arcs, scenes, the story everyone shares. It moves once a week for everybody at the same rate."
+      ],
+      [
+        "Each student's clock",
+        "The coursebook trail. Units, lessons, tests. It moves at the speed of one person's studying, and it is normal for four players to be in four different places."
+      ]
+    ],
+    "lessonCycle": [
+      [
+        "A",
+        "Lesson 1 debuts",
+        "The student meets the first topic in a scene for the first time.",
+        "no"
+      ],
+      [
+        "B",
+        "Lesson 1 again",
+        "Same topic. The student opens the session with a one-minute presentation of it.",
+        "yes — 1 min"
+      ],
+      [
+        "C",
+        "Lesson 2 debuts",
+        "The second topic of the unit enters a scene for the first time.",
+        "no"
+      ],
+      [
+        "D",
+        "Lesson 2 again",
+        "Same topic, with a presentation. At the end of this session the GM releases the test.",
+        "yes — 1 min"
+      ],
+      [
+        "X",
+        "Extra session",
+        "Only if the pass mark was not reached. Revisits both topics of the unit.",
+        "no"
+      ]
+    ],
+    "cycleNotes": [
+      "Nothing blocks the walk from A to D except the student missing a session.",
+      "The cycle runs on each student's own clock. Misalignment across the table is the design, not a fault.",
+      "After a pass, the student returns to A on the next unit."
+    ],
+    "testRule": {
+      "released": "at the end of the D session, as an individual assignment",
+      "passMark": 75,
+      "attempts": 2,
+      "onPass": "Advance to the next unit and return to stage A.",
+      "onExhausted": "Extra session, an individual conversation, and the teacher decides — based on what the student actually does in scenes — whether to move them on. The test is a signal, not a gatekeeper.",
+      "watchpoint": "A second extra session in a row (about three weeks stalled) is a fixed trigger for a fifteen-minute one-to-one outside the session. The Panel flags it on its own."
+    },
+    "growthRule": {
+      "startsAt": 1,
+      "levels": 12,
+      "trigger": "Passing the test of the sixth unit in a block of six — one half-book.",
+      "neverTouchesDice": true,
+      "notTheSameAs": "Growth Level is not the coursebook level. It is time at the table, not proficiency. No formula converts one into the other. Everybody starts at 1."
+    },
+    "sessionShape": [
+      [
+        "0–10",
+        "Opening",
+        "Recap in English. Announcements: Growth Moments, tests released, who is in an extra session. Hand out the Language Points earned last week."
+      ],
+      [
+        "10–20",
+        "Presentations",
+        "Every student in a B or D session, about a minute each."
+      ],
+      [
+        "20–60",
+        "Act I",
+        "Two or three scenes."
+      ],
+      [
+        "60–65",
+        "Breath",
+        "Five minutes off."
+      ],
+      [
+        "65–105",
+        "Act II",
+        "Two or three scenes and the night's climax."
+      ],
+      [
+        "105–115",
+        "Debrief",
+        "Count the Language Points out loud, one short comment per student."
+      ],
+      [
+        "115–120",
+        "Close",
+        "Release tests, one-sentence hook for next week."
+      ]
+    ],
+    "pointsRhythm": {
+      "countedIn": "Debrief",
+      "handedOutIn": "Opening",
+      "sentence": "What you earn tonight is what you spend next week."
+    }
+  },
+  "glossary": [
+    [
+      "Action (language action)",
+      "One of the thirteen things a speaker does with language — identify, describe, quantify, narrate, report, plan, argue, speculate, regulate and the rest. The axis the GM uses to design a scene, because an action is something a character does, while a grammar topic is not.",
+      "method"
+    ],
+    [
+      "Archetype",
+      "One of the four roles a character is built on: Vanguard, Diplomat, Strategist, Scout. It sets your Kit and your Signature Move. It is not a class and it does not change your dice.",
+      "system"
+    ],
+    [
+      "Band",
+      "One of the three outcome ranges every roll falls into: 10+ Strong Hit, 7–9 Mixed Result, 6 or under Miss.",
+      "system"
+    ],
+    [
+      "Boon",
+      "A narratively strong thing earned only at a Growth Moment — a door that opens for you, a person who owes you and knows it, an object that does one impossible thing once. It takes no Pack slot and it never adds to a roll.",
+      "system"
+    ],
+    [
+      "Codex",
+      "The table's shared written memory of the campaign: what happened, who was met, what the players invented. Kept in the class, not in the books.",
+      "table"
+    ],
+    [
+      "Door",
+      "A setting. Each Door is a world the same engine runs — the Tallow Coast, the Cyberpunk Door, and so on. Characters walk through a Door from the Ludus and come back out.",
+      "world"
+    ],
+    [
+      "Door Book",
+      "The GM-only book for one Door: its people, its secret, its cast, and the four arcs of its campaign, written as suggestions rather than a script.",
+      "world"
+    ],
+    [
+      "Focus",
+      "One of the four ratings on a character sheet — Courage, Empathy, Wit, Instinct. You add the relevant one to 2d6 when you make a Move.",
+      "system"
+    ],
+    [
+      "Growth Level",
+      "How far a character has travelled, on a track of twelve. Everyone starts at 1. It rises when a student passes the test of the sixth unit in a block of six. It never touches the dice, and it is NOT the coursebook level.",
+      "system"
+    ],
+    [
+      "Growth Moment",
+      "The ritual at the table when a Growth Level goes up. The moment a Boon is earned.",
+      "system"
+    ],
+    [
+      "Kit",
+      "The four or five things your Archetype always carries in this world. Printed on the sheet the day the character is made. Never counted, never tracked, never uses a Pack slot.",
+      "system"
+    ],
+    [
+      "Language Focus",
+      "The one structure a student is working on this week, taken from their own place in the coursebook trail. It is the only line on the sheet that is different for every player at the table.",
+      "method"
+    ],
+    [
+      "Language Point",
+      "A reroll, earned for homework, for using your Language Focus in a scene, and for giving your presentation. Counted at the close of a session and spent in the next one. Paid for the attempt, never for the result.",
+      "system"
+    ],
+    [
+      "Ludus",
+      "Two things at once, on purpose. In the fiction, the hall the players return to between worlds — the place the Doors open from. In Latin, both 'school' and 'game'. It is also the name of this system.",
+      "world"
+    ],
+    [
+      "Move",
+      "One of the six things a character can do that need dice: Act Under Pressure, Face Danger, Read the Scene, Persuade or Manipulate, Parley, Help or Interfere.",
+      "system"
+    ],
+    [
+      "Pack",
+      "Six slots for everything gathered since the story began. One thing per slot, whatever its size. To take something with a full Pack you must say in English what you are leaving behind.",
+      "system"
+    ],
+    [
+      "Passing the Lantern",
+      "The GM handing a piece of the world to a player to invent — what this place looks like, what happened here before you arrived, what the rule is here. What the player says becomes true.",
+      "table"
+    ],
+    [
+      "Signature Move",
+      "The one thing your Archetype does better than anyone. It grows in tiers as your Growth Level rises, and it never becomes a flat bonus.",
+      "system"
+    ],
+    [
+      "Spotlight Token",
+      "Three per session, for everyone, reset every week. Spend one to claim an extended turn — at most one per scene. You may give one to another player by saying in English why you want to hear from them.",
+      "system"
+    ],
+    [
+      "The Second Look",
+      "The table's permission to rewind a beat and say it again, better, in English. It costs nothing and it is never refused.",
+      "table"
+    ],
+    [
+      "A · B · C · D · X",
+      "The five stages a student walks through in one coursebook unit. A and C debut a topic; B and D repeat it with a one-minute presentation; X is the extra session that only happens if the test was not passed.",
+      "method"
+    ],
+    [
+      "Extra session (X)",
+      "The repeat stage, entered only when the pass mark was not reached. Two in a row is a fixed trigger for a one-to-one.",
+      "method"
+    ],
+    [
+      "Presentation",
+      "About one minute at the top of a session, in which a student explains the topic they are on. Happens in B and D sessions only.",
+      "method"
+    ],
+    [
+      "The trail",
+      "The student's own path through the coursebook — units, lessons, tests. It runs on their clock, not the table's.",
+      "method"
+    ],
+    [
+      "Unit Progress Test",
+      "The coursebook's own test, released at the end of a D session. Pass mark 75%, two attempts, marked by the platform. The teacher writes none of it.",
+      "method"
+    ],
+    [
+      "Class Board",
+      "The read-only sheet the whole class can see: who is where on the trail, today's Language Focus, who presents, the reminder for next week. It is fed by the Panel and it holds nothing private.",
+      "table"
+    ],
+    [
+      "Panel",
+      "The teacher's sheet, never shared. Three fields typed per student — level, unit, stage — and everything else calculated. Marks, attempts and alerts live here and only here.",
+      "table"
+    ]
+  ],
+  "doors": {
+    "tallowCoast": {
+      "coastPlaces": [
+        [
+          "Ashlight",
+          "A walled city on the coast road",
+          "Trade, a gate that checks papers, and a guild that will vouch for you if it likes you. Everyone knows everyone, which is either comfortable or unbearable depending on the week."
+        ],
+        [
+          "Bellmoor",
+          "The middle of the road, and the largest",
+          "Richer, louder, and the seat of the Concord in this region. If a decision is being made about the coast, it is being made here."
+        ],
+        [
+          "Saltgate",
+          "The last city before the road ends",
+          "A port. Ships, salt, and a great deal of cargo nobody asks about. People who want to stop being asked questions come here."
+        ],
+        [
+          "The road",
+          "Days, not hours, between cities",
+          "Patrolled badly. Villages, farms and shrines line it, and none of them are on any map you can buy."
+        ],
+        [
+          "Inland",
+          "Where the road gives up",
+          "Nobody goes. This is where the Hush is."
+        ]
+      ],
+      "burnLadder": [
+        [
+          "a spark",
+          "No paper at all",
+          "Light it, warm it, find something you dropped. Anyone may."
+        ],
+        [
+          "a taper",
+          "A plain Warrant",
+          "Set a broken bone. Lock a door so that it stays locked."
+        ],
+        [
+          "a lantern",
+          "A sealed Warrant",
+          "Turn the weather. Bring down a wall. Somebody signs to answer for you."
+        ],
+        [
+          "a pyre",
+          "Nobody is licensed",
+          "There is no Warrant for this, and there has not been for eighty years."
+        ]
+      ],
+      "peopleQuickRef": [
+        [
+          "Human",
+          "Kinship Everywhere",
+          "Name one distant relation or old acquaintance wherever you go. They are not obliged to help. Once per arc."
+        ],
+        [
+          "Wickborn",
+          "The Old Sense",
+          "You feel that burning has happened nearby, and roughly how much. Never who, never why, never what it did."
+        ],
+        [
+          "Greenkept",
+          "Green Memory",
+          "You can tell how long a place has been as it is — older, younger, about the same. Never a date."
+        ],
+        [
+          "Duskborn",
+          "Nightsight",
+          "You see in poor light as others see at dusk. Full daylight tires your eyes within the hour."
+        ],
+        [
+          "Hybrid",
+          "The Animal's Gift",
+          "One sense or one fact of your body, taken from your animal and written by you in a single sentence."
+        ]
+      ],
+      "humanLineages": [
+        [
+          "Emberkin",
+          "The foundry towns of the inland hills",
+          "Endurance and metal. They judge a blade by looking at it and a wall by putting a hand on it. Half the smiths on the coast learned from an Emberkin, and all of them will tell you so."
+        ],
+        [
+          "Tidebound",
+          "The Tallow Coast itself",
+          "Sailors, traders, harbour clerks, gatekeepers. They read weather and water, and they are the people most likely to have an opinion about the Concord."
+        ],
+        [
+          "Roadborn",
+          "Caravan families, no fixed city",
+          "They have heard most dialects on the coast and know which roads flood. Welcome everywhere for a week, and suspected everywhere by the third."
+        ],
+        [
+          "Stonewake",
+          "Descended from those who left the fourth city before it stopped",
+          "Eighty years of being asked about it. They are uneasy in places that are too quiet, and they do not think that is superstition."
+        ],
+        [
+          "Fenfolk",
+          "The inland wetlands",
+          "Herbalists, midwives, bone-setters. Where the Concord has licensed nobody, a Fenfolk healer is what stands between a village and the burying ground."
+        ]
+      ],
+      "lineageNote": "Lineage is where your family came from and what it did — it is not what you look like. Skin, hair, height and features vary inside every lineage on this coast. Decide how your character looks because that is the character you want to play, not because a table told you to.",
+      "bloodlines": [
+        [
+          "Elf-touched",
+          "An elven ancestor two or three generations back. Eyes that catch light, a slightly longer life, or one thinned-out thread of an elven sense. Elves consider you human."
+        ],
+        [
+          "Orc-blooded",
+          "Broader shoulders, fast recovery, and a temper that arrives before you do. In a crowded room people make way without deciding to. Useful now and then, tiring the rest of the time."
+        ]
+      ],
+      "theSix": [
+        [
+          "The Wright",
+          "Making, craft, building, repair",
+          "Said of anything well made, and of anyone you hope will last. “Wright's hands on it.” · “May the Wright hold this roof.”"
+        ],
+        [
+          "The Ferryman",
+          "Roads, sea, travel — and death, which is only the last of these",
+          "Said to someone leaving and said at a graveside, in the same words. Nobody finds that strange. “Ferryman keep you.” · “He's gone to the water.”"
+        ],
+        [
+          "The Ledger",
+          "Trade, debt, oath, law",
+          "The god of the Concord's world, whether the Concord admits it or not. “On the Ledger.” · “That's written, then.”"
+        ],
+        [
+          "The Green Mother",
+          "Growth, harvest, birth, healing",
+          "Said over food, over children, and over anyone who is ill. “Mother's luck to you.” · “Green on your table.”"
+        ],
+        [
+          "The Watcher",
+          "Knowledge, memory, records, secrets",
+          "Said when a truth is hidden, and said pointedly when someone is lying to your face. “The Watcher knows.” · “Well — someone remembers.”"
+        ],
+        [
+          "The Stranger",
+          "Chance, change, luck, whatever was not planned",
+          "Said when something unexpected happens, good or bad. The only one of the Six people speak to casually. “Stranger's turn.”"
+        ]
+      ],
+      "castPublic": [
+        [
+          "Oren",
+          "Gatekeeper of Ashlight",
+          "Tired and correct. Asks for papers, and asks again. Speaks in facts and rules."
+        ],
+        [
+          "Factor Bram Locke",
+          "Guild agent",
+          "Friendly and timed. Deadlines, commissions, promises. He is where work comes from."
+        ],
+        [
+          "Keeper Marrow",
+          "The roadside shrine",
+          "Old and patient. Keeps the stone with the names on it. Always marks what she saw against what she was told."
+        ],
+        [
+          "Warden Alder",
+          "Concord inspector",
+          "Polite, inflexible, and not a villain. He believes the licence is what stands between the coast and another Hush."
+        ],
+        [
+          "Envoy Calla Wren",
+          "Speaks for the coast cities",
+          "Never says no. Says “that would be difficult.” Every sentence has two readings."
+        ],
+        [
+          "Hesper Vane",
+          "Burns without a licence",
+          "Keeps a village alive on unlicensed tapers. Knows exactly what she is risking and does it anyway."
+        ]
+      ],
+      "archetypeKits": [
+        [
+          "Vanguard",
+          "A shield · a heavy coat, mended more than once · a whistle that carries further than a shout · a name written down, in case you do not come back"
+        ],
+        [
+          "Diplomat",
+          "A sealed letter · a silver ring · a warm cloak · a small mirror"
+        ],
+        [
+          "Strategist",
+          "A folding map of the coast road · chalk and a length of string · a notebook and pencil · a key you have not explained to anyone"
+        ],
+        [
+          "Scout",
+          "A rope · a knife · a lantern · a water bottle"
+        ]
+      ]
+    }
+  }
+}

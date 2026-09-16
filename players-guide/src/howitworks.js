@@ -198,7 +198,7 @@ function english() {
   c.push(...masthead("How This Class Works",
     "Read this once, before your first session. It takes four minutes."));
 
-  c.push(para("This is an English course. The content is Cambridge's — you study Evolve on Cambridge One, and you take the Cambridge test at the end of every unit, exactly as you would in any other class. What is different is the shape of the lesson: for two hours a week, you and three other students live a story in English, and each of you plays a character inside it.", { color: INK }));
+  c.push(para("This is an English course. The content is Cambridge's — you study Evolve on Cambridge One, and you take the Cambridge test at the end of every unit, exactly as you would in any other class. What is different is the shape of the lesson: you and up to three other students live a story in English, and each of you plays a character inside it.", { color: INK }));
   c.push(para("You will not repeat sentences you would never say. You speak because your character needs something and nobody else is going to get it."));
 
   c.push(head("Two things are being measured"));
@@ -210,18 +210,18 @@ function english() {
     ], [1900, W - 4300, 2400]));
   c.push(para("They are connected on purpose. Your character grows because you studied, and for no other reason.", { italics: true, size: 17 }));
 
-  c.push(head("Your week"));
+  c.push(head("Your rhythm"));
   c.push(grid(
     ["WHEN", "WHAT YOU DO"],
     [
-      ["During the week", "Your Evolve unit and whatever homework was set. Finishing it before Saturday is worth a Language Point — see below."],
-      ["Saturday, 10:00", "Two hours. Ten minutes to arrive and say what happened last week, ninety minutes of story, twenty minutes to close."],
+      ["Before each session", "Your Evolve unit and whatever homework was set. Finishing it before you sit down is worth a Language Point — see below."],
+      ["The session itself", "A few minutes to arrive and say what happened last time, then the story, then a close. Your group's day, time and length are in Classroom, under Start Here."],
       ["After the session", "Read the recap in Classroom and answer the question at the end of it. Two or three sentences is enough."],
     ], [2300, W - 2300]));
 
-  c.push(head("Have these open every Saturday"));
+  c.push(head("Have these open every session"));
   c.push(callout("Your kit",
-    "The Zoom link (the same one every week, in Start Here)  ·  your own character sheet  ·  the Quick Reference  ·  something to write names and promises on.", WARN));
+    "The Zoom link (always the same one, in Start Here)  ·  your own character sheet  ·  the Quick Reference  ·  something to write names and promises on.", WARN));
 
   c.push(head("The three things that actually make this work", BRAND));
   c.push(three([
@@ -252,7 +252,7 @@ function portugues() {
   c.push(...masthead("Como Funciona a Aula",
     "Leia uma vez, antes da primeira sessão. Leva quatro minutos.", true));
 
-  c.push(para("Isto é um curso de inglês. O conteúdo é da Cambridge — você estuda o Evolve na plataforma Cambridge One e faz a prova da Cambridge ao fim de cada unidade, igual a qualquer outro curso. O que muda é o formato da aula: durante duas horas por semana, você e mais três alunos vivem uma história em inglês, e cada um tem um personagem dentro dela.", { color: INK }));
+  c.push(para("Isto é um curso de inglês. O conteúdo é da Cambridge — você estuda o Evolve na plataforma Cambridge One e faz a prova da Cambridge ao fim de cada unidade, igual a qualquer outro curso. O que muda é o formato da aula: você e até mais três alunos vivem uma história em inglês, e cada um tem um personagem dentro dela.", { color: INK }));
   c.push(para("Você não vai repetir frases que nunca diria na vida. Você fala porque o seu personagem precisa de algo e ninguém vai conseguir por você."));
 
   c.push(head("Duas coisas estão sendo medidas"));
@@ -264,18 +264,18 @@ function portugues() {
     ], [1900, W - 4300, 2400]));
   c.push(para("Elas são ligadas de propósito. Seu personagem evolui porque você estudou, e por nenhum outro motivo.", { italics: true, size: 17 }));
 
-  c.push(head("Sua semana"));
+  c.push(head("Seu ritmo"));
   c.push(grid(
     ["QUANDO", "O QUE VOCÊ FAZ"],
     [
-      ["Durante a semana", "Sua unidade do Evolve e a lição que foi passada. Terminar antes de sábado te dá uma vantagem na mesa — veja abaixo."],
-      ["Sábado, 10h", "Duas horas. Dez minutos para chegar e contar o que aconteceu na semana passada, noventa minutos de história, vinte para fechar."],
+      ["Antes de cada sessão", "Sua unidade do Evolve e a lição que foi passada. Terminar antes de sentar vale um Language Point — veja abaixo."],
+      ["A sessão", "Alguns minutos para chegar e contar o que aconteceu da última vez, a história, e o fechamento. O dia, o horário e a duração do seu grupo estão no Classroom, no Start Here."],
       ["Depois da sessão", "Leia o resumo no Classroom e responda a pergunta que vem no fim dele. Duas ou três frases bastam."],
     ], [2300, W - 2300]));
 
-  c.push(head("Tenha isto aberto todo sábado"));
+  c.push(head("Tenha isto aberto em toda sessão"));
   c.push(callout("Seu kit",
-    "O link do Zoom (o mesmo toda semana, no Start Here)  ·  a sua ficha de personagem  ·  o Quick Reference  ·  algo para anotar nomes e promessas.", WARN));
+    "O link do Zoom (sempre o mesmo, no Start Here)  ·  a sua ficha de personagem  ·  o Quick Reference  ·  algo para anotar nomes e promessas.", WARN));
 
   c.push(head("As três coisas que realmente fazem isto funcionar", BRAND));
   c.push(three([

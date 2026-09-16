@@ -48,6 +48,37 @@ const cycleNotes = [
   "After a pass, the student returns to A on the next unit.",
 ];
 
+
+// ---------------------------------------------------------------------------
+// SESSION FORMATS — how a group's timetable maps onto the cycle.
+// Locked 16/09/2026.
+//
+// THE DISTINCTION THAT MATTERS: the cycle counts LESSONS, not meetings.
+// A unit is always A · B · C · D (+ X), whatever the timetable says. What
+// changes between groups is how many of those lessons fit into one meeting.
+//
+// A SESSION means one meeting. Language Points and Spotlight Tokens run per
+// session — per meeting — never per lesson.
+// ---------------------------------------------------------------------------
+const sessionFormats = [
+  ["One meeting a week",
+   "About two hours in one sitting",
+   "The meeting covers TWO lessons of the cycle, back to back.",
+   "The pilot group."],
+  ["Two meetings a week",
+   "About an hour each, on separate days",
+   "Each meeting covers ONE lesson of the cycle — A on Tuesday, B on Thursday.",
+   "The default as new groups open."],
+];
+
+// Both formats move at the same speed: two lessons a week either way, so a
+// unit takes two weeks in both. Nothing in the system needs to know which
+// format a group is on — which is why no document should ever name a weekday.
+const formatNeutrality =
+  "No student-facing document names a day, a time or a number of meetings. " +
+  "The timetable lives in the group's Classroom, under Start Here, and nowhere else. " +
+  "Documents speak of 'your next session' and 'the next lesson of the cycle', never of Saturday.";
+
 // ---------------------------------------------------------------------------
 // THE TEST  ★
 // ---------------------------------------------------------------------------
@@ -99,6 +130,7 @@ const pointsRhythm = {
 };
 
 module.exports = {
+  sessionFormats, formatNeutrality,
   COURSEBOOK, COURSEBOOK_PLATFORM, TEST_NAME, PASS_MARK, MAX_ATTEMPTS,
   twoClocks, lessonCycle, cycleNotes, testRule, growthRule,
   sessionShape, pointsRhythm,
