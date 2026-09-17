@@ -1,7 +1,8 @@
 """
 LUDUS — Painel da Turma  (o arquivo do professor · NUNCA compartilhado)
 
-    node core/export.js            ← rode antes
+    python3 planilhas/src/export_units.py   ← 1º
+    node core/export.js                    ← 2º
     python3 planilhas/src/build_painel.py
 
 Abas:  LEIA-ME · PAINEL · QUADRO · REFERENCIA
@@ -12,12 +13,12 @@ PAINEL   dez colunas digitadas, onze calculadas. O professor digita nível,
 QUADRO   o bloco público. É a ÚNICA aba que sai deste arquivo: o Quadro da
          Turma lê QUADRO!A1:I5 por IMPORTRANGE. Nota, tentativa e alerta
          ficam no PAINEL e não aparecem aqui.
-REFERENCIA  as 72 unidades do Evolve, geradas do Catalogo-Etiquetas-Evolve.
+REFERENCIA  as 72 unidades do Evolve, vindas de core/units.json — o MESMO
+            arquivo que o Core Book imprime.
 """
 
 import os
 
-import openpyxl
 from openpyxl import Workbook
 
 from _common import (BORDER, FILL_CALC, FILL_NOTE, FILL_PRIV, FILL_TYPE,
@@ -29,7 +30,8 @@ GAME = C["brand"]["GAME_NAME"]
 VERSION = C["brand"]["VERSION"]
 CYCLE = C["method"]["lessonCycle"]
 PASS = C["method"]["PASS_MARK"]
-ATTEMPTS = C["method"]["MAX_ATTEMPTS"]
+SOFTCAP = C["method"]["testRule"]["softCap"]
+QUIZ = C["method"]["TEST_NAME"]
 LP = C["system"]["languagePoints"]
 
 ROWS = 4          # quatro alunos
@@ -38,35 +40,21 @@ REF0 = 2          # primeira linha de dado na REFERENCIA
 
 
 # ---------------------------------------------------------------------------
-# REFERENCIA — as 72 unidades, do catálogo
+# REFERENCIA — as 72 unidades, vindas de core/units.json
+#
+# ⚠ Até 16/09 este script lia o Catalogo-Etiquetas-Evolve.xlsx direto, e o Core
+# Book não tinha como imprimir a mesma tabela sem redigitá-la. Agora os dois
+# leem o mesmo arquivo. Rode antes:  python3 planilhas/src/export_units.py
 # ---------------------------------------------------------------------------
-def read_catalogue():
-    p = os.path.join(OUT, "Catalogo-Etiquetas-Evolve.xlsx")
-    wb = openpyxl.load_workbook(p)
-    ws = wb["MAPA"]
-    out = []
-    for r in range(5, ws.max_row + 1):
-        ev = ws.cell(r, 2).value
-        if ev is None:
-            continue
-        lvl = ws.cell(r, 1).value
-        un = int(ws.cell(r, 3).value)
-        tit = ws.cell(r, 4).value or ""
-        gram = (ws.cell(r, 5).value or "").strip()
-        a1 = ws.cell(r, 6).value or "—"
-        a2 = ws.cell(r, 7).value or "—"
-        if ";" in gram:
-            i = gram.index(";")
-            l1, l2 = gram[:i].strip(), gram[i + 1:].strip()
-            conf = "inferida"
-        else:
-            l1, l2 = gram, "⚠ conferir no livro — o catálogo traz um tópico só"
-            conf = "⚠ CONFERIR"
-        out.append([f"E{int(ev)}-U{un}", lvl, int(ev), un, tit, l1, l2, a1, a2, conf])
-    return out
+def read_units():
+    U = C["units"]["units"]
+    return [[u["key"], u["cefr"], u["level"], u["unit"], u["title"],
+             u["lesson1"], u["lesson2"], u["action1"], u["action2"],
+             "conferida" if u["checked"] == "inferred" else "⚠ CONFERIR"]
+            for u in U]
 
 
-CAT = read_catalogue()
+CAT = read_units()
 REF_LAST = REF0 + len(CAT) - 1
 
 
@@ -85,7 +73,7 @@ def sheet_painel(wb):
               "Amarelo você digita. Azul se calcula. Vermelho é privado e nunca sai deste arquivo.")
 
     head = ["ALUNO", "EVOLVE", "UNIDADE", "LIÇÃO", "GROWTH",
-            "LIÇÃO DE CASA?", "USOU O FOCUS?", "APRESENTOU?", "TENT.", "NOTA %",
+            "LIÇÃO DE CASA?", "USOU O FOCUS?", "APRESENTOU?", "TENT.", "QUIZ %",
             "TÍTULO DA UNIDADE", "LIÇÃO 1 (tópico)", "LIÇÃO 2 (tópico)",
             "LANGUAGE FOCUS DE HOJE", "AÇÕES", "APRESENTA?", "PRÓX. LIÇÃO",
             "LEMBRETE — PRÓXIMA AULA", "LP", "ALERTA — PRIVADO", "motor"]
@@ -123,8 +111,8 @@ def sheet_painel(wb):
         ws[f"S{r}"] = (f'=IF($F{r}="sim",1,0)+IF($G{r}="sim",1,0)+IF($H{r}="sim",1,0)')
         ws[f"T{r}"] = (
             f'=IF($J{r}="","—",IF($J{r}>={PASS},"ok — avança e volta ao A",'
-            f'IF($I{r}>={ATTEMPTS},"⚠ esgotou as {ATTEMPTS} tentativas — você libera",'
-            f'"abaixo de {PASS} — cabe 2ª tentativa")))')
+            f'IF($I{r}>={SOFTCAP},"⚠ {SOFTCAP} tentativas sem passar — converse antes da próxima",'
+            f'"abaixo de {PASS} — pode refazer")))')
 
         paint(ws, r, list("ABCDEFGHIJ"), FILL_TYPE)
         paint(ws, r, list("KLMNOPQRS"), FILL_CALC)
@@ -136,12 +124,11 @@ def sheet_painel(wb):
     n = note(ws, n, "COMO USAR — dez minutos antes da sessão", F_LABEL)
     for line in [
         "Digite três coisas por aluno: EVOLVE, UNIDADE e LIÇÃO do ciclo (A, B, C, D ou X). Tudo de K a S se calcula.",
-        "Depois da sessão, no debrief: marque sim/não em LIÇÃO DE CASA, USOU O FOCUS e APRESENTOU. A coluna LP é o que o aluno terá para gastar NA PRÓXIMA sessão.",
+        "Depois da sessão, no debrief: marque sim/não em LIÇÃO DE CASA, USOU O FOCUS e APRESENTOU. A coluna LP é o que o aluno terá para gastar NA PRÓXIMA sessão — anuncie em voz alta, e é o aluno que anota na ficha dele.",
         f"O LP é pago pela TENTATIVA, nunca pelo acerto. {LP['lawOfTheAttempt']}",
-        "Uma vez por semana, lance TENTATIVAS e NOTA lendo o relatório do Cambridge One.",
+        "Uma vez por semana, lance TENTATIVAS e NOTA lendo as respostas do " + QUIZ + " no Google Forms. A lição de casa fica no Cambridge One e a plataforma corrige sozinha — você não lança nada dela.",
         "",
-        "GRUPOS DE UM ENCONTRO POR SEMANA cobrem DUAS lições do ciclo por encontro: avance a coluna LIÇÃO duas vezes.",
-        "GRUPOS DE DOIS ENCONTROS cobrem UMA lição por encontro: avance uma vez. O ciclo conta lições, não dias.",
+        "UMA HORA DE AULA = UMA LIÇÃO DO CICLO. Grupo de um encontro de 2h avança a coluna LIÇÃO duas vezes; grupo de dois encontros de 1h avança uma vez por encontro. Todo grupo faz duas lições por semana e uma unidade a cada duas semanas — não existe formato mais rápido.",
         "",
         "NADA das colunas I, J e T sai deste arquivo. O Quadro da Turma só enxerga a aba QUADRO.",
     ]:
@@ -157,7 +144,7 @@ def sheet_quadro(wb):
                 "H": 9, "I": 48})
     header_row(ws, 1, ["ALUNO", "GROWTH", "ONDE VOCÊ ESTÁ", "LIÇÃO",
                        "LANGUAGE FOCUS DE HOJE", "APRESENTA HOJE?", "AÇÕES",
-                       "LANG. POINTS", "LEMBRETE — PRÓXIMA AULA"])
+                       "LP PARA ESTA SESSÃO", "LEMBRETE — PRÓXIMA AULA"])
     for i in range(ROWS):
         q, p = 2 + i, R0 + i
         ws.cell(q, 1, f"=PAINEL!A{p}")
@@ -178,6 +165,7 @@ def sheet_quadro(wb):
         "O Quadro da Turma lê exatamente QUADRO!A1:I5 por IMPORTRANGE. Nada fora deste retângulo é alcançável a partir de uma ficha de aluno.",
         "Não tem nota. Não tem tentativa. Não tem alerta. Por construção, não por disciplina.",
         "Não digite nada aqui: as nove colunas são espelho do PAINEL.",
+        "A coluna LP é o que você anunciou no debrief passado. Quem controla o saldo durante a sessão é o aluno, na ficha dele — esta coluna é a conferência, não o placar.",
     ]:
         n = note(ws, n, line, F_BODY)
     return ws

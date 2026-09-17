@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-09-16T11:21:50.117Z",
+  "_generated": "2026-09-17T14:45:19.273Z",
   "_warning": "GENERATED FILE — do not edit. Edit core/*.js and run: node core/export.js",
   "brand": {
     "HOUSE": "Ludify",
@@ -206,7 +206,9 @@
       ],
       "lawOfTheAttempt": "The point is paid for the attempt, never for the result. If you reached for the structure you are working on and it came out crooked, you earned it. Getting it right is better. It is not what is being paid for.",
       "spend": "Reroll one 2d6 you have already rolled for a Move. Re-add your Focus and read the new total, even if it is worse. One point, one reroll.",
-      "maxPerSession": 3
+      "maxPerSession": 3,
+      "keptBy": "the student, on their own sheet",
+      "announcedBy": "the GM, once, at the debrief"
     },
     "spotlightTokens": {
       "start": 3,
@@ -217,7 +219,138 @@
       "spend": "Claim an extended turn — a bigger beat that is fully yours, for as long as it takes to play it out. The GM slows down and gives you the scene.",
       "transferRule": "You may hand a token to another player, saying in English why you want to hear from them. A given token is spent by its new owner in the same session.",
       "outOfTokensRule": "Running out never means silence. You lose the right to claim a scene, not the right to play. You speak whenever the GM turns to you, like everybody else.",
-      "purpose": "The GM distributes the invitation, not the minutes. Tokens are the brake on the player who would take every scene, and the invitation the quiet player can hand across the table."
+      "purpose": "The GM distributes the invitation, not the minutes. Tokens are the brake on the player who would take every scene, and the invitation the quiet player can hand across the table.",
+      "keptBy": "the student, on their own sheet. It resets to three at the start of every session."
+    },
+    "signatureMoves": {
+      "perCharacter": 3,
+      "main": "One, and it comes with your Archetype. It upgrades in tiers at Growth Levels 3, 7 and 12.",
+      "crossTrainingAt": [
+        5,
+        11
+      ],
+      "crossTrainingRule": "At Growth Level 5, and again at Growth Level 11, you may take the Tier 1 Signature Move of a DIFFERENT Archetype and add it to your sheet permanently. It stays at Tier 1 forever — it never upgrades. Twice in a career, and never from the same Archetype twice.",
+      "why": "Borrowed Moves give you range, not depth. The one that grows is the one you started with."
+    },
+    "characterCreationSteps": [
+      [
+        "1",
+        "Name and world",
+        "The student names the character. The Door decides the world, the peoples and the lineages available.",
+        "student"
+      ],
+      [
+        "2",
+        "People and lineage",
+        "From the Door Section of the Player's Guide. This is setting, not mechanics — nothing here touches a die.",
+        "student"
+      ],
+      [
+        "3",
+        "Archetype",
+        "Vanguard, Diplomat, Strategist or Scout. It sets the Kit and the Signature Move and nothing else.",
+        "student"
+      ],
+      [
+        "4",
+        "The Focus array",
+        "Place +2, +1, +0 and −1, one in each Focus, in any order. This never changes again.",
+        "student"
+      ],
+      [
+        "5",
+        "Signature Move",
+        "Comes with the Archetype, at Tier 1. The student does not choose it.",
+        "given"
+      ],
+      [
+        "6",
+        "Kit",
+        "Comes with the Archetype and the Door, already written. The student does not choose it and never counts it.",
+        "given"
+      ],
+      [
+        "7",
+        "Money",
+        "The same for everyone. Then one question, answered in English: where did it come from?",
+        "given"
+      ],
+      [
+        "8",
+        "Growth Level 1, and the sheet is done",
+        "Three Spotlight Tokens, zero Language Points, an empty Pack and an empty Growth Ledger.",
+        "given"
+      ]
+    ],
+    "creationPrinciple": "Four decisions, four things handed over. A character is finished in about ten minutes, and the ten minutes are spent on who the person is rather than on what the numbers do — because there is nothing for the numbers to do.",
+    "lanternSizes": [
+      [
+        "One Line",
+        "A sentence or two, answering a closed or multiple-choice question.",
+        "10–20 seconds",
+        "A1–A2"
+      ],
+      [
+        "One Place",
+        "A full description of a place, a person or an object.",
+        "30–60 seconds",
+        "A2–B1"
+      ],
+      [
+        "One Story",
+        "Narrating a stretch of what happened, not only describing it.",
+        "1–3 minutes",
+        "B1 and up"
+      ]
+    ],
+    "lanternRules": [
+      [
+        "Warn them first",
+        "In the opening, say who will be holding the lantern tonight. Nobody is ambushed. A student who was told in advance arrives with words ready, and that is rehearsal, not cheating."
+      ],
+      [
+        "Opportunity, not a stopwatch",
+        "Every student gets the lantern at least once a session, and nobody gets it twice before everybody has had it once. What is distributed is the invitation, never the minutes."
+      ],
+      [
+        "It becomes canon",
+        "What was said is true and cannot be contradicted afterwards — not by another player and not by the GM."
+      ],
+      [
+        "The GM adds, never erases",
+        "There is no veto. You may ask ONE complicating question about what was said. Complicating is accepting; correcting is taking the authorship back."
+      ]
+    ],
+    "lanternScope": {
+      "may": [
+        "Sensory detail of any place",
+        "Minor NPCs and how they behave",
+        "Their own character's past — home town, family, trade",
+        "Local custom, food, festival, superstition"
+      ],
+      "mayNot": [
+        "Contradict the lore, or what another player created",
+        "Remove a threat, solve the problem on the spot, or produce a resource that resolves it",
+        "Say what another player's character did, thought or felt",
+        "Create or alter an important NPC the adventure already has"
+      ]
+    },
+    "secondLook": {
+      "what": "Two lanterns over the same object: first the small size, to the student with less language; then the large size, to the student with more.",
+      "rule": "The Second Look never contradicts the first. It deepens, explains, gives history. If it contradicts, the GM cuts it off and points back at what is already true.",
+      "why": "Giving ten seconds to an A1 student in a scene of their own is kindness. Making those ten seconds decide what the B2 student has to build on is structure. The beginner's sentence becomes load-bearing.",
+      "example": [
+        "GM: \"There is a merchant behind the last stall. Lu, take the lantern. What does he look like?\"",
+        "Lu: \"He is old. He is very tired and his clothes are dirty.\"",
+        "GM: \"An old man, tired, dirty clothes. Diego, second look. What does he regret?\"",
+        "Diego: \"I think he used to have a bigger shop… he lost it… and he has been carrying that ever since.\""
+      ]
+    },
+    "lanternRhythm": {
+      "perSession": "Two to four passes, one every twenty to twenty-five minutes. Three to five minutes in total.",
+      "always": "The opening of Act I is ALWAYS a lantern. The place where the night begins is never described by the GM.",
+      "whoGetsWhichSize": "It comes from the preparation, not from instinct. A student on a Describe unit gets One Place; on a Narrate unit, One Story; on a Regulate unit, the lantern is about local law — what is forbidden here, and who enforces it.",
+      "codex": "One line per lantern, written by the GM right after the session. Four lines a week, thirty seconds. After a year that is about a hundred and fifty lines of world written by the students themselves, in English, about something they care about, at exactly their level."
     },
     "laws": [
       [
@@ -254,23 +387,40 @@
     "sessionFormats": [
       [
         "One meeting a week",
-        "About two hours in one sitting",
-        "The meeting covers TWO lessons of the cycle, back to back.",
+        "Two hours in one sitting",
+        "Two lessons of the cycle, back to back — A in the first hour, B in the second.",
         "The pilot group."
       ],
       [
         "Two meetings a week",
-        "About an hour each, on separate days",
-        "Each meeting covers ONE lesson of the cycle — A on Tuesday, B on Thursday.",
+        "One hour each, on separate days",
+        "One lesson of the cycle per meeting — A on Tuesday, B on Thursday.",
         "The default as new groups open."
       ]
     ],
+    "trailPace": {
+      "lessonsPerWeek": 2,
+      "lessonsPerUnit": 4,
+      "weeksPerUnit": 2,
+      "teachingWeeksPerYear": 44,
+      "classHoursPerYear": 88,
+      "unitsPerYear": 22,
+      "growthMomentsPerYear": 3.7,
+      "note": "Identical in both formats. A group that meets once for two hours and a group that meets twice for one hour cover the same four lessons a fortnight."
+    },
     "formatNeutrality": "No student-facing document names a day, a time or a number of meetings. The timetable lives in the group's Classroom, under Start Here, and nowhere else. Documents speak of 'your next session' and 'the next lesson of the cycle', never of Saturday.",
     "COURSEBOOK": "Evolve",
+    "COURSEBOOK_EDITION": "Student's Book with Digital Pack",
     "COURSEBOOK_PLATFORM": "Cambridge One",
-    "TEST_NAME": "Unit Progress Test",
+    "HOMEWORK_LOAD": "Ten to fifteen minutes a set. Marked and fed back by the platform, and the student may redo any set as many times as they like.",
+    "TEST_NAME": "Unit Quiz",
+    "TEST_TOOL": "Google Forms, written by Ludify",
     "PASS_MARK": 75,
-    "MAX_ATTEMPTS": 2,
+    "pacing": {
+      "theBrake": "A student who does not feel ready simply does not sit the quiz yet. The unit stays open, the topic keeps coming back in scenes, and the homework can be redone as often as they like.",
+      "why": "Because the brake is individual, nobody is dragged along and nobody is held back by a slower classmate. The table moves at the table's pace; the trail moves at each student's.",
+      "soThePlanIsACeiling": "Two lessons a week is the ceiling, not the requirement. Read every number in this chapter as the fastest lawful speed."
+    },
     "twoClocks": [
       [
         "The table's clock",
@@ -303,13 +453,13 @@
       [
         "D",
         "Lesson 2 again",
-        "Same topic, with a presentation. At the end of this session the GM releases the test.",
+        "Same topic, with a presentation. At the end of this lesson the GM releases the quiz.",
         "yes — 1 min"
       ],
       [
         "X",
-        "Extra session",
-        "Only if the pass mark was not reached. Revisits both topics of the unit.",
+        "Extra lesson",
+        "Only if the student has not passed the quiz yet. Revisits both topics of the unit.",
         "no"
       ]
     ],
@@ -319,12 +469,14 @@
       "After a pass, the student returns to A on the next unit."
     ],
     "testRule": {
-      "released": "at the end of the D session, as an individual assignment",
+      "released": "at the end of the D lesson, to that student alone",
       "passMark": 75,
-      "attempts": 2,
-      "onPass": "Advance to the next unit and return to stage A.",
-      "onExhausted": "Extra session, an individual conversation, and the teacher decides — based on what the student actually does in scenes — whether to move them on. The test is a signal, not a gatekeeper.",
-      "watchpoint": "A second extra session in a row (about three weeks stalled) is a fixed trigger for a fifteen-minute one-to-one outside the session. The Panel flags it on its own."
+      "hardLimit": null,
+      "softCap": 2,
+      "softCapReason": "Not a wall — a conversation. A student who sits the same quiz five times is learning the answer key, not the language. At the third attempt the teacher talks to them first.",
+      "onPass": "Advance to the next unit and return to lesson A.",
+      "onStall": "Extra lesson, and the teacher decides — based on what the student actually does in scenes — whether to move them on. The quiz is a signal, not a gatekeeper.",
+      "watchpoint": "A second extra lesson in a row is a fixed trigger for a fifteen-minute one-to-one outside the session. The Panel flags it on its own."
     },
     "growthRule": {
       "startsAt": 1,
@@ -374,7 +526,165 @@
       "countedIn": "Debrief",
       "handedOutIn": "Opening",
       "sentence": "What you earn tonight is what you spend next week."
-    }
+    },
+    "actions": [
+      [
+        "IDENT",
+        "Identify",
+        "Say who or what something is. Introduce yourself, name a thing, state origin, function or ownership.",
+        "be · possessives · articles · question words · this/these · agreement",
+        "Halden — the Present"
+      ],
+      [
+        "DESCR",
+        "Describe",
+        "Attach quality. Say how things are, how they look, how they usually happen.",
+        "adjectives · comparatives and superlatives · adverbs of frequency · present simple and continuous · relative clauses",
+        "Halden — the Present"
+      ],
+      [
+        "QUANT",
+        "Quantify",
+        "Say how much and how many. Measure, estimate, compare quantity and availability.",
+        "there is/are · count and non-count · some/any/much/many · quantifiers · too/enough",
+        "Halden — the Present"
+      ],
+      [
+        "ABIL",
+        "Ability & Progress",
+        "Declare what you can do, how well, and how far you have come since before.",
+        "can/can't · well · present perfect continuous · adverbs of manner",
+        "Halden — the Present"
+      ],
+      [
+        "NARR",
+        "Narrate",
+        "Tell what happened. Sequence, background, what had already happened before.",
+        "past simple and continuous · present perfect · past perfect · used to / would",
+        "Sable — the Past"
+      ],
+      [
+        "REPOR",
+        "Report",
+        "Relay what somebody else said. Testimony, rumour, news, third-hand record.",
+        "reported speech · indirect questions · reported modals · indefinite pronouns",
+        "Sable — the Past"
+      ],
+      [
+        "PLAN",
+        "Plan",
+        "Arrange, predict, promise, schedule. Everything that throws the scene forward.",
+        "be going to · will · present continuous for future · when/before/until/after · first conditional",
+        "Piro — the Future"
+      ],
+      [
+        "REGUL",
+        "Regulate",
+        "Permit, forbid, oblige, advise. The language of the rule, the licence and the authority.",
+        "can/must/have to/need to · mustn't · should · permission and prohibition in the past · causatives",
+        "Quill — the Modals"
+      ],
+      [
+        "SPEC",
+        "Speculate",
+        "Say how sure you are. Deduce, suppose, risk an explanation.",
+        "may/might/could · modals of speculation · past modals of probability · real conditionals",
+        "Quill — the Modals"
+      ],
+      [
+        "SUPP",
+        "Suppose",
+        "Talk about what did not happen. Unreal hypothesis, regret, the road not taken.",
+        "unreal conditionals · I wish · was/were going to · was/were supposed to",
+        "Quill — the Modals"
+      ],
+      [
+        "ARGUE",
+        "Argue",
+        "State an opinion, evaluate, justify, disagree. Defend a position in front of somebody.",
+        "opinion phrases · giving reasons with to/for · gerund and infinitive · evaluative structures",
+        "The Tenant — Functional"
+      ],
+      [
+        "REACT",
+        "React",
+        "Respond with feeling. Emotion, empathy, surprise, willingness and refusal.",
+        "emotion adjectives · exclamatives · wishes and regrets · reflexive pronouns",
+        "The Tenant — Functional"
+      ],
+      [
+        "REGIS",
+        "Register & Nuance",
+        "Choose the tone. Politeness, indirectness, emphasis, idiom — the same thing said another way.",
+        "indirect questions · so…that / such…that · clefts · fronting · phrasal verbs and idiom",
+        "The Tenant — Functional"
+      ]
+    ],
+    "actionPrinciple": "Design the scene around the Action, never around the grammar. A scene built on 'past simple' is an exercise wearing a costume; a scene built on 'somebody has to tell the magistrate what they saw' is a scene, and the past simple arrives on its own.",
+    "presentationRule": {
+      "when": "B and D lessons only",
+      "length": "about one minute",
+      "what": "The student explains, in English, the topic they are on — in their own words, to the table.",
+      "notAssessed": "Nobody is marked on it. It is worth a Language Point for happening at all, which is the same law as everywhere else in this system: paid for the attempt.",
+      "why": "Explaining a structure out loud is a harder language task than using it, and it is the one moment in the week when a student has the floor with nobody interrupting."
+    },
+    "conceptsToIntroduce": [
+      {
+        "name": "What a roleplaying game is",
+        "say": "I describe a world. You tell me what your character does. When it is not certain, we roll two dice. Nobody wins. We find out what happens.",
+        "show": "Describe a closed door and a sound behind it. Ask one student what their character does. Take whatever they say seriously.",
+        "use": "Every student says one sentence about what their character does with that door."
+      },
+      {
+        "name": "The Ludus",
+        "say": "This hall is the Ludus. You all live here. The doors in this hall open onto other worlds, and each door is a story. When a story ends, we come back here.",
+        "show": "Name the hall out loud. Point at the door this campaign goes through and name the world.",
+        "use": "Each student says one thing their character does in the Ludus when they are not working."
+      },
+      {
+        "name": "The roll and the three bands",
+        "say": "Two dice, plus one number from your sheet. Ten or more: you get it. Seven to nine: you get it, but it costs you something. Six or less: it does not work and I make something happen.",
+        "show": "Roll 2d6 in front of them, out loud, and read the band.",
+        "use": "Every student rolls once, for anything, and reads their own band aloud."
+      },
+      {
+        "name": "Your Language Focus",
+        "say": "This line on your sheet is only yours. It is what you are studying this week. When the scene fits it, I will ask you to say it that way.",
+        "show": "Read one student's Focus aloud and ask them a question that can only be answered with it.",
+        "use": "Each student uses their own Focus in one sentence, however badly."
+      },
+      {
+        "name": "Language Points",
+        "say": "A Language Point is a second chance at the dice. You get one for homework, one for using your Focus in a scene, one for your presentation. I count them at the end. You spend them next time.",
+        "show": "Show a bad roll and spend a point on it, out loud: 'I am spending a Language Point.'",
+        "use": "Everyone writes zero on their sheet, and hears what they can earn tonight."
+      },
+      {
+        "name": "Spotlight Tokens",
+        "say": "Three tokens, every session, everybody. Spend one and the scene is yours for a bigger moment. One per scene. You can give one away if you want to hear from somebody.",
+        "show": "Spend one yourself, as a player would, and take a longer beat so they see what it buys.",
+        "use": "Each student says what they would spend one on tonight."
+      },
+      {
+        "name": "Passing the Lantern",
+        "say": "Sometimes I will ask you what something looks like, or what happened here before you arrived. Whatever you say is true. I will not overrule it.",
+        "show": "Ask one student what the room smells like, and then use their answer in the next sentence you say.",
+        "use": "Every student invents one detail of the first location."
+      },
+      {
+        "name": "The Second Look",
+        "say": "If a sentence comes out wrong and you want it again, just say it again. Nobody will stop you and nobody needs to ask.",
+        "show": "Do it yourself, on purpose, on one of your own lines.",
+        "use": "Nothing. This one only needs permission to exist."
+      },
+      {
+        "name": "The cycle, and the presentation",
+        "say": "Each unit of your book takes four lessons. On two of them you open the session by explaining your topic to us, for about a minute. It is not a test.",
+        "show": "Show the Class Board and point at the reminder line on one student's row.",
+        "use": "Each student reads their own next-lesson reminder aloud from the Board."
+      }
+    ],
+    "conceptIntroductionRule": "Thirty to sixty seconds each, in English a beginner can follow, and then the demonstration. Nine of them is about twenty minutes and it is the best-spent twenty minutes of the term. A concept introduced late arrives as an interruption; a concept introduced here arrives as a tool the student already knows they own."
   },
   "glossary": [
     [
@@ -419,7 +729,7 @@
     ],
     [
       "Growth Level",
-      "How far a character has travelled, on a track of twelve. Everyone starts at 1. It rises when a student passes the test of the sixth unit in a block of six. It never touches the dice, and it is NOT the coursebook level.",
+      "How far a character has travelled, on a track of twelve. Everyone starts at 1. It rises when a student passes the quiz of the sixth unit in a block of six. It never touches the dice, and it is NOT the coursebook level.",
       "system"
     ],
     [
@@ -479,17 +789,17 @@
     ],
     [
       "A · B · C · D · X",
-      "The five stages a student walks through in one coursebook unit. A and C debut a topic; B and D repeat it with a one-minute presentation; X is the extra session that only happens if the test was not passed.",
+      "The five stages a student walks through in one coursebook unit. A and C debut a topic; B and D repeat it with a one-minute presentation; X is the extra lesson that only happens if the quiz was not passed yet.",
       "method"
     ],
     [
-      "Extra session (X)",
-      "The repeat stage, entered only when the pass mark was not reached. Two in a row is a fixed trigger for a one-to-one.",
+      "Extra lesson (X)",
+      "The repeat stage, entered when a student has not passed the quiz yet. Two in a row is a fixed trigger for a one-to-one.",
       "method"
     ],
     [
       "Presentation",
-      "About one minute at the top of a session, in which a student explains the topic they are on. Happens in B and D sessions only.",
+      "About one minute at the top of a session, in which a student explains the topic they are on. Happens in B and D lessons only.",
       "method"
     ],
     [
@@ -498,8 +808,38 @@
       "method"
     ],
     [
-      "Unit Progress Test",
-      "The coursebook's own test, released at the end of a D session. Pass mark 75%, two attempts, marked by the platform. The teacher writes none of it.",
+      "Unit Quiz",
+      "Our own quiz, written as a Google Form and released to one student at the end of their D lesson. Pass mark 75%. There is no platform attempt limit — the quiz is ours — but a third attempt is a conversation before it is a retake.",
+      "method"
+    ],
+    [
+      "Cross-Training",
+      "At Growth Levels 5 and 11, taking the Tier 1 Signature Move of a different Archetype and keeping it permanently — at Tier 1 forever. Twice in a career, never the same Archetype twice.",
+      "system"
+    ],
+    [
+      "Lesson",
+      "One hour of class, and one step of the cycle. Not the same as a session: a two-hour session contains two lessons.",
+      "method"
+    ],
+    [
+      "Ludify",
+      "The school. The registered mark, and the house every book in this system is published under.",
+      "system"
+    ],
+    [
+      "RPL",
+      "The internal shorthand for the method. It lives in the repository, in spreadsheets and in notes, and never appears on a cover or in front of a student.",
+      "system"
+    ],
+    [
+      "Session",
+      "One meeting, whatever its length. Language Points and Spotlight Tokens run per session, never per lesson.",
+      "table"
+    ],
+    [
+      "Unit",
+      "One coursebook unit: two topics, four lessons of the cycle, one quiz at the end.",
       "method"
     ],
     [
@@ -509,8 +849,1245 @@
     ],
     [
       "Panel",
-      "The teacher's sheet, never shared. Three fields typed per student — level, unit, stage — and everything else calculated. Marks, attempts and alerts live here and only here.",
+      "The teacher's sheet, never shared. Level, unit and lesson typed per student, plus three yes/no boxes at the debrief; everything else is calculated. Marks, attempts and alerts live here and only here.",
       "table"
+    ]
+  ],
+  "units": {
+    "coursebook": "Evolve",
+    "units": [
+      {
+        "key": "E1-U1",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 1,
+        "title": "I am…",
+        "lesson1": "I am, you are",
+        "lesson2": "What's…?; It's…",
+        "action1": "Identify",
+        "action2": "—",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E1-U2",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 2,
+        "title": "Great people",
+        "lesson1": "is/are (affirmative and question forms)",
+        "lesson2": "is not/are not",
+        "action1": "Identify",
+        "action2": "Describe",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E1-U3",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 3,
+        "title": "Come in",
+        "lesson1": "Possessive adjectives",
+        "lesson2": "possessive 's and s'; It is",
+        "action1": "Describe",
+        "action2": "Identify",
+        "domain": "Places & Environment",
+        "checked": "inferred"
+      },
+      {
+        "key": "E1-U4",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 4,
+        "title": "I love it!",
+        "lesson1": "Simple present (I/you/we)",
+        "lesson2": "yes/no questions",
+        "action1": "Describe",
+        "action2": "Argue",
+        "domain": "Objects & Technology",
+        "checked": "inferred"
+      },
+      {
+        "key": "E1-U5",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 5,
+        "title": "Mondays and fundays",
+        "lesson1": "Simple present (he/she/they)",
+        "lesson2": "questions",
+        "action1": "Describe",
+        "action2": "—",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E1-U6",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 6,
+        "title": "Zoom in, zoom out",
+        "lesson1": "There's/There are",
+        "lesson2": "a lot of, some, no; count/non-count",
+        "action1": "Quantify",
+        "action2": "Describe",
+        "domain": "Places & Environment",
+        "checked": "inferred"
+      },
+      {
+        "key": "E1-U7",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 7,
+        "title": "Now is good",
+        "lesson1": "Present continuous (affirmative and question forms)",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Describe",
+        "action2": "—",
+        "domain": "Places & Environment",
+        "checked": "⚠ CHECK"
+      },
+      {
+        "key": "E1-U8",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 8,
+        "title": "You're good!",
+        "lesson1": "can/can't (ability and possibility)",
+        "lesson2": "well",
+        "action1": "Ability & Progress",
+        "action2": "Describe",
+        "domain": "Work & Learning",
+        "checked": "inferred"
+      },
+      {
+        "key": "E1-U9",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 9,
+        "title": "Places to go",
+        "lesson1": "this/these",
+        "lesson2": "like to, want to, need to, have to",
+        "action1": "Plan",
+        "action2": "Regulate",
+        "domain": "Journeys & Movement",
+        "checked": "inferred"
+      },
+      {
+        "key": "E1-U10",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 10,
+        "title": "Get ready",
+        "lesson1": "be going to (affirmative and question forms)",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Plan",
+        "action2": "—",
+        "domain": "Society & Culture",
+        "checked": "⚠ CHECK"
+      },
+      {
+        "key": "E1-U11",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 11,
+        "title": "Colorful memories",
+        "lesson1": "was/were (affirmative and question forms)",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Narrate",
+        "action2": "Describe",
+        "domain": "Places & Environment",
+        "checked": "⚠ CHECK"
+      },
+      {
+        "key": "E1-U12",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 12,
+        "title": "Stop, eat, go",
+        "lesson1": "Simple past (affirmative and question forms)",
+        "lesson2": "any",
+        "action1": "Narrate",
+        "action2": "Quantify",
+        "domain": "Body, Food & Health",
+        "checked": "inferred"
+      },
+      {
+        "key": "E2-U1",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 1,
+        "title": "Connections",
+        "lesson1": "be",
+        "lesson2": "possessive adjectives and pronouns; possessive 's",
+        "action1": "Identify",
+        "action2": "—",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E2-U2",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 2,
+        "title": "Work and Study",
+        "lesson1": "Simple present (habits)",
+        "lesson2": "adverbs of frequency; demonstratives",
+        "action1": "Describe",
+        "action2": "—",
+        "domain": "Work & Learning",
+        "checked": "inferred"
+      },
+      {
+        "key": "E2-U3",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 3,
+        "title": "Let's Move",
+        "lesson1": "Present continuous",
+        "lesson2": "simple present vs continuous",
+        "action1": "Describe",
+        "action2": "—",
+        "domain": "Body, Food & Health",
+        "checked": "inferred"
+      },
+      {
+        "key": "E2-U4",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 4,
+        "title": "Good Times",
+        "lesson1": "Present continuous (future plans)",
+        "lesson2": "object pronouns",
+        "action1": "Plan",
+        "action2": "Describe",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E2-U5",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 5,
+        "title": "Firsts and Lasts",
+        "lesson1": "Simple past (affirmative, negative and question forms)",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Narrate",
+        "action2": "React",
+        "domain": "People & Relationships",
+        "checked": "⚠ CHECK"
+      },
+      {
+        "key": "E2-U6",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 6,
+        "title": "Buy Now, Pay Later",
+        "lesson1": "be going to",
+        "lesson2": "determiners (no/none, some, many, most, all)",
+        "action1": "Plan",
+        "action2": "Quantify",
+        "domain": "Trade & Value",
+        "checked": "inferred"
+      },
+      {
+        "key": "E2-U7",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 7,
+        "title": "Eat, Drink, Be Happy",
+        "lesson1": "Quantifiers",
+        "lesson2": "verb patterns",
+        "action1": "Quantify",
+        "action2": "Describe",
+        "domain": "Body, Food & Health",
+        "checked": "inferred"
+      },
+      {
+        "key": "E2-U8",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 8,
+        "title": "Trips",
+        "lesson1": "if/when",
+        "lesson2": "giving reasons with to/for",
+        "action1": "Plan",
+        "action2": "Argue",
+        "domain": "Journeys & Movement",
+        "checked": "inferred"
+      },
+      {
+        "key": "E2-U9",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 9,
+        "title": "Looking Good",
+        "lesson1": "Comparative and superlative adjectives",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Describe",
+        "action2": "—",
+        "domain": "People & Relationships",
+        "checked": "⚠ CHECK"
+      },
+      {
+        "key": "E2-U10",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 10,
+        "title": "Risky Business",
+        "lesson1": "have to",
+        "lesson2": "predictions with will/may/might",
+        "action1": "Speculate",
+        "action2": "Regulate",
+        "domain": "Work & Learning",
+        "checked": "inferred"
+      },
+      {
+        "key": "E2-U11",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 11,
+        "title": "Me, Online",
+        "lesson1": "Present perfect (experiences)",
+        "lesson2": "present perfect x simple past",
+        "action1": "Narrate",
+        "action2": "Ability & Progress",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E2-U12",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 12,
+        "title": "Outdoors",
+        "lesson1": "be like",
+        "lesson2": "relative pronouns (who/which/that)",
+        "action1": "Describe",
+        "action2": "—",
+        "domain": "Places & Environment",
+        "checked": "inferred"
+      },
+      {
+        "key": "E3-U1",
+        "cefr": "B1",
+        "level": 3,
+        "unit": 1,
+        "title": "Who we are",
+        "lesson1": "Information questions",
+        "lesson2": "indirect questions",
+        "action1": "Identify",
+        "action2": "Register & Nuance",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E3-U2",
+        "cefr": "B1",
+        "level": 3,
+        "unit": 2,
+        "title": "So much stuff",
+        "lesson1": "Present perfect (ever/never/for/since",
+        "lesson2": "already/yet)",
+        "action1": "Narrate",
+        "action2": "Describe",
+        "domain": "Objects & Technology",
+        "checked": "inferred"
+      },
+      {
+        "key": "E3-U3",
+        "cefr": "B1",
+        "level": 3,
+        "unit": 3,
+        "title": "Smart moves",
+        "lesson1": "Articles",
+        "lesson2": "modals for advice",
+        "action1": "Regulate",
+        "action2": "Describe",
+        "domain": "Places & Environment",
+        "checked": "inferred"
+      },
+      {
+        "key": "E3-U4",
+        "cefr": "B1",
+        "level": 3,
+        "unit": 4,
+        "title": "Think first",
+        "lesson1": "be going to/will",
+        "lesson2": "will (sudden decisions); present continuous (future)",
+        "action1": "Plan",
+        "action2": "Speculate",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E3-U5",
+        "cefr": "B1",
+        "level": 3,
+        "unit": 5,
+        "title": "And then…",
+        "lesson1": "Simple past",
+        "lesson2": "past continuous x simple past",
+        "action1": "Narrate",
+        "action2": "—",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E3-U6",
+        "cefr": "B1",
+        "level": 3,
+        "unit": 6,
+        "title": "Impact",
+        "lesson1": "Quantifiers",
+        "lesson2": "real conditionals (present and future)",
+        "action1": "Argue",
+        "action2": "Quantify",
+        "domain": "Places & Environment",
+        "checked": "inferred"
+      },
+      {
+        "key": "E3-U7",
+        "cefr": "B1",
+        "level": 3,
+        "unit": 7,
+        "title": "Entertain us",
+        "lesson1": "used to",
+        "lesson2": "comparisons (not) as…as",
+        "action1": "Narrate",
+        "action2": "Describe",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E3-U8",
+        "cefr": "B1",
+        "level": 3,
+        "unit": 8,
+        "title": "Getting there",
+        "lesson1": "Present perfect continuous",
+        "lesson2": "contrast with present perfect",
+        "action1": "Ability & Progress",
+        "action2": "Narrate",
+        "domain": "Work & Learning",
+        "checked": "inferred"
+      },
+      {
+        "key": "E3-U9",
+        "cefr": "B1",
+        "level": 3,
+        "unit": 9,
+        "title": "Make it work",
+        "lesson1": "Modals of necessity",
+        "lesson2": "modals of prohibition and permission",
+        "action1": "Regulate",
+        "action2": "—",
+        "domain": "Work & Learning",
+        "checked": "inferred"
+      },
+      {
+        "key": "E3-U10",
+        "cefr": "B1",
+        "level": 3,
+        "unit": 10,
+        "title": "Why we buy",
+        "lesson1": "Simple present passive",
+        "lesson2": "simple past passive",
+        "action1": "Describe",
+        "action2": "Narrate",
+        "domain": "Trade & Value",
+        "checked": "inferred"
+      },
+      {
+        "key": "E3-U11",
+        "cefr": "B1",
+        "level": 3,
+        "unit": 11,
+        "title": "Pushing yourself",
+        "lesson1": "Phrasal verbs",
+        "lesson2": "unreal conditionals (present and future)",
+        "action1": "Suppose",
+        "action2": "Ability & Progress",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E3-U12",
+        "cefr": "B1",
+        "level": 3,
+        "unit": 12,
+        "title": "Life's little lessons",
+        "lesson1": "Indefinite pronouns",
+        "lesson2": "reported speech",
+        "action1": "Report",
+        "action2": "Narrate",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E4-U1",
+        "cefr": "B1+",
+        "level": 4,
+        "unit": 1,
+        "title": "And we're off!",
+        "lesson1": "Tense review (simple and continuous)",
+        "lesson2": "dynamic and stative verbs",
+        "action1": "Describe",
+        "action2": "Ability & Progress",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E4-U2",
+        "cefr": "B1+",
+        "level": 4,
+        "unit": 2,
+        "title": "The future of food",
+        "lesson1": "Real conditionals",
+        "lesson2": "clauses with after/until/when",
+        "action1": "Plan",
+        "action2": "Speculate",
+        "domain": "Body, Food & Health",
+        "checked": "inferred"
+      },
+      {
+        "key": "E4-U3",
+        "cefr": "B1+",
+        "level": 4,
+        "unit": 3,
+        "title": "What's it worth?",
+        "lesson1": "too/enough",
+        "lesson2": "modifying comparisons",
+        "action1": "Quantify",
+        "action2": "Argue",
+        "domain": "Trade & Value",
+        "checked": "inferred"
+      },
+      {
+        "key": "E4-U4",
+        "cefr": "B1+",
+        "level": 4,
+        "unit": 4,
+        "title": "Going glocal",
+        "lesson1": "Modals of speculation",
+        "lesson2": "subject and object relative clauses",
+        "action1": "Speculate",
+        "action2": "Describe",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E4-U5",
+        "cefr": "B1+",
+        "level": 4,
+        "unit": 5,
+        "title": "True stories",
+        "lesson1": "Past perfect",
+        "lesson2": "was/were going to; was/were supposed to",
+        "action1": "Narrate",
+        "action2": "Suppose",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E4-U6",
+        "cefr": "B1+",
+        "level": 4,
+        "unit": 6,
+        "title": "Community action",
+        "lesson1": "Present and past passive",
+        "lesson2": "passive with modals",
+        "action1": "Describe",
+        "action2": "Argue",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E4-U7",
+        "cefr": "B1+",
+        "level": 4,
+        "unit": 7,
+        "title": "Can we talk?",
+        "lesson1": "Reported statements",
+        "lesson2": "reported questions",
+        "action1": "Report",
+        "action2": "Register & Nuance",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E4-U8",
+        "cefr": "B1+",
+        "level": 4,
+        "unit": 8,
+        "title": "Lifestyles",
+        "lesson1": "Present unreal conditionals",
+        "lesson2": "I wish",
+        "action1": "Suppose",
+        "action2": "React",
+        "domain": "Work & Learning",
+        "checked": "inferred"
+      },
+      {
+        "key": "E4-U9",
+        "cefr": "B1+",
+        "level": 4,
+        "unit": 9,
+        "title": "Yes, you can!",
+        "lesson1": "Prohibition, permission and obligation (present and past)",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Regulate",
+        "action2": "—",
+        "domain": "Places & Environment",
+        "checked": "⚠ CHECK"
+      },
+      {
+        "key": "E4-U10",
+        "cefr": "B1+",
+        "level": 4,
+        "unit": 10,
+        "title": "What if…?",
+        "lesson1": "Past unreal conditionals",
+        "lesson2": "modals of past probability",
+        "action1": "Suppose",
+        "action2": "Speculate",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E4-U11",
+        "cefr": "B1+",
+        "level": 4,
+        "unit": 11,
+        "title": "Contrasts",
+        "lesson1": "Gerund/infinitive after forget/remember/stop",
+        "lesson2": "causative help/let/make",
+        "action1": "Regulate",
+        "action2": "Describe",
+        "domain": "Work & Learning",
+        "checked": "inferred"
+      },
+      {
+        "key": "E4-U12",
+        "cefr": "B1+",
+        "level": 4,
+        "unit": 12,
+        "title": "Looking back",
+        "lesson1": "Adding emphasis",
+        "lesson2": "substitution and referencing",
+        "action1": "Narrate",
+        "action2": "Register & Nuance",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E5-U1",
+        "cefr": "B2",
+        "level": 5,
+        "unit": 1,
+        "title": "Step Forward",
+        "lesson1": "Present habits",
+        "lesson2": "past habits",
+        "action1": "Describe",
+        "action2": "Narrate",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E5-U2",
+        "cefr": "B2",
+        "level": 5,
+        "unit": 2,
+        "title": "Natural Limits",
+        "lesson1": "Comparative and superlative structures",
+        "lesson2": "ungradable adjectives",
+        "action1": "Describe",
+        "action2": "Quantify",
+        "domain": "Places & Environment",
+        "checked": "inferred"
+      },
+      {
+        "key": "E5-U3",
+        "cefr": "B2",
+        "level": 5,
+        "unit": 3,
+        "title": "The Way I Am",
+        "lesson1": "Relative pronouns",
+        "lesson2": "reduced relative clauses; present participles",
+        "action1": "Describe",
+        "action2": "React",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E5-U4",
+        "cefr": "B2",
+        "level": 5,
+        "unit": 4,
+        "title": "Combined Effort",
+        "lesson1": "so…that, such…that, even, only",
+        "lesson2": "reflexive pronouns; \"other\"",
+        "action1": "Register & Nuance",
+        "action2": "Argue",
+        "domain": "Work & Learning",
+        "checked": "inferred"
+      },
+      {
+        "key": "E5-U5",
+        "cefr": "B2",
+        "level": 5,
+        "unit": 5,
+        "title": "The Human Factor",
+        "lesson1": "Real conditionals",
+        "lesson2": "alternativas a \"if\"",
+        "action1": "React",
+        "action2": "Speculate",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E5-U6",
+        "cefr": "B2",
+        "level": 5,
+        "unit": 6,
+        "title": "Expect the Unexpected",
+        "lesson1": "Narrative tenses",
+        "lesson2": "reported speech with modal verbs",
+        "action1": "Narrate",
+        "action2": "Report",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E5-U7",
+        "cefr": "B2",
+        "level": 5,
+        "unit": 7,
+        "title": "Priorities",
+        "lesson1": "Gerunds and infinitives after adjectives, nouns and pronouns",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Argue",
+        "action2": "Plan",
+        "domain": "Trade & Value",
+        "checked": "⚠ CHECK"
+      },
+      {
+        "key": "E5-U8",
+        "cefr": "B2",
+        "level": 5,
+        "unit": 8,
+        "title": "Small Things Matter",
+        "lesson1": "Modal-like expressions with \"by\"",
+        "lesson2": "future forms",
+        "action1": "Plan",
+        "action2": "Ability & Progress",
+        "domain": "Objects & Technology",
+        "checked": "inferred"
+      },
+      {
+        "key": "E5-U9",
+        "cefr": "B2",
+        "level": 5,
+        "unit": 9,
+        "title": "Things Happen",
+        "lesson1": "Unreal conditionals",
+        "lesson2": "wishes and regrets",
+        "action1": "Suppose",
+        "action2": "React",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E5-U10",
+        "cefr": "B2",
+        "level": 5,
+        "unit": 10,
+        "title": "People, Profiles",
+        "lesson1": "Gerunds after preposições",
+        "lesson2": "causative verbs",
+        "action1": "Describe",
+        "action2": "Regulate",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E5-U11",
+        "cefr": "B2",
+        "level": 5,
+        "unit": 11,
+        "title": "Really?",
+        "lesson1": "Passives with modals and modal-like expressions",
+        "lesson2": "passive infinitives",
+        "action1": "Speculate",
+        "action2": "Register & Nuance",
+        "domain": "Objects & Technology",
+        "checked": "inferred"
+      },
+      {
+        "key": "E5-U12",
+        "cefr": "B2",
+        "level": 5,
+        "unit": 12,
+        "title": "Get What It Takes",
+        "lesson1": "Adverbs with adjectives and adverbs",
+        "lesson2": "non-count nouns contabilizados",
+        "action1": "Ability & Progress",
+        "action2": "Quantify",
+        "domain": "Work & Learning",
+        "checked": "inferred"
+      },
+      {
+        "key": "E6-U1",
+        "cefr": "C1",
+        "level": 6,
+        "unit": 1,
+        "title": "Robot Revolution",
+        "lesson1": "Commenting adverbs",
+        "lesson2": "future perfect and future continuous",
+        "action1": "Plan",
+        "action2": "Register & Nuance",
+        "domain": "Objects & Technology",
+        "checked": "inferred"
+      },
+      {
+        "key": "E6-U2",
+        "cefr": "C1",
+        "level": 6,
+        "unit": 2,
+        "title": "The Labels We Live By",
+        "lesson1": "Uses of \"all\"",
+        "lesson2": "uses of \"would\"",
+        "action1": "Describe",
+        "action2": "Narrate",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E6-U3",
+        "cefr": "C1",
+        "level": 6,
+        "unit": 3,
+        "title": "In Hindsight",
+        "lesson1": "Variations on past unreal conditionals",
+        "lesson2": "commenting on the past",
+        "action1": "Suppose",
+        "action2": "React",
+        "domain": "People & Relationships",
+        "checked": "inferred"
+      },
+      {
+        "key": "E6-U4",
+        "cefr": "C1",
+        "level": 6,
+        "unit": 4,
+        "title": "Close Up",
+        "lesson1": "Quantifiers and prepositions in relative clauses",
+        "lesson2": "noun clauses",
+        "action1": "Describe",
+        "action2": "Quantify",
+        "domain": "Objects & Technology",
+        "checked": "inferred"
+      },
+      {
+        "key": "E6-U5",
+        "cefr": "C1",
+        "level": 6,
+        "unit": 5,
+        "title": "Remote",
+        "lesson1": "Participle phrases em posição inicial",
+        "lesson2": "reduced relative clauses",
+        "action1": "Describe",
+        "action2": "Narrate",
+        "domain": "Places & Environment",
+        "checked": "inferred"
+      },
+      {
+        "key": "E6-U6",
+        "cefr": "C1",
+        "level": 6,
+        "unit": 6,
+        "title": "Surprise, Surprise",
+        "lesson1": "Clefts",
+        "lesson2": "question words with \"-ever\"",
+        "action1": "Register & Nuance",
+        "action2": "React",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E6-U7",
+        "cefr": "C1",
+        "level": 6,
+        "unit": 7,
+        "title": "Roots",
+        "lesson1": "Negative and limiting adverbials",
+        "lesson2": "fronting adverbials",
+        "action1": "Register & Nuance",
+        "action2": "Narrate",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E6-U8",
+        "cefr": "C1",
+        "level": 6,
+        "unit": 8,
+        "title": "Short",
+        "lesson1": "Phrases with \"get\"",
+        "lesson2": "phrases with \"go\"",
+        "action1": "Register & Nuance",
+        "action2": "—",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E6-U9",
+        "cefr": "C1",
+        "level": 6,
+        "unit": 9,
+        "title": "Healthy Modern Life",
+        "lesson1": "Referencing",
+        "lesson2": "continuous infinitives",
+        "action1": "Register & Nuance",
+        "action2": "Describe",
+        "domain": "Body, Food & Health",
+        "checked": "inferred"
+      },
+      {
+        "key": "E6-U10",
+        "cefr": "C1",
+        "level": 6,
+        "unit": 10,
+        "title": "Reinvention",
+        "lesson1": "Simple past for unreal situations",
+        "lesson2": "if-constructions",
+        "action1": "Suppose",
+        "action2": "Argue",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E6-U11",
+        "cefr": "C1",
+        "level": 6,
+        "unit": 11,
+        "title": "True Colors",
+        "lesson1": "Subject-verb agreement",
+        "lesson2": "articles",
+        "action1": "Describe",
+        "action2": "Register & Nuance",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      },
+      {
+        "key": "E6-U12",
+        "cefr": "C1",
+        "level": 6,
+        "unit": 12,
+        "title": "Things Change",
+        "lesson1": "Present subjunctive",
+        "lesson2": "perfect infinitive",
+        "action1": "Regulate",
+        "action2": "Plan",
+        "domain": "Society & Culture",
+        "checked": "inferred"
+      }
+    ],
+    "unitsToCheck": [
+      {
+        "key": "E1-U7",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 7,
+        "title": "Now is good",
+        "lesson1": "Present continuous (affirmative and question forms)",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Describe",
+        "action2": "—",
+        "domain": "Places & Environment",
+        "checked": "⚠ CHECK"
+      },
+      {
+        "key": "E1-U10",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 10,
+        "title": "Get ready",
+        "lesson1": "be going to (affirmative and question forms)",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Plan",
+        "action2": "—",
+        "domain": "Society & Culture",
+        "checked": "⚠ CHECK"
+      },
+      {
+        "key": "E1-U11",
+        "cefr": "A1",
+        "level": 1,
+        "unit": 11,
+        "title": "Colorful memories",
+        "lesson1": "was/were (affirmative and question forms)",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Narrate",
+        "action2": "Describe",
+        "domain": "Places & Environment",
+        "checked": "⚠ CHECK"
+      },
+      {
+        "key": "E2-U5",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 5,
+        "title": "Firsts and Lasts",
+        "lesson1": "Simple past (affirmative, negative and question forms)",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Narrate",
+        "action2": "React",
+        "domain": "People & Relationships",
+        "checked": "⚠ CHECK"
+      },
+      {
+        "key": "E2-U9",
+        "cefr": "A2",
+        "level": 2,
+        "unit": 9,
+        "title": "Looking Good",
+        "lesson1": "Comparative and superlative adjectives",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Describe",
+        "action2": "—",
+        "domain": "People & Relationships",
+        "checked": "⚠ CHECK"
+      },
+      {
+        "key": "E4-U9",
+        "cefr": "B1+",
+        "level": 4,
+        "unit": 9,
+        "title": "Yes, you can!",
+        "lesson1": "Prohibition, permission and obligation (present and past)",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Regulate",
+        "action2": "—",
+        "domain": "Places & Environment",
+        "checked": "⚠ CHECK"
+      },
+      {
+        "key": "E5-U7",
+        "cefr": "B2",
+        "level": 5,
+        "unit": 7,
+        "title": "Priorities",
+        "lesson1": "Gerunds and infinitives after adjectives, nouns and pronouns",
+        "lesson2": "⚠ check the book — the catalogue gives only one topic",
+        "action1": "Argue",
+        "action2": "Plan",
+        "domain": "Trade & Value",
+        "checked": "⚠ CHECK"
+      }
+    ]
+  },
+  "ludus": {
+    "theLudus": {
+      "what": "The hall the characters live in between worlds. Its doors open onto other worlds, and each Door is a campaign. When a story ends, everyone comes back here.",
+      "why": "It gives the table a permanent home that survives a change of setting, a place for a new student to arrive into, and a reason the same four people keep meeting. It is also the name of the system, and in Latin it means both school and game."
+    },
+    "sessionRitual": [
+      [
+        "Joining the call",
+        "is entering the Ludus. You are yourself, in the hall, in English."
+      ],
+      [
+        "Crossing the Door",
+        "is taking on your character. Everything after this is in the fiction."
+      ],
+      [
+        "Leaving through the Door",
+        "is the end of the session. You are in the hall again."
+      ],
+      [
+        "The other Doors",
+        "stay sealed, and need not even be mentioned at the start."
+      ]
+    ],
+    "creationMoment": "Characters are made at the Door, in Session Zero, as the table crosses for the first time. Not in advance and not by homework: the crossing is what turns a sheet into somebody.",
+    "ludusCast": [
+      [
+        "Halden",
+        "The Present",
+        "Identify · Describe · Quantify · Ability & Progress"
+      ],
+      [
+        "Sable",
+        "The Past",
+        "Narrate · Report"
+      ],
+      [
+        "Piro",
+        "The Future",
+        "Plan"
+      ],
+      [
+        "Quill",
+        "The Modals",
+        "Regulate · Speculate · Suppose"
+      ],
+      [
+        "The Tenant",
+        "The Functional",
+        "Argue · React · Register & Nuance"
+      ]
+    ],
+    "relics": {
+      "four": [
+        "Listening",
+        "Speaking",
+        "Reading",
+        "Writing"
+      ],
+      "when": "Handed over at the end of Arc 3, on the defeat of the campaign's antagonist. Never earlier.",
+      "nature": "Purely narrative. A relic carries weight of history, memory and standing. It does not touch the dice, and it never will — the same law as everything else a character can hold.",
+      "oneEach": "One campaign, one relic. The conversation about changing Door happens after that."
+    },
+    "arcs": [
+      [
+        "Arc 1",
+        "Introduce the world",
+        "Places, people, friendships and enmities, local problems. The table ends the arc as local heroes — with something larger approaching that they have only heard rumours of."
+      ],
+      [
+        "Arc 2",
+        "The consequences, and the journey",
+        "What they did in Arc 1 comes back. The threat arrives in force and breaks the local balance. They travel after a resource the story needs, and they come back with it."
+      ],
+      [
+        "Arc 3",
+        "The broken world, and the confrontation",
+        "Repair the damage before the fight — this is where Arc 1's friendships pay out or come collecting. Ends in the great confrontation, and in the handing over of the relic."
+      ],
+      [
+        "Arc 4",
+        "Epilogue, with no deadline",
+        "Unfinished personal business, consequences, farewells. It exists because a table that has played for a year does not want to be told the story is over on a Tuesday."
+      ]
+    ],
+    "arcResourceRule": "What the table goes after in Arc 2 is a NARRATIVE resource, specific to that campaign, and it is not the relic. If the antagonist is a despot who conquered by military superiority, the resource is the thing that cancels that superiority inside the story — and it has no mechanical effect whatsoever.",
+    "arcLength": "About ten to twelve weeks an arc, measured in weeks rather than sessions — 'twelve sessions' means two different things in a group that meets once and a group that meets twice. There is not enough data yet to be more precise than that, and a Door Book that pretends otherwise is inventing a number.",
+    "doorBookParts": [
+      [
+        "How to use this book",
+        "What is locked, what is a choice, what the students may invent, what must never be said out loud."
+      ],
+      [
+        "The secret",
+        "The one thing that is true about this world that the table does not know yet. GM only, always."
+      ],
+      [
+        "The cast in three states",
+        "Every recurring NPC written three times: before the table meets them, after they are an ally, after they are an enemy."
+      ],
+      [
+        "The arcs",
+        "Four, following the skeleton. Each arc is a handful of adventures, written as suggestions."
+      ],
+      [
+        "Each adventure",
+        "Pitch · what must be true at the end · what to read aloud · three ways in · who is in it · the pressure ladder · what the table will probably try · the Action tags · the lantern · the omen · short version · long version · one line for the Codex."
+      ],
+      [
+        "The session grid",
+        "A page that maps adventures onto weeks, for a GM who wants a default path."
+      ],
+      [
+        "Setting quick reference",
+        "Peoples, places, money, distance, oaths — everything a student might ask mid-scene."
+      ]
+    ],
+    "doorBookPrinciple": "Suggestions, never a script. The GM sets the pace of the campaign, not the book. A Door Book is written for the week the teacher is tired or blocked: a safe path that works, clearly marked as one option among many.",
+    "settingChange": {
+      "when": "The semester conversation, about twenty minutes in the last session of a semester.",
+      "what": "Are you happy? Do you want a different setting? Or keep this world and play a new campaign in it?",
+      "itIsAConversation": "Not a voting apparatus. Most tables answer it in five minutes and go back to playing.",
+      "voting": "A vote only happens once the table has decided to change world AND there are options on the table. Then it is APPROVAL VOTING: each student marks every setting they would happily play. Never one-vote-each, which produces a winner three people did not want.",
+      "whatTravels": "Same setting, the character travels whole. Different setting, the character is rebuilt at the same Growth Level — about ten minutes — and the old one becomes an NPC at the table they left.",
+      "whatNever": "The trail. A student's coursebook position has never depended on the setting and never will."
+    }
+  },
+  "decisions": [
+    [
+      "12/08/2026",
+      "The session is the class",
+      "An earlier design had the game as a 40–50 minute block inside an ordinary lesson. Replaced: the session IS the class, two hours a week, and the coursebook trail is autonomous study."
+    ],
+    [
+      "06/09/2026",
+      "Four arcs, not three",
+      "The three-arc spine was specific to one setting. The four-arc skeleton fits any Door, and Arc 4 exists because a table that has played for a year does not want to be told it is over."
+    ],
+    [
+      "06/09/2026",
+      "The relic comes at the end of Arc 3",
+      "Not in Arc 2. What the table chases in Arc 2 is a narrative resource specific to that campaign. One campaign, one relic, one of the four skills."
+    ],
+    [
+      "06/09/2026",
+      "Opportunity, not talk time",
+      "An earlier rule asked for equal speaking time. Wrong: the more proficient student will speak more, and that is fine. What is never acceptable is a student finishing a session without having been invited. What is distributed is the invitation."
+    ],
+    [
+      "13/09/2026",
+      "English for everything used at the table",
+      "Names, places, mechanics, GM lines, lantern prompts, the Codex. Portuguese survives only in planning conversation and in commercial copy, where the word is 'aula' and not 'session'."
+    ],
+    [
+      "13/09/2026",
+      "Growth Level is not the coursebook level",
+      "A formula of the shape (level − 1) × 2 + 1 had circulated in operational notes and reached a real classroom before it was caught. There is no conversion. Everybody starts at Growth 1."
+    ],
+    [
+      "15/09/2026",
+      "The system is called LUDUS",
+      "Ludify stays as the house mark; RPL becomes the internal shorthand and never appears on a cover. Latin ludus means both school and game, and Ludify comes from the same root."
+    ],
+    [
+      "15/09/2026",
+      "Money is a ladder, not arithmetic",
+      "Coin, handful, bag, chest — descriptive, answering what a rung buys rather than how much you have. Everyone starts with three handfuls, and answers one question about where it came from."
+    ],
+    [
+      "15/09/2026",
+      "Language Points are counted at the close and spent next time",
+      "They used to be awarded mid-scene and spent minutes later. Now: counted out loud at the debrief, written down by the student, spent the following session. And paid for the ATTEMPT."
+    ],
+    [
+      "15/09/2026",
+      "The Homework Bonus is retired",
+      "It added a flat +1 to a roll and was described as the only exception to the law that nothing modifies the dice. With homework worth a Language Point instead, the exception disappears and the law has no hole in it."
+    ],
+    [
+      "15/09/2026",
+      "One Spotlight Token per scene, and they are transferable",
+      "Without the per-scene cap the brake is spent in the opening. Without the transfer, tokens restrain the loud student and do nothing for the quiet one, whose three expire unused."
+    ],
+    [
+      "16/09/2026",
+      "One hour of class is one lesson of the cycle",
+      "Not one meeting. Every group does two hours a week, so every group does two lessons a week and a unit every two weeks. This corrected a year-plan that was out by a factor of two."
+    ],
+    [
+      "16/09/2026",
+      "The students manage their own resources",
+      "Language Points and Spotlight Tokens are the student's to track. The GM announces; the student records and crosses off — out loud, in English, which is the point."
+    ],
+    [
+      "16/09/2026",
+      "The coursebook is Evolve with Digital Pack, and the quiz is ours",
+      "Evolve Digital went off sale. The printed book with the activation code gives the same homework. The Cambridge unit test capped attempts at two and needed an administrator to reset; our own quiz in Google Forms removes the cap and the dependency."
+    ],
+    [
+      "16/09/2026",
+      "The truth moved into core/",
+      "Every rule, term and number now lives in one place and is imported by every book and every spreadsheet. A definition found inside a build script is a defect. This is the decision that makes all the others enforceable."
     ]
   ],
   "doors": {

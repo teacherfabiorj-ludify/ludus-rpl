@@ -11,7 +11,8 @@
 //
 //   node core/export.js            → writes core/core.json
 //
-// RUN IT BEFORE THE PYTHON BUILDS. If core.json is older than the .js files
+// RUN export_units.py FIRST (it writes core/units.json), THEN this, THEN the
+// Python builds. If core.json is older than the .js files
 // it came from, the spreadsheets are being built from stale truth.
 // ============================================================================
 
@@ -22,6 +23,9 @@ const brand = require("./brand.js");
 const system = require("./system.js");
 const method = require("./method.js");
 const glossary = require("./glossary.js");
+const units = require("./units.js");
+const ludus = require("./ludus.js");
+const decisions = require("./decisions.js");
 const tallowCoast = require("./doors/tallow-coast.js");
 
 const payload = {
@@ -31,6 +35,9 @@ const payload = {
   system,
   method,
   glossary: glossary.glossary,
+  units: { coursebook: units.coursebook, units: units.units, unitsToCheck: units.unitsToCheck },
+  ludus,
+  decisions: decisions.decisions,
   doors: { tallowCoast },
 };
 

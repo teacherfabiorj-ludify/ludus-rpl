@@ -31,8 +31,9 @@ VERSION = C["brand"]["VERSION"]
 KITS = C["doors"]["tallowCoast"]["archetypeKits"]
 SLOTS = S["PACK_SLOTS"]
 SPOT = S["spotlightTokens"]["start"]
+SIG = S["signatureMoves"]
 
-ENGINE = 58              # linha do IMPORTRANGE — espalha em A58:I62
+ENGINE = 70              # linha do IMPORTRANGE — espalha em A70:I74
 LOOK = f"$A${ENGINE}:$I${ENGINE + 4}"
 
 
@@ -95,26 +96,35 @@ def sheet_ficha(wb):
     r = pulled(ws, r, "Language Focus de hoje", 5)
     r = pulled(ws, r, "Você apresenta hoje?", 6)
     r = pulled(ws, r, "Suas ações", 7)
-    r = pulled(ws, r, "Language Points", 8,
-               hint="Rerrolagens. Ganhas no debrief da sessão passada, gastas hoje.")
-    r = field(ws, r, "Spotlight Tokens", SPOT, FILL_CALC,
-              hint=f"{SPOT} toda sessão, {S['spotlightTokens']['maxPerScene']} por cena. Transferíveis. Não acumulam.")
     r = pulled(ws, r, "Lembrete — próxima aula", 9)
 
     r += 1
-    r = block(ws, r, "3 — SEUS FOCUSES   ·   +2, +1, +0 e −1, um em cada")
+    r = block(ws, r, "3 — SEUS RECURSOS   ·   você gerencia, você desconta")
+    r = field(ws, r, "Language Points", 0, FILL_TYPE,
+              hint="No fim de cada sessão o GM anuncia quantos você terá na próxima. Anote aqui e "
+                   "risque um a cada vez que gastar. Zera no fim da sessão.")
+    r = field(ws, r, "Spotlight Tokens", SPOT, FILL_TYPE,
+              hint=f"{SPOT} no começo de toda sessão, {S['spotlightTokens']['maxPerScene']} por cena. "
+                   "Dá para passar um a outro aluno, dizendo em inglês por quê. Volta a "
+                   f"{SPOT} na sessão seguinte.")
+
+    r += 1
+    r = block(ws, r, "4 — SEUS FOCUSES   ·   +2, +1, +0 e −1, um em cada")
     header_row(ws, r, ["FOCUS", "SEU VALOR", "QUANDO ELE APARECE"])
     r += 1
     for name, _tag, when in S["focuses"]:
         r = field(ws, r, name, "", FILL_TYPE, when)
 
     r += 1
-    r = block(ws, r, "4 — SIGNATURE MOVE")
-    r = field(ws, r, "Signature Move", "",
-              hint="Vem do seu Archetype. Sobe de tier nos Growth Levels 3, 7 e 12.")
+    r = block(ws, r, f"5 — SIGNATURE MOVES   ·   até {SIG['perCharacter']} ao longo da carreira")
+    r = field(ws, r, "Signature Move", "", hint=SIG["main"])
+    r = field(ws, r, f"Cross-Training 1  (Growth {SIG['crossTrainingAt'][0]})", "",
+              hint="Tier 1 de OUTRO Archetype. Fica no Tier 1 para sempre.")
+    r = field(ws, r, f"Cross-Training 2  (Growth {SIG['crossTrainingAt'][1]})", "",
+              hint="O segundo, de um Archetype diferente do primeiro. Também fica no Tier 1.")
 
     r += 1
-    r = block(ws, r, "5 — O QUE VOCÊ CARREGA")
+    r = block(ws, r, "6 — O QUE VOCÊ CARREGA")
     kit_row = r
     r = field(ws, r, "Kit",
               f'=IFERROR(VLOOKUP($B${arch_row},REFERENCE!$A$3:$B$6,2,FALSE),"—")',
@@ -127,14 +137,14 @@ def sheet_ficha(wb):
               hint="Só em Growth Moment. Não ocupam slot. Nunca somam no dado.")
 
     r += 1
-    r = block(ws, r, "6 — DINHEIRO   ·   coin → handful → bag → chest, dez de um faz um do seguinte")
+    r = block(ws, r, "7 — DINHEIRO   ·   coin → handful → bag → chest, dez de um faz um do seguinte")
     for i, (rung, means) in enumerate(S["moneyLadder"]):
         default = 3 if rung == "A handful" else 0
         r = field(ws, r, rung, default, FILL_TYPE, means)
     r = note(ws, r, f'Você começa com {S["startingMoney"]["amount"]}. Pergunta de sessão zero: "{S["startingMoney"]["question"]}"', F_SMALL)
 
     r += 1
-    r = block(ws, r, "7 — ANOTAÇÕES   ·   nomes, promessas, dívidas")
+    r = block(ws, r, "8 — ANOTAÇÕES   ·   nomes, promessas, dívidas")
     for _ in range(4):
         r = field(ws, r, "", "")
 
@@ -212,6 +222,17 @@ def sheet_reference(wb):
         r += 1
     c = ws.cell(r, 2, S["languagePoints"]["lawOfTheAttempt"])
     c.font, c.alignment = F_SMALL, WRAP
+    r += 2
+
+    header_row(ws, r, ["SIGNATURE MOVES", ""])
+    r += 1
+    for lab, txt in [("O seu", SIG["main"]),
+                     ("Cross-Training", SIG["crossTrainingRule"]),
+                     ("Por quê", SIG["why"])]:
+        ws.cell(r, 1, lab).font = F_BODY
+        c = ws.cell(r, 2, txt)
+        c.font, c.alignment = F_BODY, WRAP
+        r += 1
     return ws
 
 
@@ -234,7 +255,8 @@ def build():
         "5. Poste no Classroom como MATERIAL dirigido àquele aluno, com permissão de edição.",
         "",
         "## Amarelo e azul",
-        "Amarelo o aluno preenche à mão: personagem, Focuses, Signature Move, Pack, Boons, dinheiro, anotações.",
+        "Amarelo o aluno preenche à mão: personagem, Focuses, Signature Moves, Pack, Boons, dinheiro, anotações — e os RECURSOS.",
+        "Language Points e Spotlight Tokens são do aluno. O GM anuncia o total no debrief; o aluno anota e risca conforme gasta. Gerenciar o próprio recurso em voz alta, em inglês, faz parte do exercício — não é papel de planilha.",
         "Azul vem do Quadro da Turma e não se edita: Growth, onde ele está na trilha, a lição do ciclo, o Language Focus de hoje, se apresenta, as ações, os Language Points e o lembrete da próxima aula.",
         "",
         "## Por que só a linha dele aparece",

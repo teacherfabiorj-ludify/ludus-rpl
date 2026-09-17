@@ -11,8 +11,18 @@ core/                     ← A CAMADA DA VERDADE
    method.js         ★    o método: dois relógios, ciclo A·B·C·D·X, o teste, Growth,
                           anatomia da sessão — ÚNICO arquivo que sabe que o Evolve existe
    glossary.js            todo termo, uma definição
+   ludus.js               o Ludus, o ritual, as relíquias, os 4 arcos, a anatomia
+                          de um Door Book, a troca de setting
+   decisions.js           o log de decisões — o que mudou, quando, e o que substituiu
+   units.js / units.json ★ AS 72 UNIDADES — gerado por planilhas/src/export_units.py.
+                          O ÚNICO arquivo que casa material didático com unidade
    doors/
       tallow-coast.js     o cenário Fantasy (era door-fantasy/src/content.js)
+
+core-book/                O CORE BOOK — a referência de tudo  (81 páginas · COMPLETO)
+   CoreBook.docx          Partes 0 a VII: o livro, o projeto, o sistema, o método,
+                          a mesa, as Portas, a operação e a referência
+   src/build.js           imprime o que está em core/ — não define nada
 
 players-guide/            O livro do ALUNO  (49 páginas)
    PlayersGuide.docx
@@ -66,6 +76,7 @@ Precisa de Node e da biblioteca `docx`:
 
 ```
 npm install -g docx
+node core-book/src/build.js
 node players-guide/src/build.js
 node players-guide/src/quickref.js
 node players-guide/src/howitworks.js
@@ -76,8 +87,9 @@ node door-fantasy/src/build.js
 E as planilhas (precisa de Python e openpyxl):
 
 ```
-node core/export.js                         # PRIMEIRO: gera core/core.json
-python3 planilhas/src/build_catalogo.py     # o catálogo é a fonte da REFERENCIA
+python3 planilhas/src/build_catalogo.py      # 1º: o catálogo é a fonte
+python3 planilhas/src/export_units.py        # 2º: catálogo → core/units.json
+node core/export.js                          # 3º: core/*.js → core/core.json
 python3 planilhas/src/build_painel.py
 python3 planilhas/src/build_quadro.py
 python3 planilhas/src/build_ficha.py
