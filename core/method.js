@@ -175,6 +175,24 @@ const growthRule = {
 // embody one family, so a GM who needs a Narrate scene knows whose door to
 // knock on.
 // ---------------------------------------------------------------------------
+// ★ WHERE A LANGUAGE FOCUS COMES FROM AND HOW OFTEN IT MOVES.
+// Was hardcoded in core-book/src/build.js ch.15 until 17/09/2026, which is why
+// the Player's Guide was able to say "every time you finish a unit" and nothing
+// caught it.
+const languageFocusRule = {
+  what:
+    "One line on the sheet, belonging to one student: the structure they are studying right now, " +
+    "and the thing the GM will build a pressure point around tonight.",
+  changesWhen:
+    "The Focus changes when the student changes lesson, which is to say every hour of class.",
+  whoTypesIt:
+    "Nobody types it. The Panel reads it from the trail table, the Class Board shows it, and the " +
+    "student's own sheet shows theirs. The teacher types the lesson letter and the Focus follows.",
+  notTiedToGrowth:
+    "It has nothing to do with Growth Level. Growth moves every six units; the Focus moves every " +
+    "hour of class, and the two are not synchronised.",
+};
+
 const actions = [
   ["IDENT", "Identify", "Say who or what something is. Introduce yourself, name a thing, state origin, function or ownership.",
    "be · possessives · articles · question words · this/these · agreement", "Halden — the Present"],
@@ -280,7 +298,7 @@ const conceptsToIntroduce = [
     use: "Every student invents one detail of the first location.",
   },
   {
-    name: "The Second Look",
+    name: "Say It Again",
     say: "If a sentence comes out wrong and you want it again, just say it again. Nobody will stop you and nobody needs to ask.",
     show: "Do it yourself, on purpose, on one of your own lines.",
     use: "Nothing. This one only needs permission to exist.",
@@ -321,6 +339,7 @@ const pointsRhythm = {
 };
 
 module.exports = {
+  languageFocusRule,
   sessionFormats, trailPace, formatNeutrality,
   COURSEBOOK, COURSEBOOK_EDITION, COURSEBOOK_PLATFORM, HOMEWORK_LOAD,
   TEST_NAME, TEST_TOOL, PASS_MARK, pacing,

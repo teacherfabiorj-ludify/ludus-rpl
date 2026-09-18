@@ -68,8 +68,11 @@ const glossary = [
   ["Spotlight Token",
    "Three per session, for everyone, reset every week. Spend one to claim an extended turn — at most one per scene. You may give one to another player by saying in English why you want to hear from them.",
    "system"],
+  ["Say It Again",
+   "The table's permission to rewind your own last line and say it again, better, in English. It costs nothing, it needs no permission and it is never refused. Called The Second Look until 17/09/2026.",
+   "table"],
   ["The Second Look",
-   "The table's permission to rewind a beat and say it again, better, in English. It costs nothing and it is never refused.",
+   "The lantern passing twice over the same thing: first the small size, to the student with less language, then the large size, to the student with more. The second look deepens the first and never contradicts it.",
    "table"],
 
   // --- the method ★ -------------------------------------------------------

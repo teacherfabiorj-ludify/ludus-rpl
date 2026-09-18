@@ -831,12 +831,15 @@ function ch10() {
     "It is wrong, and it is retired.", { italics: true }));
 
   c.push(h2("What a level actually gives you"));
-  c.push(dataTable(["AT", "WHAT CHANGES"], [
-    ["Every Growth Moment", "A Boon. Something the world now owes you, or something you now are."],
-    ["Levels 3, 7 and 12", "Your Signature Move moves up a tier."],
-    [`Levels ${S.signatureMoves.crossTrainingAt.join(" and ")}`, "Cross-Training: a Tier 1 Signature Move borrowed from a different Archetype, permanently at Tier 1."],
-    ["Never", "A Focus. A die. A flat bonus of any kind."],
-  ], [2600, W - 2600]));
+  c.push(spacer(80));
+  c.push(dataTable(["LEVEL", "UNITS DONE HERE", "WHAT YOU GAIN"],
+    S.growthLadder, [1600, 2600, W - 4200]));
+  c.push(spacer(140));
+  c.push(dataTable(["THE KIND OF GROWTH", "WHAT IT IS"], S.growthKinds, [2600, W - 2600]));
+  c.push(spacer(140));
+  c.push(box("And never, at any level",
+    "A Focus. A die. A flat bonus of any kind. The array a student places at creation is the " +
+    "array they roll with at Level 12.", CRIT, "FBEDEC"));
 
   c.push(spacer(140));
   c.push(trailBox("when a Growth Moment happens",
@@ -944,11 +947,16 @@ function ch12() {
     "who is interrupted to be corrected stops producing and starts monitoring, and a room full of " +
     "people monitoring their own grammar is a silent room."));
 
+  c.push(h2("The five rules of the table"));
+  c.push(body(
+    "These are printed on the student's table sheet and read aloud in Session Zero. They are the " +
+    "whole of the table's etiquette; there is no sixth."));
+  c.push(spacer(80));
+  c.push(dataTable(["RULE", "WHAT IT MEANS"], S.tableRules, [3000, W - 3000]));
+
   c.push(spacer(140));
-  c.push(box("The Second Look",
-    "Any student may rewind their own last line and say it again, better. It costs nothing, it is " +
-    "never refused, and it needs no permission. It exists so that the instinct to fix a sentence " +
-    "has somewhere to go that is not an apology.", GOOD, "E8F4EE"));
+  c.push(box("Say It Again",
+    `${S.sayItAgain.what} ${S.sayItAgain.rule} ${S.sayItAgain.why}`, GOOD, "E8F4EE"));
   return c;
 }
 
@@ -1069,10 +1077,9 @@ function ch15() {
     "says what a Focus is and where it comes from."));
 
   c.push(h2("It updates itself"));
-  c.push(body(
-    "The Focus changes when the student changes lesson, which is to say every hour of class. " +
-    "Nobody types it: the Panel reads it from the trail table, the Class Board shows it, and the " +
-    "student's own sheet shows theirs. The teacher types the lesson letter and the Focus follows."));
+  c.push(body(`${M.languageFocusRule.changesWhen} ${M.languageFocusRule.whoTypesIt}`));
+  c.push(spacer(100));
+  c.push(box("Not on the Growth clock", M.languageFocusRule.notTiedToGrowth, CRIT, "FBEDEC"));
   return c;
 }
 

@@ -110,7 +110,7 @@ const GAME_TERMS = [
   // System nouns
   "Growth Moment", "Growth Level", "Growth Ledger", "Language Focus",
   "Language Point", "Spotlight Token", "Signature Move",
-  "Session Zero", "Cross-Training", "Focus Shift", "Legacy Boon",
+  "Session Zero", "Cross-Training", "Say It Again", "The Second Look",
   // The four Archetypes
   "Vanguard", "Diplomat", "Strategist", "Scout",
   // The four Focuses
@@ -1152,7 +1152,7 @@ const doors = [
   {
     name: "The Iron Door",
     setting: "Fantasy",
-    focuses: "Courage · Empathy · Wit · Instinct",
+    drills: "Requests, negotiation, describing places and people.",
     look: "Black iron, too heavy for one person, warm to the touch. It smells of rain on stone.",
     world: "The Tallow Coast: three walled cities on one road, sea on one side and unmapped interior on the other. Magic did not fade here — it was licensed, and burning it without a Warrant is a crime. Eighty years ago a fourth city stopped, and nobody goes there.",
     feel: "The most forgiving setting to run and the easiest for a beginner to picture. Nothing here needs explaining to anybody.",
@@ -1167,7 +1167,7 @@ const doors = [
   {
     name: "The Salt Door",
     setting: "Cosmic Horror",
-    focuses: "Nerve · Rapport · Lore · Dread",
+    drills: "Hedging and uncertainty, reported speech, describing what you are not sure you saw.",
     look: "Pale wood, swollen as though it has been underwater, crusted white around the frame. It is cold from two metres away.",
     world: "A coast, a century or so behind the modern world, where something very large is asleep offshore and the towns have quietly organised themselves around not waking it. Nobody says so out loud.",
     feel: "Slow and talky. Almost no combat. The tension comes from what people will not tell you, which makes it the best setting in the book for advanced students and a poor one for beginners.",
@@ -1182,7 +1182,7 @@ const doors = [
   {
     name: "The Glass Door",
     setting: "Supernatural Investigation",
-    focuses: "Grit · Rapport · Deduction · Hunch",
+    drills: "Question forms, past tenses, deduction: must have, can't have, might have.",
     look: "Frosted glass in a plain frame, like an office door. There is a light on behind it that never goes out.",
     world: "A city, roughly now, where the impossible happens often enough that a small number of people make a living dealing with it, and the rest of the population has agreed not to notice.",
     feel: "Structured and satisfying. Every arc is a case: a question at the start, an answer at the end. The easiest setting to prepare, because the shape is always the same.",
@@ -1197,7 +1197,7 @@ const doors = [
   {
     name: "The Red Door",
     setting: "Dystopian Superheroes",
-    focuses: "Valor · Charisma · Ingenuity · Reflex",
+    drills: "Opinions and argument, modals of obligation, persuading a crowd.",
     look: "Painted steel, municipal red, with a small window at head height that has been broken and replaced many times.",
     world: "A country where extraordinary people exist, are licensed, and are managed. Power is legal, regulated and expensive, and the people who have it mostly work for someone who does not.",
     feel: "Loud and argumentative. The conflicts are about legitimacy, not strength — who is allowed, who decides, who pays. Teenagers love it.",
@@ -1212,7 +1212,7 @@ const doors = [
   {
     name: "The Rust Door",
     setting: "Post-Apocalypse Survival",
-    focuses: "Steel · Trust · Salvage · Survival",
+    drills: "Giving instructions, conditionals, stating needs plainly and fast.",
     look: "Corrugated metal, orange with rust, held shut by a bar. Hot air comes under it.",
     world: "Eighty years after something that nobody living remembers properly. Small settlements, long distances, and water as the only currency that has never lost value.",
     feel: "Practical and tense. Decisions have weights and costs. This is the setting where the Pack rule earns its keep, because six slots matter when the walk is four days.",
@@ -1227,7 +1227,7 @@ const doors = [
   {
     name: "The Bright Door",
     setting: "Cyberpunk",
-    focuses: "Edge · Face · Hacking · Street",
+    drills: "Future forms, technical description, bargaining and double-talk.",
     look: "A seamless panel that lights up when you approach it and asks, in a pleasant voice, who you are.",
     world: "A city sixty or seventy years ahead, run by companies that provide everything and own everyone, where the difference between a citizen and a product is a contract most people have not read.",
     feel: "Fast, verbal and slippery. Almost every scene is a negotiation with somebody who is also negotiating. Superb for advanced students, punishing for beginners.",
@@ -1254,7 +1254,7 @@ function doorBlock(d) {
   }));
   parts.push(new Paragraph({
     spacing: { after: 120 },
-    children: [ new TextRun({ text: d.focuses, bold: true, color: BRAND, size: 19 }) ],
+    children: [ new TextRun({ text: d.drills, bold: true, color: BRAND, size: 19 }) ],
   }));
   parts.push(bodyPara(d.look, { italics: true, after: 120 }));
   parts.push(threeColTable(
@@ -1302,8 +1302,8 @@ function chapterDoors() {
   ));
   children.push(spacer(140));
   children.push(calloutBox(
-    "Only the four Focus names change",
-    `Each world renames the four Focuses to fit — Courage becomes Nerve, becomes Grit, becomes Steel — but they are the same four positions in the same order, doing the same job. A Vanguard is a Vanguard behind every Door. Nothing else about a character sheet changes.`,
+    "Nothing about the sheet changes",
+    `The four Focuses are called Courage, Empathy, Wit and Instinct behind every Door — they are never renamed, because the sheet and the Class Board print them and a student who changes world must not have to relearn their own sheet. A Vanguard is a Vanguard everywhere. What changes is the dressing, never the vocabulary of the system.`,
     "warn"
   ));
 

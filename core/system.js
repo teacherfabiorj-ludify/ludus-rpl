@@ -319,6 +319,10 @@ const lanternScope = {
   ],
 };
 
+// ⚠ NAME COLLISION RESOLVED 17/09/2026. Until today "The Second Look" named two
+// different rules: this one (the lantern passing twice) and the permission to
+// redo your own sentence. The lantern keeps the name; the other is SAY IT AGAIN,
+// below. See decisions.js.
 const secondLook = {
   what:
     "Two lanterns over the same object: first the small size, to the student with less language; " +
@@ -338,6 +342,49 @@ const secondLook = {
   ],
 };
 
+// THE FIVE RULES OF THE TABLE. Lifted into core 17/09/2026: two of them
+// ("One Scene, One Voice" and "Yes, And") existed only inside the Player's
+// Guide, the Quick Reference and the welcome sheet, which meant the Core Book
+// printed three rules and the student's table sheet printed five. One list now,
+// printed by every book that prints any of them.
+const tableRules = [
+  ["Mistakes Are How We Play",
+   "Nobody is corrected in the middle of a scene. The correct form comes back inside the GM's " +
+   "next line, in character, and you either pick it up or you do not."],
+  ["One Scene, One Voice",
+   "Let a player finish their thought before adding yours, even when your English comes out " +
+   "faster than theirs. Joining someone's Move through Help or Interfere is the game; talking " +
+   "over them mid-sentence is not."],
+  ["Yes, And",
+   "Build on what another player put into the story instead of shutting it down. If somebody " +
+   "says there is a hidden door behind the bookshelf, find a way to make that true and add " +
+   "something on top of it."],
+  ["In Character, In English",
+   "Everything you say as your character is in English, including the arguing, the joking and " +
+   "the complaining — with the two permanent exceptions: stopping a scene, and asking for a word."],
+  ["Say It Again",
+   "Redo your own last line, better, whenever you want. No permission, no cost, no apology."],
+];
+
+// SAY IT AGAIN — the table's permission to redo your own last line. Named
+// "The Second Look" until 17/09/2026, when that name went to the lantern rule
+// above. This is a rule of the table, not of the lantern: it applies to any
+// sentence, in any scene, whether or not a lantern is in play.
+const sayItAgain = {
+  what:
+    "Any player may rewind their own last line and say it again, better, in English.",
+  rule:
+    "It costs nothing, it needs no permission and it is never refused. Nobody at the table " +
+    "may treat it as a correction, and the player does not have to explain why.",
+  why:
+    "So that the instinct to fix a sentence has somewhere to go that is not an apology. A " +
+    "student who cannot redo a line either leaves it wrong or stops to apologise for it, and " +
+    "both of those cost more than the second attempt would have.",
+  gmLine:
+    "If a sentence comes out wrong and you want it again, just say it again. Nobody will stop " +
+    "you and nobody needs to ask.",
+};
+
 // Where the lantern goes in a session, and who gets which size.
 const lanternRhythm = {
   perSession: "Two to four passes, one every twenty to twenty-five minutes. Three to five minutes in total.",
@@ -351,6 +398,114 @@ const lanternRhythm = {
     "seconds. After a year that is about a hundred and fifty lines of world written by the " +
     "students themselves, in English, about something they care about, at exactly their level.",
 };
+
+
+// ---------------------------------------------------------------------------
+// ARCHETYPES AND THE GROWTH LADDER
+//
+// Lifted out of players-guide/src/build.js on 17/09/2026. It had been living
+// inside the student's book, which made the Player's Guide a definer rather
+// than a printer and left the Core Book unable to print the same tables
+// without retyping them. Same law as everything else here.
+// ---------------------------------------------------------------------------
+const archetypes = [
+  {
+    name: "The Vanguard",
+    concept: "Steps into danger first, shields the people behind them, acts when talk runs out.",
+    array: [["Courage", "+2"], ["Instinct", "+1"], ["Empathy", "+0"], ["Wit", "−1"]],
+    moveName: "Shield the Line",
+    tiers: [
+      ["Tier 1 — Level 1", "Shield the Line", "When you Face Danger to protect another character, on a 7–9 you choose the complication yourself instead of the GM."],
+      ["Tier 2 — Level 3", "Shield the Line", "As Tier 1, and on a 10+ the character you protected may immediately take an action of their own before the scene moves on."],
+      ["Tier 3 — Level 7", "Hold the Door", "As Tier 2, and once per session, when an ally would suffer a consequence from a Miss, you may take it in their place instead."],
+      ["Tier 4 — Level 12", "Nothing Gets Past Me", "As Tier 3, and whenever you take a consequence in an ally's place, describe what it cost you out loud, in character, in English. What you describe becomes true of your character, and the GM writes it into the Codex — it will come back."],
+    ],
+  },
+  {
+    name: "The Diplomat",
+    concept: "Reads what people actually want, negotiates instead of confronting, turns enemies into leverage.",
+    array: [["Empathy", "+2"], ["Wit", "+1"], ["Instinct", "+0"], ["Courage", "−1"]],
+    moveName: "Read the Room",
+    tiers: [
+      ["Tier 1 — Level 1", "Read the Room", "Before you decide what to offer in a Parley, you may ask your GM what the other party actually wants — they answer honestly."],
+      ["Tier 2 — Level 3", "Read the Room", "As Tier 1, and you may instead ask what the other party is afraid of. Your choice, one question, answered honestly before you commit."],
+      ["Tier 3 — Level 7", "Everyone Has a Price", "As Tier 2, and once per session you may reroll a Parley — the whole 2d6, re-adding your Focus, exactly as a Language Point would."],
+      ["Tier 4 — Level 12", "Speak for the Table", "As Tier 3, and you may Parley on behalf of another player's character instead of your own, provided they narrate their half of the offer in English. Whatever you win, you win for both of you."],
+    ],
+  },
+  {
+    name: "The Strategist",
+    concept: "Outthinks the problem before it becomes a fight — always three steps ahead, the clever one at the table.",
+    array: [["Wit", "+2"], ["Instinct", "+1"], ["Empathy", "+0"], ["Courage", "−1"]],
+    moveName: "Angles and Openings",
+    tiers: [
+      ["Tier 1 — Level 1", "Angles and Openings", "Once per session, after you roll Persuade or Manipulate, you may reroll the whole 2d6 and re-add your Focus."],
+      ["Tier 2 — Level 3", "Angles and Openings", "As Tier 1, but twice per session instead of once."],
+      ["Tier 3 — Level 7", "Already Knew That", "As Tier 2, and once per session you may ask your GM one question about the current scene without rolling Read the Scene. They answer honestly, at no cost."],
+      ["Tier 4 — Level 12", "I Planned for This", "As Tier 3, and at the start of a session you may name one thing you expect to go wrong. If it does, every player at the table may reroll one 2d6 during that scene."],
+    ],
+  },
+  {
+    name: "The Scout",
+    concept: "Notices danger before anyone else does, moves quiet, trusts their gut over their plan.",
+    array: [["Instinct", "+2"], ["Courage", "+1"], ["Wit", "+0"], ["Empathy", "−1"]],
+    moveName: "Nothing Slips By",
+    tiers: [
+      ["Tier 1 — Level 1", "Nothing Slips By", "Even on a Miss, Read the Scene still lets you ask one question — the GM just answers it in a way that costs you something."],
+      ["Tier 2 — Level 3", "Nothing Slips By", "As Tier 1, and on a 10+ you may aim one of your questions at a scene that hasn't happened yet — somewhere your character is headed."],
+      ["Tier 3 — Level 7", "One Step Ahead", "As Tier 2, and once per session, when a scene opens, you may say what your character was already doing there before anyone else arrived. The GM works it into the opening."],
+      ["Tier 4 — Level 12", "Follow Me", "As Tier 3, and you may bring one other player's character with you — they were there too. They describe what they saw, in English, before the scene moves on."],
+    ],
+  },
+];
+
+// What an Archetype does and does not decide. The `array` above is a suggestion
+// the student may ignore: the Archetype itself sets the Kit and the Signature
+// Move and nothing else, and the student places +2/+1/+0/−1 wherever they like.
+const archetypePrinciple =
+  "An Archetype sets two things: the Kit the character always carries, and the Signature Move " +
+  "they start with. It does not set a Focus. The array printed beside each one is a suggestion " +
+  "that fits the concept — the student is free to place the four numbers anywhere, and nothing " +
+  "in the system penalises them for it.";
+
+// The full career ladder. 12 Growth Levels, 11 Growth Moments between them.
+//
+// ⚠ REWRITTEN 17/09/2026 to match Core Book ch.10, which is the authority.
+// The version that stood here until today came out of an old Player's Guide and
+// said three things the Core Book does not: a Boon only on even levels, a FOCUS
+// SHIFT at Level 9, and a CAPSTONE with a LEGACY BOON at 72 units. The Core Book
+// says a Boon at EVERY Growth Moment, and "Never: a Focus, a die, a flat bonus
+// of any kind." The ladder runs 1 to 12 and stops there. See decisions.js.
+const growthLadder = [
+  ["Level 1",  "the day you sit down", "Archetype, Focus array, Signature Move at Tier 1."],
+  ["Level 2",  "6 units",  "A Boon."],
+  ["Level 3",  "12 units", "A Boon — and your Signature Move steps up to Tier 2."],
+  ["Level 4",  "18 units", "A Boon."],
+  ["Level 5",  "24 units", "A Boon — and Cross-Training."],
+  ["Level 6",  "30 units", "A Boon."],
+  ["Level 7",  "36 units", "A Boon — and your Signature Move steps up to Tier 3."],
+  ["Level 8",  "42 units", "A Boon."],
+  ["Level 9",  "48 units", "A Boon."],
+  ["Level 10", "54 units", "A Boon."],
+  ["Level 11", "60 units", "A Boon — and Cross-Training."],
+  ["Level 12", "66 units", "A Boon — and your Signature Move steps up to Tier 4."],
+];
+
+const growthKinds = [
+  ["Boon", "A narrative gain, defined by you and your GM out of what has already happened in your story: an item, an ally, a place that will open its door to you, a reputation that precedes you. A Boon can open a door, change a fact, or give your GM a reason to say yes. It never adds a number to a roll. One at every Growth Moment, without exception."],
+  ["Signature Move tier", "Your Archetype's Signature Move, rewritten sharper. The new tier replaces the old text on your sheet. You always have exactly one Archetype Signature Move, at every level, from Level 1 to Level 12."],
+  ["Cross-Training", "Take the Tier 1 Signature Move of a different Archetype and add it to your sheet permanently. It stays at Tier 1 forever — it never upgrades. You may do this twice in a career, and never from the same Archetype twice."],
+];
+
+const guardrails = [
+  ["You start at Level 1. Everybody does.", "Your Growth Level does not come from how good your English already is. A student who joins at a high level and a student who joins from zero both sit down at Level 1, with no Boons. What you knew before you got here is not something this table gets to reward — only what you do after."],
+  ["Your Focus array never changes.", "You place +2, +1, +0 and −1 once, at character creation, and that is where they stay for the life of the character. Nothing on the ladder moves them, raises them or swaps them. A Level 12 character and a Level 1 character roll against exactly the same odds. This is the promise from Chapter 2, kept all the way to the end of the track."],
+  ["You only ever have one Archetype Signature Move.", "Tiers replace each other. Your sheet at Level 12 is not four Moves deep — it is one Move, four times sharper."],
+  ["Cross-Training stays at Tier 1, twice, forever.", "Borrowed Moves give you range, not depth. Two of them, from two different Archetypes, and neither one ever upgrades."],
+  ["Nothing may add a flat bonus to a roll.", "No growth in this game ever hands you a +1, and neither does anything else. There is no exception anywhere in this book. What effort buys you is a reroll — a second chance at the same dice — never better dice."],
+  ["One session is still one session.", "Almost every Signature Move is once per session. A Level 12 character holding three once-per-session tools still only gets three moments of leverage in a two-hour game. What grows is the number of interesting choices, not the size of the numbers."],
+];
+
 
 // ---------------------------------------------------------------------------
 // THE LAWS — the non-negotiables, numbered. Printed in the Core Book, quoted
@@ -384,6 +539,8 @@ module.exports = {
   moneyLadder, startingMoney, carryRows, PACK_SLOTS, packFullRule,
   languagePoints, spotlightTokens, signatureMoves,
   characterCreationSteps, creationPrinciple,
-  lanternSizes, lanternRules, lanternScope, secondLook, lanternRhythm,
+  lanternSizes, lanternRules, lanternScope, secondLook, sayItAgain, lanternRhythm,
+  tableRules,
+  archetypes, archetypePrinciple, growthLadder, growthKinds, guardrails,
   laws,
 };

@@ -73,6 +73,17 @@ const decisions = [
    "Every rule, term and number now lives in one place and is imported by every book and every " +
    "spreadsheet. A definition found inside a build script is a defect. This is the decision that " +
    "makes all the others enforceable."],
+
+  ["17/09/2026", "\"The Second Look\" names the lantern rule; the other one is \"Say It Again\"",
+   "One name was carrying two different rules, and both were printed in the same book: the " +
+   "lantern passing twice over one object, and a player's permission to redo their own sentence. " +
+   "The lantern keeps the name. The permission becomes Say It Again, which is the sentence the " +
+   "teacher already says out loud in Session Zero."],
+
+  ["17/09/2026", "The Player's Guide prints only what core/ can prove",
+   "Three campaign shapes, a Language Focus card the GM hands out, and every trace of equal " +
+   "speaking time came out of the Player's Guide because nothing in core/ supported them. What " +
+   "is distributed is the invitation, never the minutes."],
 ];
 
 module.exports = { decisions };

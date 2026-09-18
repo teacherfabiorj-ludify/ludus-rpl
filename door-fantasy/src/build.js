@@ -33,6 +33,13 @@ const {
   coastPlaces, burnLadder, peopleQuickRef, humanLineages, lineageNote, theSix,
 } = require("../../core/doors/tallow-coast.js");
 
+// ---- The world, in prose. New 17/09/2026, rewritten 18/09.
+// The Player's Guide prints the `student` extracts from this same file, so the
+// two books cannot drift. NOTE the alias: the module exports `readAloud` (text)
+// and this build already has a readAloud() (layout). Do not un-alias it.
+const WORLD = require("../../core/doors/tallow-coast-world.js");
+const OPENING = WORLD.readAloud;
+
 const sizeOf = (path) => {
   const buf = readFileSync(path);
   return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
@@ -126,12 +133,19 @@ const GAME_TERMS = [
   "Act Under Pressure", "Persuade or Manipulate", "Help or Interfere",
   "Read the Scene", "Face Danger", "Parley",
   "Growth Moment", "Growth Level", "Growth Ledger", "Language Focus",
-  "Spotlight Token", "Signature Move", "Session Zero", "Legacy Boon",
+  "Spotlight Token", "Signature Move", "Session Zero", "Passing the Lantern",
   "Vanguard", "Diplomat", "Strategist", "Scout",
   "Courage", "Empathy", "Instinct", "Wit",
   // this Door's defined objects
   "Passing the Lantern", "The Second Look", "Second Look",
   "the Second Silence", "Second Silence", "wardstone", "Warrant", "the Hush",
+  // The four burn rungs are NOT marked: they are on every page of Chapter 2
+  // and marking them is noise. "a lantern" would also collide with Passing
+  // the Lantern, which is a different thing.
+  "the kindling", "the Unkindled", "a wound", "sour", "hollow",
+  "the Marrow Stone", "Fenny Cross", "the Harvest Fair",
+  "the Grey Stair", "the Bell House", "the Hollow Yard", "ward-candle",
+  "Burning Unanswered", "the Assize", "Unanswerable",
   "the Codex", "Codex", "the Spoken Flame",
   "One Line", "One Place", "One Story",
   // the peoples and their characteristics
@@ -675,17 +689,18 @@ function titlePage() {
 // Build once, read the page numbers, write them into PAGES, build again.
 // ===========================================================================
 const PAGES = {
-  ch1: 3, ch2: 7, ch3: 10, arc1: 15, a1: 17, a2: 19, a3: 21, a4: 23, a5: 25,
-  appA: 27, appB: 29,
+  ch1: 3, world: 7, ch2: 30, ch3: 33, arc1: 38, a1: 40, a2: 42, a3: 44, a4: 46, a5: 48,
+  appA: 50, appB: 52,
 };
 
 const CONTENTS = [
   ["PART I", "Before You Run It", null],
   ["1", "How to Use This Book", "ch1"],
-  ["2", "The Secret", "ch2"],
-  ["3", "The Cast in Three States", "ch3"],
+  ["2", "The Tallow Coast", "world"],
+  ["3", "The Secret", "ch2"],
+  ["4", "The Cast in Three States", "ch3"],
   ["PART II", "The Campaign", null],
-  ["4", "Arc 1 · The Right to Burn", "arc1"],
+  ["5", "Arc 1 · The Right to Burn", "arc1"],
   ["", "Adventure 1 · Papers", "a1"],
   ["", "Adventure 2 · The Empty Taper", "a2"],
   ["", "Adventure 3 · The Woman Who Would Not Stop", "a3"],
@@ -835,11 +850,302 @@ function chapter1() {
 }
 
 // ===========================================================================
+// CHAPTER 2 — THE TALLOW COAST
+//
+// New 17/09/2026, rewritten 18/09. The reason it exists: until it was written
+// this book described a campaign in a world that had never been described. The
+// GM had a list of city names, a licence system with no economics behind it,
+// and a Concord nobody had ever defined.
+//
+// Everything printed here is PUBLIC. It lives in
+// core/doors/tallow-coast-world.js and the Player's Guide prints extracts of
+// the same strings, so the two books cannot drift apart.
+//
+// What is NOT here: who is draining the wardstones, how a wardstone is really
+// fed, and how anybody learned to move kindling. That is Chapter 3.
+// ===========================================================================
+function chapterWorld() {
+  const c = [];
+  c.push(...chapterOpener("Part I · Before You Run It", "2", "The Tallow Coast",
+    "What this world is, what burning costs, what the Concord actually is, what a ruined place is like, and what the three cities are like to walk into.",
+    "Once, properly, before Session Zero. Then a page at a time, whenever a student asks you something about the world and you want the answer to be the same as last month's."));
+
+  c.push(bodyPara(
+    "This chapter is the coast as everybody who lives on it understands it. None of it is secret " +
+    "and none of it needs to be earned: a student may be told any of it, at any time, and the " +
+    "Player's Guide already carries most of it. Read it once for the shape and then stop " +
+    "worrying about it — the point of writing it down is that you stop having to invent it twice."));
+
+  c.push(spacer(140));
+  c.push(readAloud(OPENING));
+  c.push(spacer(120));
+  c.push(calloutBox("This is the opening of Session Zero",
+    "Read it slowly, before anybody has a character. It takes about ninety seconds and it does the one job nothing else does: it tells the table what kind of place they are in before they have to make decisions in it. Then go straight to Oren's gate.",
+    "example"));
+
+  c.push(pageBreak());
+  c.push(sectionHeading("Burning, and what it spends"));
+  c.push(bodyPara(WORLD.burning.whatItIs));
+  c.push(bodyPara(WORLD.burning.whatItLooksLike));
+  c.push(spacer(100));
+  c.push(markerBlock("locked", "Burning is paid for by the place, not the burner",
+    [WORLD.burning.whatItCosts, WORLD.burning.whereKindlingIs]));
+
+  c.push(pageBreak());
+  c.push(sectionHeading("What decides the rung"));
+  c.push(bodyPara(WORLD.theRungRule.headline, { italics: true }));
+  c.push(spacer(100));
+  c.push(bodyPara(WORLD.theRungRule.body));
+  c.push(bodyPara(WORLD.theRungRule.consequence));
+  c.push(spacer(120));
+  c.push(markerBlock("locked", "And this is the engine of the whole game",
+    WORLD.theRungRule.forTheTeacherOnly));
+  c.push(spacer(140));
+  c.push(subHeading("The four rungs, read as spending"));
+  c.push(bodyPara(WORLD.wardstones.theLadderInWords, { italics: true }));
+  c.push(spacer(100));
+  c.push(dataTable(["RUNG", "WHAT IT NEEDS", "WHAT IT DOES", "WHAT IT SPENDS"],
+    burnLadder.map((r, i) => [...r, [
+      "About an hour of one room.",
+      "About a day of one street.",
+      "Most of a season of a whole district.",
+      "More than anywhere has. This is what happened to the fourth city.",
+    ][i]]),
+    [1500, 2100, CONTENT_W - 7100, 3500]));
+  c.push(spacer(140));
+  c.push(bodyPara(WORLD.wardstones.thePyre));
+
+  c.push(pageBreak());
+  c.push(subHeading("Accidents"));
+  c.push(bodyPara(WORLD.accidents.theCommonOne));
+  c.push(bodyPara(WORLD.accidents.theRealDanger));
+  c.push(spacer(120));
+  c.push(calloutBox("A gift for a session you have not prepared",
+    "A place that went bad because somebody panicked there is a whole adventure with no villain in it, and the table will supply the rest. Somebody drowned. Somebody could not save them. The field has not come back in six years and the family has not either.",
+    "example"));
+  c.push(spacer(160));
+  c.push(subHeading("Where you learn it"));
+  c.push(bodyPara(WORLD.learning.noSchool));
+  c.push(bodyPara(WORLD.learning.taper));
+  c.push(bodyPara(WORLD.learning.lantern));
+  c.push(spacer(120));
+  c.push(markerBlock("locked", "There is no college of magic, and there must not be one",
+    WORLD.learning.theGift));
+
+  c.push(pageBreak());
+  c.push(sectionHeading("Wardstones"));
+  c.push(bodyPara(WORLD.wardstones.what));
+  c.push(bodyPara(WORLD.wardstones.theHeartOfTheCity));
+  c.push(spacer(100));
+  c.push(markerBlock("never", "Do not let a wardstone become a battery the players can carry",
+    "A wardstone is buried, immovable, and older than the city on top of it. The moment one becomes portable, the coast stops being a place where burning has a geography — and the geography is the whole reason the licence, the road and Hesper Vane are interesting."));
+  c.push(spacer(140));
+  c.push(bodyPara(WORLD.wardstones.andWhyTheRoadIsFrightening));
+  c.push(spacer(120));
+  c.push(calloutBox("How a wardstone is actually fed",
+    "Chapter 3. It is one of the things this world is hiding, and it changes what the Arc 3 argument is about. Do not hint at it.",
+    "stop"));
+  c.push(spacer(160));
+  c.push(subHeading("Letting the ground lie fallow"));
+  c.push(bodyPara(WORLD.fallow));
+  c.push(spacer(140));
+  c.push(subHeading("The sea, which is the hole in everything"));
+  c.push(bodyPara(WORLD.theSeaLoophole));
+
+  c.push(pageBreak());
+  c.push(sectionHeading("What a used-up place is like"));
+  c.push(bodyPara(
+    "This is the question a student will ask in the first hour, and the one the GM most needs a " +
+    "consistent answer to. There are four stages and they are a spectrum, not a switch."));
+  c.push(spacer(100));
+  c.push(dataTable(["STAGE", "COMES BACK IN", "WHAT IT IS LIKE"],
+    WORLD.depletion, [1700, 2600, CONTENT_W - 4300]));
+  c.push(spacer(140));
+  c.push(bodyPara(WORLD.depletionNote, { italics: true }));
+  c.push(spacer(120));
+  c.push(calloutBox("Use the second column as your clock",
+    "Sour is a complaint. Hollow is a reason a family left. A wound is a place with a fence and a name. If you know which of the three you are describing, the table will feel the difference without you explaining anything.",
+    "clarify"));
+
+  c.push(pageBreak());
+  c.push(sectionHeading("Wounds"));
+  c.push(bodyPara(WORLD.wounds.whatItIs));
+  c.push(spacer(100));
+  c.push(markerBlock("locked", "The loop, which is the whole of it",
+    "Life leaves, so the kindling does not return; the kindling does not return, so more life leaves. That is a wound in one sentence — and read backwards, it is why a city full of people is the safest place on this coast."));
+  c.push(spacer(140));
+  c.push(subHeading("What it is like to stand at one"));
+  c.push(bodyPara(WORLD.wounds.whatItIsLike));
+  c.push(spacer(100));
+  c.push(dataTable(["", ""], [
+    ["How big", WORLD.wounds.howBig],
+    ["How many", WORLD.wounds.howMany],
+    ["Can one be healed", WORLD.wounds.canItBeHealed],
+  ], [2400, CONTENT_W - 2400]));
+  c.push(spacer(140));
+  c.push(markerBlock("never", "Do not put a wound in front of the table casually",
+    "Six exist, all old, all fenced, all avoided. They are the reason people obey a slow and stupid licence. A wound the table stumbles into on the way to somewhere else is worth nothing; a NEW wound opening is worth an entire arc, and that is what it is for."));
+
+  c.push(pageBreak());
+  c.push(sectionHeading("The Unkindled"));
+  c.push(bodyPara(WORLD.unkindled.whatTheyAre));
+  c.push(bodyPara(WORLD.unkindled.whatTheyWere));
+  c.push(bodyPara(WORLD.unkindled.whereTheyStay));
+  c.push(spacer(120));
+  c.push(markerBlock("locked", "The name stops one. Nothing brings one back.",
+    [WORLD.unkindled.theName, WORLD.unkindled.andNoMore]));
+  c.push(spacer(140));
+  c.push(bodyPara(WORLD.unkindled.whyItMatters, { italics: true }));
+  c.push(spacer(120));
+  c.push(calloutBox("Why this is not a monster for fighting",
+    "Ludus has no combat rules and does not want any. An Unkindled is a tragedy with a name in it, and the scene it belongs in is one where somebody has to say that name out loud — which means somebody has to have found it out, from a person who did not want to give it. That is three sessions of work and none of it is a fight.",
+    "warn"));
+  c.push(spacer(120));
+  c.push(markerBlock("choice", "Whose name is it",
+    "The strongest version is an Unkindled somebody at the table can identify. A villager recognises the coat. If a student has invented a home town near a wound — and they will, because the lantern invites it — this is where you hand it back to them, and you ask permission first."));
+
+  c.push(pageBreak());
+  c.push(sectionHeading("The Concord"));
+  c.push(bodyPara(WORLD.concord.inOneLine, { italics: true }));
+  c.push(spacer(100));
+  c.push(bodyPara(WORLD.concord.what));
+  c.push(spacer(100));
+  c.push(markerBlock("locked", "It has no army, and that is the point",
+    WORLD.concord.whatItIsNot));
+  c.push(spacer(140));
+  c.push(subHeading("What a character actually sees of it"));
+  c.push(spacer(80));
+  c.push(dataTable(["WHAT", "WHAT IT IS"], WORLD.concord.whatYouSeeOfIt,
+    [3200, CONTENT_W - 3200]));
+
+  c.push(pageBreak());
+  c.push(subHeading("The Warrant, as an object"));
+  c.push(bodyPara(WORLD.concord.theWarrant));
+  c.push(spacer(120));
+  c.push(calloutBox("Somebody has to sign for you",
+    "A sealed Warrant needs a second name, and that second person answers for what you do with it. This is the mechanism behind Adventure 1 and it never stops being useful: every time the table needs something bigger, somebody in the fiction has to decide to be liable for them. That is a scene, not a die roll.",
+    "example"));
+  c.push(spacer(160));
+  c.push(subHeading("Why it is obeyed, and why it is hated"));
+  c.push(bodyPara(WORLD.concord.whyPeopleObeyIt));
+  c.push(bodyPara(WORLD.concord.whyPeopleHateIt));
+  c.push(spacer(120));
+  c.push(markerBlock("locked", "Neither side of this is the villain",
+    WORLD.concord.theHonestVersion));
+
+  c.push(pageBreak());
+  c.push(sectionHeading("The law, which is smaller than people think"));
+  c.push(bodyPara(WORLD.theLaw.headline, { italics: true }));
+  c.push(spacer(100));
+  c.push(bodyPara(WORLD.theLaw.body));
+  c.push(bodyPara(WORLD.theLaw.theUseful));
+  c.push(spacer(100));
+  c.push(markerBlock("locked", "What stops somebody burning in the middle of nowhere",
+    WORLD.theLaw.whatStopsYouAnyway));
+  c.push(spacer(140));
+  c.push(subHeading("What can actually be done to you"));
+  c.push(spacer(80));
+  c.push(dataTable(["PENALTY", "WHAT IT MEANS"], WORLD.theLaw.penalties,
+    [2600, CONTENT_W - 2600]));
+  c.push(spacer(140));
+  c.push(calloutBox("And that is how Adventure 1 starts",
+    "Exile on this coast is three gatekeepers and a list, and the campaign opens at a gate with a tired man reading one. Oren is not being officious. He is the entire enforcement apparatus of an international treaty, and he knows it.",
+    "example"));
+
+  c.push(pageBreak());
+  c.push(sectionHeading("How the Concord finds things out"));
+  c.push(bodyPara(WORLD.investigation.whoDoesWhat));
+  c.push(spacer(120));
+  c.push(subHeading("The ward-candle"));
+  c.push(bodyPara(WORLD.investigation.wardCandle));
+  c.push(spacer(120));
+  c.push(calloutBox("Your instrument for showing, instead of telling",
+    "When you want the table to know a place has been drained, do not say so. Have somebody take out the tube, and have the candle not take. On a coast that lives by rendering tallow, the instrument for measuring magic is a candle.",
+    "clarify"));
+  c.push(spacer(160));
+  c.push(subHeading("Readers"));
+  c.push(bodyPara(WORLD.investigation.wickbornReaders));
+  c.push(spacer(140));
+  c.push(subHeading("The method, which is the useful part"));
+  c.push(bodyPara(WORLD.investigation.theMethod));
+  c.push(spacer(120));
+  c.push(markerBlock("locked", "A Warden's questions are the grammar of Arc 2",
+    "What did you notice? When? Who told you that? Did you see it, or were you told? Four questions that produce past tenses and reported speech every time they are asked, from any NPC, in any village, with no preparation."));
+
+  c.push(pageBreak());
+  c.push(sectionHeading("The Hush"));
+  c.push(bodyPara(WORLD.hush.whatEverybodyKnows));
+  c.push(spacer(100));
+  c.push(markerBlock("locked", "The Hush is not a big wound", WORLD.hush.notAWound));
+  c.push(spacer(140));
+  c.push(bodyPara(WORLD.hush.theEdge));
+  c.push(spacer(100));
+  c.push(markerBlock("locked", "Talking is what brings somebody back",
+    "Everything about the Hush is built so that the answer to it is a person saying words out loud, and understanding them. In a language school that is not decoration. Hold it: nothing physical ever rescues anybody from the edge of the Hush."));
+
+  c.push(pageBreak());
+  c.push(subHeading("The name nobody agrees on"));
+  c.push(bodyPara(WORLD.hush.theName));
+  c.push(bodyPara(WORLD.hush.whyItMattersEveryDay));
+  c.push(spacer(120));
+  c.push(calloutBox("What you must not say yet",
+    "What the Hush IS, why it left none of a wound's marks, how a wardstone is fed, and who is about to do it all again are in Chapter 3. Everything in Chapter 2 can be handed to a student freely. Nothing in Chapter 3 can.",
+    "stop"));
+
+  WORLD.places.forEach((pl) => {
+    c.push(pageBreak());
+    c.push(sectionHeading(pl.name));
+    c.push(bodyPara(pl.line, { italics: true }));
+    c.push(spacer(100));
+    pl.prose.forEach((para) => c.push(bodyPara(para)));
+  });
+
+  c.push(pageBreak());
+  c.push(sectionHeading("Everyday life, for when a student asks"));
+  c.push(bodyPara(
+    "None of this is lore you need to remember. It is here so that when somebody asks what the " +
+    "inn smells like or what people swear by, you have an answer that will still be true in " +
+    "March.", { italics: true }));
+  c.push(spacer(100));
+  c.push(dataTable(["", ""], WORLD.everyday, [3200, CONTENT_W - 3200]));
+
+  c.push(pageBreak());
+  c.push(sectionHeading("What is deliberately blank"));
+  c.push(bodyPara(WORLD.blanks.rule));
+  c.push(spacer(100));
+  c.push(markerBlock("student", "The lantern's territory",
+    WORLD.blanks.list.map((b) => "· " + b)));
+  c.push(spacer(140));
+  c.push(bodyPara(
+    "The temptation, having read a chapter like this one, is to keep going — to name the " +
+    "villages, to decide who keeps the inn at Fenny Cross, to write the festival calendar. Do " +
+    "not. Everything above is fixed precisely so that everything in that box can belong to a " +
+    "student, and a world a student helped build is the one they will come back to on a Tuesday " +
+    "night in August.", { italics: true }));
+
+  c.push(pageBreak());
+  c.push(sectionHeading("The glossary of the coast"));
+  c.push(bodyPara(
+    "Every named thing in this world, in one place, so that you never have to remember which " +
+    "chapter it was in. The Player's Guide prints the same list.", { italics: true }));
+  ["burning", "law", "the past", "place", "peoples", "people"].forEach((cat) => {
+    const rows = WORLD.glossary.filter((g) => g[1] === cat).map((g) => [g[0], g[2]]);
+    if (!rows.length) return;
+    c.push(spacer(160));
+    c.push(subHeading(cat.toUpperCase()));
+    c.push(spacer(60));
+    c.push(dataTable(["TERM", "WHAT IT IS"], rows, [2600, CONTENT_W - 2600]));
+  });
+
+  return c;
+}
+
+// ===========================================================================
 // CHAPTER 2 — THE SECRET
 // ===========================================================================
 function chapter2() {
   const c = [];
-  c.push(...chapterOpener("Part I · Before You Run It", "2", "The Secret",
+  c.push(...chapterOpener("Part I · Before You Run It", "3", "The Secret",
     "What is actually happening on this coast, who is doing it, and why they believe they are right.",
     "Once, before anything else. Then again before Arc 3, when it stops being a secret."));
 
@@ -984,7 +1290,7 @@ const CAST = [
 
 function chapter3() {
   const c = [];
-  c.push(...chapterOpener("Part I · Before You Run It", "3", "The Cast in Three States",
+  c.push(...chapterOpener("Part I · Before You Run It", "4", "The Cast in Three States",
     "Six people the table will keep meeting, and what each of them becomes depending on how they are treated.",
     "Once before you begin. Then at the end of every arc, for two minutes, to update the Codex."));
 
@@ -1291,7 +1597,7 @@ const ARC1 = [
 
 function chapterArc1() {
   const c = [];
-  c.push(...chapterOpener("Part II · The Campaign", "4", "Arc 1 · The Right to Burn",
+  c.push(...chapterOpener("Part II · The Campaign", "5", "Arc 1 · The Right to Burn",
     "Sessions 1 to 12, all of them in and around Ashlight. Five adventures that get larger.",
     "Every week, for your first three months. This is the only arc you need in order to start."));
 
@@ -1449,9 +1755,10 @@ function main() {
       section("", "", titlePage(), { noHeader: true }),
       section("", "", contentsPage(), { noHeader: true }),
       section("Part I · Before You Run It", "1 · How to Use This Book", chapter1()),
-      section("Part I · Before You Run It", "2 · The Secret", chapter2()),
-      section("Part I · Before You Run It", "3 · The Cast in Three States", chapter3()),
-      section("Part II · The Campaign", "4 · Arc 1 · The Right to Burn", chapterArc1()),
+      section("Part I · Before You Run It", "2 · The Tallow Coast", chapterWorld()),
+      section("Part I · Before You Run It", "3 · The Secret", chapter2()),
+      section("Part I · Before You Run It", "4 · The Cast in Three States", chapter3()),
+      section("Part II · The Campaign", "5 · Arc 1 · The Right to Burn", chapterArc1()),
       ...ARC1.map((a) => section("Part II · Arc 1", `Adventure ${a.n} · ${a.title}`, adventure(a))),
       section("Appendices", "A · The Session Grid", appendixA()),
       section("Appendices", "B · Setting Quick Reference", appendixB()),

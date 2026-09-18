@@ -17,14 +17,20 @@ core/                     ← A CAMADA DA VERDADE
    units.js / units.json ★ AS 72 UNIDADES — gerado por planilhas/src/export_units.py.
                           O ÚNICO arquivo que casa material didático com unidade
    doors/
-      tallow-coast.js     o cenário Fantasy (era door-fantasy/src/content.js)
+      tallow-coast.js     o cenário Fantasy: as TABELAS (povos, linhagens, deuses,
+                          escada de queima, kits, elenco público)
+      tallow-coast-world.js  o cenário Fantasy: a PROSA — a kindling e o que ela
+                          custa, as quatro fases de um lugar gasto, as feridas e
+                          os Unkindled, o Concord, a lei, a Hush, as três cidades,
+                          e o GLOSSÁRIO de 47 termos. O Door Book imprime tudo
+                          como capítulo 2; o PG imprime os extratos `student`
 
 core-book/                O CORE BOOK — a referência de tudo  (81 páginas · COMPLETO)
    CoreBook.docx          Partes 0 a VII: o livro, o projeto, o sistema, o método,
                           a mesa, as Portas, a operação e a referência
    src/build.js           imprime o que está em core/ — não define nada
 
-players-guide/            O livro do ALUNO  (49 páginas)
+players-guide/            O livro do ALUNO  (66 páginas)
    PlayersGuide.docx
    QuickReference.docx    a folha de mesa, frente e verso (2 páginas)
    HowThisClassWorks.docx a folha de boas-vindas — inglês e português (2 páginas)

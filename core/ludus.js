@@ -90,6 +90,89 @@ const arcLength =
   "inventing a number.";
 
 // ---------------------------------------------------------------------------
+// THE SIX DOORS
+// Lifted out of the Player's Guide 17/09/2026, where they were the only copy.
+// Six is a decision, not an observation: one Door per wall of the hall, five of
+// them sealed on day one. Only the Tallow Coast (Fantasy) is written so far.
+//
+// ⚠ THE FOUR FOCUSES ARE NEVER RENAMED. An earlier Player's Guide gave each
+// world its own four Focus names — Nerve, Rapport, Lore, Dread and so on. That
+// is retired: Courage, Empathy, Wit and Instinct are the same four words in
+// every Door, because the character sheet and the Class Board print them and a
+// student who changes world must not have to relearn their own sheet.
+// ---------------------------------------------------------------------------
+const doors = [
+  {
+    name: "Fantasy",
+    pitch: "Walled towns, tired gatekeepers, a road that goes somewhere worse than it looks.",
+    what:
+      "The default world, and the one every example in our books is drawn from. Swords, guilds, " +
+      "old magic that nobody fully understands, and problems that can usually be solved by " +
+      "talking to the right person before they have to be solved any other way. The most " +
+      "forgiving world to start in: the tone is flexible and the stakes scale easily.",
+    drills: "Requests, negotiation, describing places and people.",
+    written: true,
+  },
+  {
+    name: "Cosmic Horror",
+    pitch: "Something is wrong with this town, and explaining what is the dangerous part.",
+    what:
+      "Slow dread rather than sudden violence. Characters investigate something they should " +
+      "probably leave alone, and the game is at its best when nobody is certain what they saw. " +
+      "It runs on doubt, which makes it unusually good language practice — the table spends most " +
+      "of it hedging, qualifying and reporting what someone else claimed.",
+    drills: "Hedging and uncertainty, reported speech, describing what you are not sure you saw.",
+    written: false,
+  },
+  {
+    name: "Supernatural Investigation",
+    pitch: "The case is real, the client is lying, and one of the witnesses is not alive.",
+    what:
+      "Ghosts, hauntings, and things that leave evidence. Structurally the most satisfying world " +
+      "for a short campaign, because a case has a shape: a question at the start and an answer at " +
+      "the end. Every session is built out of asking things.",
+    drills: "Question forms, past tenses, deduction: must have, can't have, might have.",
+    written: false,
+  },
+  {
+    name: "Dystopian Superheroes",
+    pitch: "You have powers. So does the government, and theirs are legal.",
+    what:
+      "Big abilities, bigger consequences, and a world where the real problem is never the fight. " +
+      "Characters argue in public, take sides, and answer for what they did. The loudest of the " +
+      "six, and the best one for a table that likes debating.",
+    drills: "Opinions and argument, modals of obligation, persuading a crowd.",
+    written: false,
+  },
+  {
+    name: "Post-Apocalypse Survival",
+    pitch: "The water is three days away and the truck holds four people.",
+    what:
+      "Scarcity, hard choices, and a group that has to keep functioning. Resources matter here " +
+      "more than in any other world, and so does telling people plainly what to do.",
+    drills: "Giving instructions, conditionals, stating needs plainly and fast.",
+    written: false,
+  },
+  {
+    name: "Cyberpunk",
+    pitch: "Everyone is being paid by someone, and nobody is being paid enough.",
+    what:
+      "Neon, contracts, and the assumption that every deal has a second layer. Characters take " +
+      "jobs, get betrayed, and negotiate their way sideways out of it. The most transactional of " +
+      "the six.",
+    drills: "Future forms, technical description, bargaining and double-talk.",
+    written: false,
+  },
+];
+
+const doorsPrinciple =
+  "The engine does not care which Door the table went through. The same four Focuses, the same " +
+  "six Moves and the same three outcome bands run a haunted lighthouse, a collapsing megacity and " +
+  "a road out of a burned town. What changes is the dressing: what an Archetype looks like when " +
+  "it walks into a room, what the peoples and lineages are, and what kind of trouble the GM is " +
+  "allowed to make. The Focus names are not part of the dressing.";
+
+// ---------------------------------------------------------------------------
 // WHAT A DOOR BOOK MUST CONTAIN
 // The assembly sheet. Every Door Book carries these, in this order, so a GM who
 // has run one can open another and already know where things are.
@@ -112,6 +195,38 @@ const doorBookPrinciple =
 // ---------------------------------------------------------------------------
 // CHANGING A DOOR
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// THE CHARACTER NEVER DIES, AND STUDENTS MOVE
+// Lifted out of core-book/src/build.js ch.31 and ch.34 on 17/09/2026, where
+// they were hardcoded prose. The Player's Guide had none of it, which meant a
+// student could not find out what happens if they miss three weeks.
+// ---------------------------------------------------------------------------
+const characterNeverDies =
+  "No character in this system ever dies. Not in a change of setting, not on a bad roll, not " +
+  "when a student leaves. Characters retire, are left behind, become people the table talks " +
+  "about. A student who comes back in a year should find somebody still standing there.";
+
+const studentMovement = {
+  arriving: [
+    ["Mid-arc", "The Arrival: a ten-minute scene in which the table finds your character and decides to keep them. You play from that night."],
+    ["At the boundary between two arcs", "No ritual needed. As far as the story is concerned, you were always going to be there."],
+    ["Your Growth Level", "Level 1, always, whatever your English and whatever unit you start on."],
+  ],
+  away: [
+    ["One or two sessions", "Your character is off-screen. Nothing happens to them and nothing happens to you — your course simply does not advance that week."],
+    ["A long absence", "Your character becomes someone the table still meets: an NPC, still in the world, still yours."],
+    ["Coming back", "You resume at the exact unit and lesson you left. Nobody has to remember it — the Board does."],
+  ],
+  leaving:
+    "A student who leaves gets a farewell inside the fiction, and the character is retired rather " +
+    "than killed. Nothing is deleted.",
+  changingGroup:
+    "Nothing is lost by moving group. Your level, unit, lesson, Growth Level and Boons copy across " +
+    "exactly. If the new group plays the same world your character travels whole; if it plays a " +
+    "different one you rebuild at the same Growth Level, which takes about ten minutes, and the " +
+    "old character stays behind as someone the first table still knows.",
+};
+
 const settingChange = {
   when: "The semester conversation, about twenty minutes in the last session of a semester.",
   what: "Are you happy? Do you want a different setting? Or keep this world and play a new campaign in it?",
@@ -130,5 +245,7 @@ const settingChange = {
 module.exports = {
   theLudus, sessionRitual, creationMoment, ludusCast,
   relics, arcs, arcResourceRule, arcLength,
+  doors, doorsPrinciple,
   doorBookParts, doorBookPrinciple, settingChange,
+  characterNeverDies, studentMovement,
 };
