@@ -22,6 +22,12 @@ const {
 const { writeFileSync } = require("fs");
 
 const { GAME_NAME, HOUSE, BOOK_SUBTITLE, VERSION } = require("../../core/brand.js");
+// star The trail layer. Until 18/09/2026 this sheet told students the unit test
+// was Cambridge's, which stopped being true on 16/09 when the quiz became ours.
+// It is imported now so that it cannot go stale again.
+const {
+  COURSEBOOK, COURSEBOOK_PLATFORM, PASS_MARK, lessonCycle, pacing,
+} = require("../../core/method.js");
 
 // ---- Palette — identical to the books and the Quick Reference --------------
 const ACCENT = "2A78D6";
@@ -198,14 +204,14 @@ function english() {
   c.push(...masthead("How This Class Works",
     "Read this once, before your first session. It takes four minutes."));
 
-  c.push(para("This is an English course. The content is Cambridge's — you study Evolve on Cambridge One, and you take the Cambridge test at the end of every unit, exactly as you would in any other class. What is different is the shape of the lesson: you and up to three other students live a story in English, and each of you plays a character inside it.", { color: INK }));
+  c.push(para("This is an English course. The content is Cambridge's — you study " + COURSEBOOK + " on " + COURSEBOOK_PLATFORM + ", where your homework is set and marked, exactly as in any other class. The quiz that closes each unit is ours, written by " + HOUSE + ", and you sit it when you are ready. What is different is the shape of the lesson: you and up to three other students live a story in English, and each of you plays a character inside it.", { color: INK }));
   c.push(para("You will not repeat sentences you would never say. You speak because your character needs something and nobody else is going to get it."));
 
   c.push(head("Two things are being measured"));
   c.push(grid(
     ["", "WHAT IT MEASURES", "WHERE YOU SEE IT"],
     [
-      ["Your course", "Units finished and test scores, marked by Cambridge, from A1 to C1.", "Cambridge One"],
+      ["Your course", "Units finished and quiz scores, from A1 to C1. Homework is marked by the platform; the unit quiz is ours.", "Cambridge One"],
       ["Your character", "Growth Levels, which go up as you finish real coursework — not as you win scenes.", "Your character sheet"],
     ], [1900, W - 4300, 2400]));
   c.push(para("They are connected on purpose. Your character grows because you studied, and for no other reason.", { italics: true, size: 17 }));
@@ -218,6 +224,18 @@ function english() {
       ["The session itself", "A few minutes to arrive and say what happened last time, then the story, then a close. Your group's day, time and length are in Classroom, under Start Here."],
       ["After the session", "Read the recap in Classroom and answer the question at the end of it. Two or three sentences is enough."],
     ], [2300, W - 2300]));
+
+  c.push(head("Your unit, lesson by lesson"));
+  c.push(para("A lesson is one hour of class. A session is one meeting — two hours means one session with two lessons in it. A unit of your course is four lessons, which is two weeks whichever way your group meets. You will not be on the same lesson as the others at your table, and that is the design.", { color: INK }));
+  c.push(grid(
+    ["LESSON", "WHAT IT IS", "DO YOU PRESENT?"],
+    lessonCycle.map((l) => [l[0], l[1] + " — " + l[2], l[3]]),
+    [1100, W - 3100, 2000]));
+  c.push(para("On two of the four you open the session by explaining your own topic to the table, in English, for about a minute. It is not a test and it is not marked.", { italics: true, size: 17 }));
+
+  c.push(head("The quiz, and who sets the pace"));
+  c.push(callout("You hold the brake",
+    "Your GM releases your unit quiz at the end of the fourth lesson — to you, for your unit. Pass mark " + PASS_MARK + "%. " + pacing.theBrake + " There is no limit on attempts, and nobody is dragged forward or held back by anybody else at the table.", ACCENT));
 
   c.push(head("Have these open every session"));
   c.push(callout("Your kit",
@@ -252,14 +270,14 @@ function portugues() {
   c.push(...masthead("Como Funciona a Aula",
     "Leia uma vez, antes da primeira sessão. Leva quatro minutos.", true));
 
-  c.push(para("Isto é um curso de inglês. O conteúdo é da Cambridge — você estuda o Evolve na plataforma Cambridge One e faz a prova da Cambridge ao fim de cada unidade, igual a qualquer outro curso. O que muda é o formato da aula: você e até mais três alunos vivem uma história em inglês, e cada um tem um personagem dentro dela.", { color: INK }));
+  c.push(para("Isto é um curso de inglês. O conteúdo é da Cambridge — você estuda o Evolve na plataforma Cambridge One, onde a lição de casa é passada e corrigida, igual a qualquer outro curso. O quiz que fecha cada unidade é nosso, escrito pela Ludify, e você faz quando se sentir pronto. O que muda é o formato da aula: você e até mais três alunos vivem uma história em inglês, e cada um tem um personagem dentro dela.", { color: INK }));
   c.push(para("Você não vai repetir frases que nunca diria na vida. Você fala porque o seu personagem precisa de algo e ninguém vai conseguir por você."));
 
   c.push(head("Duas coisas estão sendo medidas"));
   c.push(grid(
     ["", "O QUE MEDE", "ONDE VOCÊ VÊ"],
     [
-      ["Seu curso", "Unidades concluídas e notas das provas, corrigidas pela Cambridge, do A1 ao C1.", "Cambridge One"],
+      ["Seu curso", "Unidades concluídas e notas dos quizzes, do A1 ao C1. A lição de casa é corrigida pela plataforma; o quiz da unidade é nosso.", "Cambridge One"],
       ["Seu personagem", "Os Growth Levels, que sobem conforme você conclui matéria de verdade — não conforme você ganha cenas.", "Sua ficha"],
     ], [1900, W - 4300, 2400]));
   c.push(para("Elas são ligadas de propósito. Seu personagem evolui porque você estudou, e por nenhum outro motivo.", { italics: true, size: 17 }));
@@ -272,6 +290,24 @@ function portugues() {
       ["A sessão", "Alguns minutos para chegar e contar o que aconteceu da última vez, a história, e o fechamento. O dia, o horário e a duração do seu grupo estão no Classroom, no Start Here."],
       ["Depois da sessão", "Leia o resumo no Classroom e responda a pergunta que vem no fim dele. Duas ou três frases bastam."],
     ], [2300, W - 2300]));
+
+  c.push(head("Sua unidade, lição por lição"));
+  c.push(para("Uma lição é uma hora de aula. Uma sessão é um encontro — duas horas são uma sessão com duas lições dentro. Uma unidade do seu curso são quatro lições, o que dá duas semanas em qualquer formato de turma. Você não vai estar na mesma lição que os colegas da sua mesa, e isso é de propósito.", { color: INK }));
+  c.push(grid(
+    ["LIÇÃO", "O QUE É", "TEM APRESENTAÇÃO?"],
+    [
+      ["A", "Lição 1 estreia — o primeiro tópico da unidade entra em cena pela primeira vez.", "não"],
+      ["B", "Lição 1 de novo — mesmo tópico. Você abre a sessão apresentando ele.", "sim — 1 min"],
+      ["C", "Lição 2 estreia — o segundo tópico da unidade entra em cena.", "não"],
+      ["D", "Lição 2 de novo, com apresentação. No fim desta lição o quiz é liberado.", "sim — 1 min"],
+      ["X", "Lição extra — só se você ainda não passou no quiz. Revisita os dois tópicos.", "não"],
+    ],
+    [1100, W - 3100, 2000]));
+  c.push(para("Em duas das quatro você abre a sessão explicando o seu próprio tópico para a mesa, em inglês, por cerca de um minuto. Não é prova e não vale nota.", { italics: true, size: 17 }));
+
+  c.push(head("O quiz, e quem dita o ritmo"));
+  c.push(callout("O freio é seu",
+    "O quiz da sua unidade é liberado no fim da quarta lição — para você, da sua unidade. Nota de corte " + PASS_MARK + "%. Quem não se sente pronto simplesmente não faz o quiz ainda: a unidade fica aberta, o tópico continua voltando nas cenas, e a lição de casa pode ser refeita quantas vezes quiser. Não há limite de tentativas, e ninguém é puxado nem segurado por causa de outro aluno.", ACCENT));
 
   c.push(head("Tenha isto aberto em toda sessão"));
   c.push(callout("Seu kit",

@@ -31,6 +31,8 @@ const { readFileSync, writeFileSync, existsSync } = require("fs");
 // tables are never retyped in either build script.
 const {
   coastPlaces, burnLadder, peopleQuickRef, humanLineages, lineageNote, theSix,
+  flameLaw, flames, sparkFloor, flameSparks, flameTapers, flameLanterns,
+  flameSuggested, flameSuggestedNote, burningRoll,
 } = require("../../core/doors/tallow-coast.js");
 
 // ---- The world, in prose. New 17/09/2026, rewritten 18/09.
@@ -689,8 +691,8 @@ function titlePage() {
 // Build once, read the page numbers, write them into PAGES, build again.
 // ===========================================================================
 const PAGES = {
-  ch1: 3, world: 7, ch2: 30, ch3: 33, arc1: 38, a1: 40, a2: 42, a3: 44, a4: 46, a5: 48,
-  appA: 50, appB: 52,
+  ch1: 3, world: 7, ch2: 39, ch3: 44, arc1: 49, a1: 51, a2: 53, a3: 56, a4: 58, a5: 60,
+  appA: 62, appB: 64,
 };
 
 const CONTENTS = [
@@ -914,6 +916,141 @@ function chapterWorld() {
     [1500, 2100, CONTENT_W - 7100, 3500]));
   c.push(spacer(140));
   c.push(bodyPara(WORLD.wardstones.thePyre));
+
+  // -------------------------------------------------------------------------
+  // THE FOUR FLAMES — 20/09/2026. Everything here comes from core/; nothing on
+  // these pages is defined in this build script.
+  // -------------------------------------------------------------------------
+  c.push(pageBreak());
+  c.push(sectionHeading("The four flames"));
+  c.push(bodyPara(WORLD.theFlames.headline, { italics: true }));
+  c.push(spacer(100));
+  c.push(bodyPara(WORLD.theFlames.whatItIs));
+  c.push(bodyPara(WORLD.theFlames.born));
+  c.push(spacer(120));
+  c.push(dataTable(["FLAME", "FOCUS", "WHAT KIND OF BURNING IT IS"], flames,
+    [1900, 1600, CONTENT_W - 3500]));
+  c.push(spacer(140));
+  c.push(bodyPara(WORLD.theFlames.invisible));
+  c.push(bodyPara(WORLD.theFlames.nobodySeesTheirOwn));
+
+  c.push(pageBreak());
+  c.push(subHeading("The colour is the domain; the rung is the scale"));
+  c.push(bodyPara(flameLaw, { italics: true }));
+  c.push(spacer(100));
+  c.push(bodyPara(WORLD.theFlames.theLaw));
+  c.push(bodyPara(WORLD.theFlames.whyItMatters));
+  c.push(spacer(120));
+  c.push(markerBlock("locked", "One idea at three sizes, never three powers",
+    "If you ever find yourself inventing a fifth thing a colour can do, check it against this " +
+    "rule first. Red holds. If the thing you are about to allow is not holding, it is not red, " +
+    "whatever size it is — and if it IS holding, the only question left is whether the character " +
+    "can hold that much at once."));
+  c.push(spacer(150));
+  c.push(markerBlock("never", "Flame is not lineage, and it is not the Archetype either",
+    [WORLD.theFlames.notLineage,
+     "It is not the Language Focus either. The Language Focus rotates every lesson because the " +
+     "Board says so. A flame does not rotate, ever, and a student who confuses the two will " +
+     "confuse them exactly once if you say this out loud in Session Zero."]));
+
+  c.push(pageBreak());
+  c.push(subHeading("What every colour can do: the floor"));
+  c.push(bodyPara(sparkFloor));
+  c.push(spacer(140));
+  c.push(subHeading("The spark of each colour"));
+  c.push(dataTable(["FLAME", "SPARK", "WHAT IT DOES"], flameSparks,
+    [1700, 1700, CONTENT_W - 3400]));
+  c.push(spacer(150));
+  c.push(subHeading("Your own taper"));
+  c.push(bodyPara(WORLD.theFlames.theNativeTaper));
+  c.push(spacer(120));
+  c.push(dataTable(["FLAME", "TAPER", "WHAT IT DOES"], flameTapers,
+    [1700, 1700, CONTENT_W - 3400]));
+
+  c.push(pageBreak());
+  c.push(subHeading("The lantern of each colour"));
+  c.push(bodyPara(
+    "Printed so the ladder has a top to it. No player character is going to reach one — see the " +
+    "rules pages that follow — but a table that can see what a lantern is will understand why a " +
+    "sealed Warrant needs a second person's name on it.", { italics: true }));
+  c.push(spacer(100));
+  c.push(dataTable(["FLAME", "LANTERN", "WHAT IT DOES"], flameLanterns,
+    [1700, 1700, CONTENT_W - 3400]));
+  c.push(spacer(160));
+  c.push(subHeading("What the coast says about colours"));
+  c.push(bodyPara(WORLD.theFlames.whatPeopleSay));
+  c.push(spacer(120));
+  c.push(markerBlock("locked", "Four colours, four grammars",
+    WORLD.theFlames.forTheTeacherOnly));
+
+  c.push(pageBreak());
+  c.push(subHeading("The green flame and the Old Sense are not the same instrument"));
+  c.push(bodyPara(WORLD.investigation.whatAReaderCannotDo));
+  c.push(spacer(120));
+  c.push(calloutBox("Why this matters more than it looks",
+    "If a green flame could do a reader's job, the Concord would not need to hire Wickborn, and " +
+    "three of the best scenes in Arc 2 stop working. Keep the line hard: a reader tells you that " +
+    "something was burned here. A green flame tells you who is standing in front of you. Neither " +
+    "one has ever told anybody who did it.",
+    "clarify"));
+
+  // -------------------------------------------------------------------------
+  // BURNING AT THE TABLE — the rules half. Public: the Player's Guide prints
+  // the same rules from the same source.
+  // -------------------------------------------------------------------------
+  c.push(pageBreak());
+  c.push(sectionHeading("Burning at the table"));
+  c.push(bodyPara(WORLD.playerBurning.theShortVersion, { italics: true }));
+  c.push(spacer(120));
+  c.push(markerBlock("never", "This is not one of the six Moves",
+    WORLD.playerBurning.notAMove));
+  c.push(spacer(150));
+  c.push(subHeading("Sparks"));
+  c.push(bodyPara(WORLD.playerBurning.spark));
+  c.push(spacer(100));
+  c.push(bodyPara(sparkFloor, { italics: true }));
+  c.push(spacer(150));
+  c.push(subHeading("Tapers"));
+  c.push(bodyPara(WORLD.playerBurning.taper));
+  c.push(bodyPara(burningRoll.warrant));
+  c.push(spacer(120));
+  c.push(dataTable(["ROLL", "BAND", "WHAT HAPPENS"], burningRoll.bands,
+    [1500, 1900, CONTENT_W - 3400]));
+  c.push(spacer(140));
+  c.push(markerBlock("locked", "The kindling is spent on a miss",
+    [burningRoll.missNote, WORLD.playerBurning.theMiss]));
+
+  c.push(pageBreak());
+  c.push(subHeading("One taper a scene"));
+  c.push(bodyPara(WORLD.playerBurning.theScene));
+  c.push(spacer(120));
+  c.push(calloutBox("Say it the same way every time",
+    WORLD.playerBurning.theSceneForTheGM,
+    "example"));
+  c.push(spacer(150));
+  c.push(subHeading("Language Points"));
+  c.push(bodyPara(burningRoll.languagePoints));
+  c.push(bodyPara(WORLD.playerBurning.languagePoints));
+  c.push(spacer(150));
+  c.push(subHeading("Lanterns"));
+  c.push(bodyPara(WORLD.playerBurning.lanterns));
+
+  c.push(pageBreak());
+  c.push(subHeading("Choosing a flame at character creation"));
+  c.push(bodyPara(
+    "The player chooses. The character was BORN with it — so ask what your flame is, never " +
+    "which power you want, and never let it change afterwards. It is the one thing on the sheet " +
+    "that is as fixed as the Focus array.", { italics: true }));
+  c.push(spacer(120));
+  c.push(dataTable(["ARCHETYPE", "SUGGESTED FLAME", "WHY"], flameSuggested,
+    [2600, 2600, CONTENT_W - 5200]));
+  c.push(spacer(120));
+  c.push(bodyPara(flameSuggestedNote));
+  c.push(spacer(150));
+  c.push(subHeading("When the table unlocks a taper"));
+  c.push(bodyPara(WORLD.playerBurning.whenTheyLearn));
+  c.push(spacer(120));
+  c.push(calloutBox("Who teaches them", WORLD.playerBurning.whoTeaches, "example"));
 
   c.push(pageBreak());
   c.push(subHeading("Accidents"));
@@ -1180,6 +1317,88 @@ function chapter2() {
     "The Old Sense tells a Wickborn that burning happened nearby and roughly how much. It never says who, why, or what it did. Near an anchor, the sense reports something drinking — and that is all. It is the strongest source of dread in Arc 1 precisely because it produces a feeling and no information.",
     "clarify"));
 
+  // --- NEW 18/09/2026: the three things Chapter 2 promises are explained here.
+  c.push(pageBreak());
+  c.push(sectionHeading("What is actually true about the kindling"));
+  c.push(bodyPara(
+    "Three facts. The coast has all three wrong, and every one of them is load-bearing for the " +
+    "campaign. Chapter 2 points a student at this page three times and tells them they cannot " +
+    "read it; this is what is on it."));
+
+  c.push(spacer(120));
+  c.push(markerBlock("locked", "One · A wardstone is fed by the lives gathered around it",
+    ["Nobody on the coast knows this, and the Bell House has no paper for it. A wardstone does " +
+     "not fill from the ground or from time. It fills from the people, animals and growing " +
+     "things packed in around it — which is why a city can burn ten thousand stoves a night and " +
+     "why the three cities are the only three cities.",
+     "Read it backwards and you have the shape of the whole campaign: a city that empties starves " +
+     "its own stone. A city that takes people in feeds it. The politics and the metaphysics point " +
+     "the same way, and only one person on this coast knows that."]));
+
+  c.push(spacer(140));
+  c.push(markerBlock("locked", "Two · Kindling can be moved, and the Hush is the proof",
+    ["Everybody believes kindling cannot be moved or restored — that it returns on its own or it " +
+     "does not. That belief is wrong, and the evidence has been standing inland for eighty years.",
+     "This is why the Hush is not a wound. A wound is ground that lost its kindling slowly and " +
+     "kept the hole; that is what makes the Unkindled, and it takes years. The fourth city lost " +
+     "everything it had in an afternoon, and it did not leak away — it WENT somewhere. There was " +
+     "no slow draining, so there is nothing in there at all. That absence is the clue, and only " +
+     "one person ever read it correctly."]));
+
+  c.push(spacer(140));
+  c.push(markerBlock("locked", "Three · The drain is done with paperwork",
+    ["This is the detail that makes the antagonist frightening rather than theatrical. Burning " +
+     "inside a city's walls pulls the wardstone before it pulls the street. So the way to empty " +
+     "a wardstone is not sabotage, not a ritual and not a midnight visit. It is to authorise a " +
+     "great deal of perfectly legal burning in one district, year after year, and to be the " +
+     "person who signs the Warrants.",
+     "The antagonist is not doing forbidden magic. They are doing their job, correctly, at a " +
+     "volume nobody audits. Adventure 2 of Arc 1 — three burns that failed in the same street — " +
+     "is what that looks like from the ground."]));
+
+  c.push(pageBreak());
+  c.push(sectionHeading("What the plan is really for"));
+  c.push(bodyPara(
+    "Not a weapon. A vault. The antagonist intends to take the kindling out of the inhabited " +
+    "coast and put it somewhere nobody can ever reach it, because a coast with nothing left to " +
+    "burn is a coast where nobody dies of burning — no unlicensed healer spending a village, no " +
+    "child left sour, no fourth city, ever again. The cost is one stretch of coast that stops " +
+    "moving, and they have decided that trade is worth making."));
+  c.push(spacer(120));
+  c.push(calloutBox("Say this in their voice at the reveal",
+    "\"You have spent your whole lives arguing about who may spend a place. I am going to take the argument away from all of you.\" It is monstrous, it is coherent, and a student should be able to repeat it back correctly before they refuse it.",
+    "example"));
+
+  c.push(spacer(160));
+  c.push(sectionHeading("The lever you should not point at"));
+  c.push(bodyPara(
+    "Because the antagonist knows what feeds a stone, they benefit every time a city closes its " +
+    "gate. Arc 3 asks the table who gets shelter inside the walls and who stays outside, and the " +
+    "table will treat that as a moral question. It is also, without anybody knowing, the " +
+    "antagonist's fastest route — and the table should only realise that afterwards, if at all."));
+  c.push(spacer(120));
+  c.push(markerBlock("never", "Do not let an NPC explain this to them",
+    "If somebody at the table works out that refugees feed the stone, that is one of the best " +
+    "things that can happen in this campaign and it belongs to them. If nobody does, the " +
+    "campaign is not damaged — it just ends with a decision that was more consequential than " +
+    "anyone knew."));
+
+  c.push(spacer(160));
+  c.push(sectionHeading("The question this book does not answer"));
+  c.push(bodyPara(
+    "If lives gathered feed a stone, a table will eventually ask the obvious and horrible next " +
+    "question. This book gives no answer, on purpose, and you should not invent one at the table " +
+    "at eleven at night."));
+  c.push(spacer(100));
+  c.push(markerBlock("choice", "If a student asks it out loud",
+    ["The honest GM answer is that nobody on this coast knows, and that the antagonist has never " +
+     "tried to find out — which is true, and is also the most interesting thing about them. " +
+     "Their plan requires no deaths at all. That is the entire reason they believe they are a " +
+     "good person.",
+     "If you ever want to answer it differently, understand what you are choosing: everything " +
+     "published for this Door sits at 13 and up, and a plan that runs on mass death is a " +
+     "different tone ceiling and a different Door. The recommendation is to leave it where it is."]));
+
   c.push(sectionHeading("Why they are not wrong"));
   c.push(bodyPara("The person doing this does not think of themselves as a villain, and if you play them as one the ending of Arc 3 collapses into a fight scene. They have watched the Concord manage a problem for eighty years without ever curing it. People still burn without licences. People still die of it. Their conclusion is that management is the disease."));
   c.push(bodyPara("When they finally speak, in Arc 3, they should be the most reasonable person in the room. Your students should be able to summarise their argument correctly — and still refuse it."));
@@ -1353,6 +1572,10 @@ function adventure(a) {
   c.push(...actionTags(a.actions, a.actionsNote));                  // 8
   c.push(markerBlock("student", a.lanternSize, a.lantern));         // 9
   c.push(spacer(150));
+  if (a.unlock) {
+    c.push(markerBlock("locked", "What this adventure unlocks", a.unlock));
+    c.push(spacer(150));
+  }
   // Slots 10-12 close every adventure as ONE rail. Keeping them together
   // stops the last slot being orphaned onto a page of its own, and it means
   // the teacher's eye finds the end of an adventure as a single shape.
@@ -1458,6 +1681,16 @@ const ARC1 = [
   long: "Give each of the three failures a different owner with a different theory, and let the table run all three to the ground. Three sessions of pure investigation, and a table that badly wants an answer going into Adventure 3.",
   codex: ["The name of the street and whatever the student made of it. Which explanation the table committed to.",
           "One line on Bram Locke."],
+  unlock: ["THIS IS WHERE THE TAPERS ARE UNLOCKED. They have watched three legal burns fail for " +
+           "no reason anybody will explain, and they have a Warrant in their pocket from Adventure 1. " +
+           "Permission first, then the cost, then the power — in that order, and never in another.",
+           "Before the last scene ends, somebody teaches them their own taper: Hesper Vane if she is " +
+           "already in play, or the licensed burner on Taper Row for the price of a favour. It takes " +
+           "one scene. Each character learns the taper of their own colour and no other, because " +
+           "that is the only one a flame reaches without a trade behind it.",
+           "From the next scene on, everybody has one taper per scene. Say that out loud, and then " +
+           "say the line that ends a scene, so the first time they hear it they already know what it " +
+           "gives back."],
 },
 {
   n: 3, sessions: "5–6", title: "The Woman Who Would Not Stop",
@@ -1715,6 +1948,14 @@ function appendixB() {
   c.push(bodyPara("Four rungs, the same shape as the money and distance ladders in the Player's Guide. It says what is possible and what is permitted — never what is likely. It is not a dice modifier and it never grants a bonus."));
   c.push(dataTable(["RUNG", "WHAT IT NEEDS", "WHAT IT DOES"], burnLadder,
     [1700, 2400, CONTENT_W - 4100]));
+
+  c.push(sectionHeading("The four flames"));
+  c.push(bodyPara(flameLaw, { italics: true }));
+  c.push(dataTable(["FLAME", "FOCUS", "SPARK", "TAPER", "LANTERN"],
+    flames.map((f, i) => [f[0], f[1], flameSparks[i][1], flameTapers[i][1], flameLanterns[i][1]]),
+    [1900, 1500, 1700, 1700, CONTENT_W - 6800]));
+  c.push(spacer(120));
+  c.push(bodyPara("Born with, never changed, invisible except to a green flame. Independent of people, lineage and Archetype. A spark is never rolled; a taper is 2d6 + the matching Focus, once a scene, and the kindling is spent even on a miss."));
 
   c.push(sectionHeading("The five peoples"));
   c.push(bodyPara("No inner characteristic touches the dice. Every one of them grants perception or narrative permission — which is to say, it gives the student something to say."));

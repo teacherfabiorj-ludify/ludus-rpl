@@ -11,7 +11,7 @@ PAINEL   dez colunas digitadas, onze calculadas. O professor digita nível,
          unidade e lição do ciclo, e o Language Focus, as ações, quem
          apresenta, a próxima lição e o lembrete saem sozinhos da REFERENCIA.
 QUADRO   o bloco público. É a ÚNICA aba que sai deste arquivo: o Quadro da
-         Turma lê QUADRO!A1:I5 por IMPORTRANGE. Nota, tentativa e alerta
+         Turma lê BOARD!A1:I5 por IMPORTRANGE. Nota, tentativa e alerta
          ficam no PAINEL e não aparecem aqui.
 REFERENCIA  as 72 unidades do Evolve, vindas de core/units.json — o MESMO
             arquivo que o Core Book imprime.
@@ -20,6 +20,7 @@ REFERENCIA  as 72 unidades do Evolve, vindas de core/units.json — o MESMO
 import os
 
 from openpyxl import Workbook
+from openpyxl.worksheet.datavalidation import DataValidation
 
 from _common import (BORDER, FILL_CALC, FILL_NOTE, FILL_PRIV, FILL_TYPE,
                      F_BODY, F_LABEL, F_SMALL, HERE, OUT, WRAP, core,
@@ -35,7 +36,8 @@ QUIZ = C["method"]["TEST_NAME"]
 LP = C["system"]["languagePoints"]
 
 ROWS = 4          # quatro alunos
-R0 = 4            # primeira linha de aluno na aba PAINEL
+R0 = 6            # primeira linha de aluno na aba PAINEL
+SET_ROW = 3       # a chave do formato: quantas lições nesta sessão
 REF0 = 2          # primeira linha de dado na REFERENCIA
 
 
@@ -63,21 +65,65 @@ def ref(col):
     return f"REFERENCIA!${col}${REF0}:${col}${REF_LAST}"
 
 
+
+# ---------------------------------------------------------------------------
+# O CICLO, EM FÓRMULA
+#
+# ⚠ 20/09/2026 — UMA HORA DE AULA = UMA LIÇÃO. Um grupo de um encontro de duas
+# horas faz DUAS lições na mesma sessão; um grupo de dois encontros de uma hora
+# faz uma por encontro. Até hoje o Painel só sabia de uma lição por sessão, e
+# o grupo de sábado ficava com metade da sessão invisível para a ficha.
+#
+# A chave é UMA célula: C3, "lições nesta sessão", 1 ou 2. Não existem dois
+# modelos — dois arquivos divergem no primeiro ajuste que só um deles recebe.
+# ---------------------------------------------------------------------------
+def nxt(letter):
+    """A letra seguinte do ciclo. D e X caem no A da unidade seguinte."""
+    return (f'IF({letter}="A","B",IF({letter}="B","C",IF({letter}="C","D",'
+            f'IF(OR({letter}="D",{letter}="X"),"A",""))))')
+
+
+def crosses_unit(letter):
+    """Verdadeiro quando a hora seguinte já é de OUTRA unidade."""
+    return f'OR({letter}="D",{letter}="X")'
+
+
+def focus_for(letter, m, col_l, col_m):
+    """O Language Focus de uma hora, dada a letra e o índice da unidade."""
+    return (f'IF({m}=0,"—",IF({letter}="X",{col_l}&"   +   "&{col_m},'
+            f'IF(OR({letter}="A",{letter}="B"),{col_l},{col_m})))')
+
+
 # ---------------------------------------------------------------------------
 def sheet_painel(wb):
     ws = wb.create_sheet("PAINEL")
     widths(ws, {"A": 16, "B": 8, "C": 9, "D": 8, "E": 8, "F": 11, "G": 11,
-                "H": 11, "I": 10, "J": 8, "K": 22, "L": 30, "M": 30, "N": 30,
-                "O": 22, "P": 13, "Q": 11, "R": 46, "S": 9, "T": 28, "U": 7})
+                "H": 11, "I": 10, "J": 8, "K": 22, "L": 30, "M": 30, "N": 38,
+                "O": 22, "P": 18, "Q": 16, "R": 50, "S": 9, "T": 28, "U": 7,
+                "V": 8, "W": 8, "X": 30})
     r = title(ws, 1, f"PAINEL DA TURMA · {GAME}",
               "Amarelo você digita. Azul se calcula. Vermelho é privado e nunca sai deste arquivo.")
 
-    head = ["ALUNO", "EVOLVE", "UNIDADE", "LIÇÃO", "GROWTH",
+    # --- a chave do formato, uma por grupo ---------------------------------
+    c = ws.cell(SET_ROW, 1, "LIÇÕES NESTA SESSÃO →")
+    c.font = F_LABEL
+    v = ws.cell(SET_ROW, 3, 2)
+    v.fill, v.font, v.border = FILL_TYPE, F_BODY, BORDER
+    dvf = DataValidation(type="list", formula1='"1,2"', allow_blank=False)
+    ws.add_data_validation(dvf)
+    dvf.add(v)
+    ws.cell(SET_ROW, 4,
+            "1 = grupo de DOIS encontros de 1h (uma lição por encontro).   "
+            "2 = grupo de UM encontro de 2h (duas lições seguidas: a 1ª hora "
+            "e a 2ª hora). Uma hora de aula é sempre uma lição do ciclo.").font = F_SMALL
+
+    head = ["ALUNO", "EVOLVE", "UNIDADE", "LIÇÃO (1ª hora)", "GROWTH",
             "LIÇÃO DE CASA?", "USOU O FOCUS?", "APRESENTOU?", "TENT.", "QUIZ %",
             "TÍTULO DA UNIDADE", "LIÇÃO 1 (tópico)", "LIÇÃO 2 (tópico)",
-            "LANGUAGE FOCUS DE HOJE", "AÇÕES", "APRESENTA?", "PRÓX. LIÇÃO",
-            "LEMBRETE — PRÓXIMA AULA", "LP", "ALERTA — PRIVADO", "motor"]
-    header_row(ws, 3, head)
+            "LANGUAGE FOCUS DA SESSÃO", "AÇÕES", "APRESENTA?", "PRÓX. LIÇÃO",
+            "LEMBRETE — PRÓXIMA AULA", "LP", "ALERTA — PRIVADO",
+            "motor", "2ª hora", "motor 2", "focus 2ª h"]
+    header_row(ws, SET_ROW + 2, head)
 
     for i in range(ROWS):
         r = R0 + i
@@ -90,24 +136,62 @@ def sheet_painel(wb):
             ws[f"{col}{r}"] = "não"
         ws.cell(r, 9, 0)
 
-        m = f"$U{r}"
+        m, m2 = f"$U{r}", f"$W{r}"
+        L1, M1 = f"INDEX({ref('F')},{m})", f"INDEX({ref('G')},{m})"
+        SET = f"$C${SET_ROW}"
+
         ws[f"U{r}"] = f'=IFERROR(MATCH("E"&$B{r}&"-U"&$C{r},{ref("A")},0),0)'
+
+        # V — a letra da 2ª hora. Vazia quando o grupo faz uma lição por sessão.
+        ws[f"V{r}"] = f'=IF({SET}=2,{nxt(f"$D{r}")},"")'
+
+        # W — o índice da unidade SEGUINTE, para quando a 2ª hora atravessa a
+        # virada de unidade (acontece quando a 1ª hora é D ou X). Se a unidade
+        # seguinte não existe naquele nível, cai no U1 do nível de cima.
+        ws[f"W{r}"] = (f'=IFERROR(MATCH("E"&$B{r}&"-U"&($C{r}+1),{ref("A")},0),'
+                       f'IFERROR(MATCH("E"&($B{r}+1)&"-U1",{ref("A")},0),0))')
+
         ws[f"K{r}"] = f'=IF({m}=0,"⚠ unidade não encontrada",INDEX({ref("E")},{m}))'
-        ws[f"L{r}"] = f'=IF({m}=0,"—",INDEX({ref("F")},{m}))'
-        ws[f"M{r}"] = f'=IF({m}=0,"—",INDEX({ref("G")},{m}))'
-        ws[f"N{r}"] = (f'=IF($D{r}="X",$L{r}&"   +   "&$M{r},'
-                       f'IF(OR($D{r}="A",$D{r}="B"),$L{r},$M{r}))')
+        ws[f"L{r}"] = f'=IF({m}=0,"—",{L1})'
+        ws[f"M{r}"] = f'=IF({m}=0,"—",{M1})'
+
+        # X — o focus da 2ª hora. Se ela é de outra unidade, lê a lição 1 de lá.
+        ws[f"X{r}"] = (
+            f'=IF($V{r}="","",'
+            f'IF({crosses_unit(f"$D{r}")},IF({m2}=0,"—",INDEX({ref("F")},{m2})),'
+            f'{focus_for(f"$V{r}", m, f"$L{r}", f"$M{r}")}))')
+
+        # N — o focus da SESSÃO. Uma hora, duas horas do mesmo tópico, ou dois.
+        ws[f"N{r}"] = (
+            f'=IF($V{r}="",{focus_for(f"$D{r}", m, f"$L{r}", f"$M{r}")},'
+            f'IF($X{r}={focus_for(f"$D{r}", m, f"$L{r}", f"$M{r}")},$X{r},'
+            f'{focus_for(f"$D{r}", m, f"$L{r}", f"$M{r}")}&"   →   "&$X{r}))')
+
         ws[f"O{r}"] = (f'=IF({m}=0,"—",IF(INDEX({ref("I")},{m})="—",INDEX({ref("H")},{m}),'
                        f'INDEX({ref("H")},{m})&" / "&INDEX({ref("I")},{m})))')
-        ws[f"P{r}"] = f'=IF(OR($D{r}="B",$D{r}="D"),"SIM — 1 min","não")'
-        ws[f"Q{r}"] = (f'=IF($D{r}="A","B",IF($D{r}="B","C",IF($D{r}="C","D",'
-                       f'IF(OR($D{r}="D",$D{r}="X"),"A (unidade seguinte)","—"))))')
+
+        # P — apresenta? Agora olha as DUAS horas.
+        p1 = f'OR($D{r}="B",$D{r}="D")'
+        p2 = f'OR($V{r}="B",$V{r}="D")'
+        ws[f"P{r}"] = (f'=IF(AND(NOT({p1}),NOT({p2})),"não",'
+                       f'IF(AND({p1},{p2}),"SIM — nas duas horas",'
+                       f'IF({p1},"SIM — 1 min","SIM — 1 min (2ª hora)")))')
+
+        # Q — a próxima lição é a que vem DEPOIS da última hora desta sessão.
+        last = f'IF($V{r}="",$D{r},$V{r})'
+        ws[f"Q{r}"] = (f'=IF(AND($V{r}<>"",{crosses_unit(f"$D{r}")}),"B (unidade nova)",'
+                       f'IF({crosses_unit(last)},"A (unidade seguinte)",{nxt(last)}))')
+
         ws[f"R{r}"] = (
-            f'=IF($D{r}="A","Próxima aula do ciclo: B — você apresenta ~1 min sobre: "&$L{r},'
-            f'IF($D{r}="B","Próxima aula do ciclo: C — tópico novo: "&$M{r},'
-            f'IF($D{r}="C","Próxima aula do ciclo: D — você apresenta ~1 min sobre: "&$M{r},'
-            f'IF($D{r}="D","Próxima aula: unidade nova, lição A. O teste desta unidade é liberado hoje.",'
-            f'IF($D{r}="X","Aula extra: revisão dos dois tópicos desta unidade.","—")))))')
+            f'=IF($Q{r}="A (unidade seguinte)","Próxima aula: unidade nova, lição A. '
+            f'O teste desta unidade foi liberado.",'
+            f'IF($Q{r}="B (unidade nova)","Próxima aula: lição B da unidade nova — '
+            f'você apresenta ~1 min sobre o tópico que acabou de estrear.",'
+            f'IF($Q{r}="B","Próxima aula do ciclo: B — você apresenta ~1 min sobre: "&$L{r},'
+            f'IF($Q{r}="C","Próxima aula do ciclo: C — tópico novo: "&$M{r},'
+            f'IF($Q{r}="D","Próxima aula do ciclo: D — você apresenta ~1 min sobre: "&$M{r},'
+            f'"—")))))')
+
         ws[f"S{r}"] = (f'=IF($F{r}="sim",1,0)+IF($G{r}="sim",1,0)+IF($H{r}="sim",1,0)')
         ws[f"T{r}"] = (
             f'=IF($J{r}="","—",IF($J{r}>={PASS},"ok — avança e volta ao A",'
@@ -117,7 +201,7 @@ def sheet_painel(wb):
         paint(ws, r, list("ABCDEFGHIJ"), FILL_TYPE)
         paint(ws, r, list("KLMNOPQRS"), FILL_CALC)
         paint(ws, r, ["T"], FILL_PRIV)
-        paint(ws, r, ["U"], FILL_NOTE)
+        paint(ws, r, ["U", "V", "W", "X"], FILL_NOTE)
         ws.row_dimensions[r].height = 46
 
     n = R0 + ROWS + 1
@@ -128,9 +212,12 @@ def sheet_painel(wb):
         f"O LP é pago pela TENTATIVA, nunca pelo acerto. {LP['lawOfTheAttempt']}",
         "Uma vez por semana, lance TENTATIVAS e NOTA lendo as respostas do " + QUIZ + " no Google Forms. A lição de casa fica no Cambridge One e a plataforma corrige sozinha — você não lança nada dela.",
         "",
-        "UMA HORA DE AULA = UMA LIÇÃO DO CICLO. Grupo de um encontro de 2h avança a coluna LIÇÃO duas vezes; grupo de dois encontros de 1h avança uma vez por encontro. Todo grupo faz duas lições por semana e uma unidade a cada duas semanas — não existe formato mais rápido.",
+        "UMA HORA DE AULA = UMA LIÇÃO DO CICLO, e é a célula C3 que diz quantas lições cabem numa sessão deste grupo.",
+        "Ponha 2 no grupo de UM encontro de duas horas: a coluna LIÇÃO passa a ser a 1ª hora, o Painel calcula a 2ª sozinho, e depois da sessão você avança a LIÇÃO DUAS letras. Ponha 1 no grupo de DOIS encontros de uma hora: avança uma letra por encontro.",
+        "Nos dois casos são duas lições por semana e uma unidade a cada duas semanas. Não existe formato mais rápido — muda só quantas lições cabem num encontro.",
+        "A 2ª hora sabe virar a unidade sozinha: se a 1ª hora for D ou X, a segunda já é o A da unidade seguinte, e o Focus vem de lá. Depois da sessão, lembre de subir a UNIDADE.",
         "",
-        "NADA das colunas I, J e T sai deste arquivo. O Quadro da Turma só enxerga a aba QUADRO.",
+        "NADA das colunas I, J e T sai deste arquivo. O Quadro da Turma só enxerga a aba BOARD.",
     ]:
         n = note(ws, n, line, F_BODY if line else F_SMALL)
     freeze(ws, "B4")
@@ -139,18 +226,23 @@ def sheet_painel(wb):
 
 # ---------------------------------------------------------------------------
 def sheet_quadro(wb):
-    ws = wb.create_sheet("QUADRO")
+    # ⚠ 19/09/2026 — renamed QUADRO -> BOARD and translated. This is the only
+    # tab that leaves this file, and what it says ends up in front of a student
+    # in an English lesson. The teacher's own tabs stay in Portuguese.
+    ws = wb.create_sheet("BOARD")
+    ws.sheet_view.showGridLines = False
     widths(ws, {"A": 16, "B": 9, "C": 34, "D": 8, "E": 32, "F": 13, "G": 24,
                 "H": 9, "I": 48})
-    header_row(ws, 1, ["ALUNO", "GROWTH", "ONDE VOCÊ ESTÁ", "LIÇÃO",
-                       "LANGUAGE FOCUS DE HOJE", "APRESENTA HOJE?", "AÇÕES",
-                       "LP PARA ESTA SESSÃO", "LEMBRETE — PRÓXIMA AULA"])
+    header_row(ws, 1, ["STUDENT", "GROWTH", "WHERE YOU ARE", "TODAY'S LESSONS",
+                       "LANGUAGE FOCUS TODAY", "PRESENTING TODAY?", "YOUR ACTIONS",
+                       "LP FOR THIS SESSION", "REMINDER — NEXT LESSON"])
     for i in range(ROWS):
         q, p = 2 + i, R0 + i
         ws.cell(q, 1, f"=PAINEL!A{p}")
         ws.cell(q, 2, f"=PAINEL!E{p}")
         ws.cell(q, 3, f'="Evolve "&PAINEL!B{p}&" · Unit "&PAINEL!C{p}&" — "&PAINEL!K{p}')
-        ws.cell(q, 4, f"=PAINEL!D{p}")
+        # Duas horas numa sessão de 2h: "A → B". Uma hora: "A".
+        ws.cell(q, 4, f'=IF(PAINEL!V{p}="",PAINEL!D{p},PAINEL!D{p}&" → "&PAINEL!V{p})')
         ws.cell(q, 5, f"=PAINEL!N{p}")
         ws.cell(q, 6, f"=PAINEL!P{p}")
         ws.cell(q, 7, f"=PAINEL!O{p}")
@@ -160,12 +252,14 @@ def sheet_quadro(wb):
         ws.row_dimensions[q].height = 40
 
     n = ROWS + 4
-    n = note(ws, n, "ESTA É A ÚNICA ABA QUE SAI DESTE ARQUIVO", F_LABEL)
+    n = note(ws, n, "ESTA É A ÚNICA ABA QUE SAI DESTE ARQUIVO — E É A ÚNICA EM INGLÊS", F_LABEL)
     for line in [
-        "O Quadro da Turma lê exatamente QUADRO!A1:I5 por IMPORTRANGE. Nada fora deste retângulo é alcançável a partir de uma ficha de aluno.",
+        "O Class Board lê exatamente BOARD!A1:I5 por IMPORTRANGE. Nada fora deste retângulo é alcançável a partir de uma ficha de aluno.",
+        "Está em inglês de propósito: estas nove colunas aparecem na ficha do aluno, e a ficha é um documento de aula de inglês.",
         "Não tem nota. Não tem tentativa. Não tem alerta. Por construção, não por disciplina.",
         "Não digite nada aqui: as nove colunas são espelho do PAINEL.",
         "A coluna LP é o que você anunciou no debrief passado. Quem controla o saldo durante a sessão é o aluno, na ficha dele — esta coluna é a conferência, não o placar.",
+        "TODAY'S LESSONS mostra 'A' num grupo de dois encontros e 'A → B' num grupo de um encontro de duas horas. Quem decide isso é a célula C3 do PAINEL, uma vez por grupo.",
     ]:
         n = note(ws, n, line, F_BODY)
     return ws
@@ -200,7 +294,7 @@ def build():
         f"{VERSION}  ·  gerado de core/core.json por planilhas/src/build_painel.py",
         "",
         "## O que é este arquivo",
-        "O painel do professor. Ele NUNCA é compartilhado com aluno nenhum, e não precisa ser: dele sai um bloco público (a aba QUADRO) que alimenta o Quadro da Turma, e é o Quadro que as fichas leem.",
+        "O painel do professor. Ele NUNCA é compartilhado com aluno nenhum, e não precisa ser: dele sai um bloco público (a aba BOARD) que alimenta o Quadro da Turma, e é o Quadro que as fichas leem.",
         "",
         "## A corrente",
         "PAINEL  →  QUADRO (aba deste arquivo)  →  Quadro da Turma (arquivo separado, somente leitura)  →  ficha de cada aluno",

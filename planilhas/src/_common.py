@@ -60,6 +60,30 @@ WRAP = Alignment(vertical="top", wrap_text=True)
 WRAP_C = Alignment(vertical="center", horizontal="center", wrap_text=True)
 
 
+# ---------------------------------------------------------------------------
+# A GEOMETRIA DA CORRENTE.  Painel → Class Board → ficha.
+#
+# ⚠ 19/09/2026 — BUG CORRIGIDO AQUI, e ele existia desde a primeira versão.
+# A ficha pedia "BOARD!A1:I5" do Class Board. Mas no Class Board o IMPORTRANGE
+# não mora em A1: mora em B6, abaixo do título. O retângulo A1:I5 daquele
+# arquivo contém a tarja preta e a célula do link — nunca os dados. A ficha
+# importava o cabeçalho do arquivo errado e o bloco azul nunca ia funcionar.
+#
+# Agora as duas pontas derivam do MESMO par de constantes. Mover o bloco de um
+# lado move o pedido do outro, e o teste no fim de build_ficha.py confere.
+# ---------------------------------------------------------------------------
+PAINEL_PUBLIC = "BOARD!A1:I5"      # no Painel, a aba pública começa em A1
+BOARD_ROW, BOARD_COL = 6, 2        # no Class Board, o IMPORTRANGE mora em B6
+BOARD_ROWS, BOARD_COLS = 5, 9      # cabeçalho + 4 alunos · 9 colunas
+
+
+def board_public():
+    """O retângulo do Class Board onde os dados realmente caem: BOARD!B6:J10."""
+    c0 = get_column_letter(BOARD_COL)
+    c1 = get_column_letter(BOARD_COL + BOARD_COLS - 1)
+    return f"BOARD!{c0}{BOARD_ROW}:{c1}{BOARD_ROW + BOARD_ROWS - 1}"
+
+
 def widths(ws, spec):
     """spec: {'A': 22, 'B': 10, ...}"""
     for col, w in spec.items():
@@ -102,8 +126,13 @@ def freeze(ws, cell):
     ws.freeze_panes = cell
 
 
-def leia_me(wb, lines, heading, sub):
-    ws = wb.create_sheet("LEIA-ME", 0)
+def leia_me(wb, lines, heading, sub, name="LEIA-ME", pos=0):
+    """pos=0 põe a aba em primeiro; pos=None joga para o fim.
+
+    ⚠ Na FICHA a aba de instruções vai por último (pos=None): ela é montagem,
+    não é conteúdo, e o aluno não pode abrir o arquivo dele numa página de
+    instruções em vez do personagem."""
+    ws = wb.create_sheet(name) if pos is None else wb.create_sheet(name, pos)
     widths(ws, {"A": 120})
     r = title(ws, 2, heading, sub)
     for line in lines:

@@ -173,6 +173,176 @@ const archetypeKits = [
    "A rope · a knife · a lantern · a water bottle"],
 ];
 
+
+// ---------------------------------------------------------------------------
+// THE FOUR FLAMES  —  canon as of 20/09/2026
+//
+// Every person on this coast is BORN with one flame, and it never changes. It
+// is not an object and not a possession; it is the shape a person's burning
+// takes. It is invisible to everybody except a green flame, who can look at
+// one person and see it.
+//
+// THE LAW OF COMPOSITION, and the reason this system exists:
+//
+//     THE COLOUR DECIDES WHAT KIND OF THING YOU CAN DO.
+//     THE RUNG DECIDES HOW MUCH OF IT.
+//
+// Red always holds. At spark it holds what is in your hand for a moment; at
+// taper it holds your own body or a patch you are touching; at lantern it
+// holds a wall. That is one idea at three scales, not three powers — which is
+// exactly the rung rule (core/doors/tallow-coast-world.js -> theRungRule)
+// applied to a person instead of to an act.
+//
+// ⚠ FLAME IS NOT LINEAGE. A Wickborn can be any colour; so can a Greenkept.
+// The two systems are orthogonal and must never be printed as one table.
+//
+// ⚠ FLAME IS NOT ARCHETYPE. The pairing below is a suggestion for a first
+// character, nothing more. Any colour with any Archetype is legal.
+//
+// ⚠ FLAME IS NOT THE LANGUAGE FOCUS. The Language Focus rotates every lesson
+// (core/method.js -> languageFocusRule). A flame never rotates.
+//
+// ⚠ THE NATIVE TAPER. The taper of your colour is the ONE taper a flame
+// reaches with no trade behind it. Setting a bone, sealing a lock and reading
+// the weather are still LEARNED tapers — ten years in a shop on Taper Row
+// (see world.js -> learning). Same rung, different training. Do not collapse
+// the two.
+// ---------------------------------------------------------------------------
+const flameLaw =
+  "The colour decides what kind of thing you can do. The rung decides how much of it.";
+
+const flames = [
+  ["Red flame", "Courage",
+   "Burning that HOLDS. Matter, endurance, the refusal of a thing to give way."],
+  ["Yellow flame", "Empathy",
+   "Burning that CARRIES. A feeling, a voice, a sentence — reaching a person who is not here."],
+  ["Blue flame", "Wit",
+   "Burning that READS WHAT WAS MADE. Objects, mechanisms, and the history left in them."],
+  ["Green flame", "Instinct",
+   "Burning that READS WHAT IS ALIVE. Bodies, weather, ground, and the flames inside people."],
+];
+
+// The floor everybody stands on, whatever their colour. This is the texture of
+// the coast — the cook, the carter, the mother at three in the morning — and
+// it must never be taken away from a player, or the world stops being the
+// world the books describe.
+const sparkFloor =
+  "Whatever your colour, you can light it, warm it and find the small thing you "
+  + "dropped. Everyone on this coast can. It is not worth a sentence at the table "
+  + "unless it is worth a sentence in English.";
+
+const flameSparks = [
+  ["Red flame", "Steady",
+   "Something you are touching stops shaking, stops slipping or stops moving for a "
+   + "moment: a knot, a ladder, a cup on a moving cart, your own hand."],
+  ["Yellow flame", "Reach",
+   "One wordless feeling reaches one person you can see — wait, run, calm, not now. "
+   + "No words, and they cannot answer."],
+  ["Blue flame", "Last Hand",
+   "Touch something somebody made and know the last thing that was done to it: "
+   + "opened, mended, cleaned, forced, dropped."],
+  ["Green flame", "Read",
+   "Look at one living thing and know one plain fact about its state — hurt, afraid, "
+   + "hungry, lying still. If it is a person, you also see the colour of their flame."],
+];
+
+const flameTapers = [
+  ["Red flame", "Reinforce",
+   "Part of your own body, or a small area of an inanimate object you are touching, "
+   + "becomes far harder to break, cut, burn or bend. It ends the moment you stop touching it."],
+  ["Yellow flame", "Message",
+   "One sentence reaches one person you have met, wherever they are. They hear your "
+   + "voice. They cannot answer, and you get one sentence."],
+  ["Blue flame", "Imprint",
+   "Touch something somebody made and learn one true fact about who made it, who has "
+   + "carried it, or how it came apart. The GM chooses the fact, and it is always true."],
+  ["Green flame", "Senses",
+   "For a few seconds everything around you arrives at once and in full detail: the "
+   + "sky turning, the set of the wind, the worn ground that says people pass here — "
+   + "and the flame colour of every person in your field of vision."],
+];
+
+// Not reachable in Arc 1, and not reachable without a sealed Warrant and a
+// named person who has signed to answer for you. Printed so the table can see
+// what the ladder is FOR.
+const flameLanterns = [
+  ["Red flame", "Bulwark",
+   "A whole structure holds — a gate, a hull, a bridge, a wall — with nobody touching it."],
+  ["Yellow flame", "Assembly",
+   "Your voice reaches everyone in one named place at once, and every one of them understands it."],
+  ["Blue flame", "Testimony",
+   "A room or an object replays what happened around it, in light and sound, for everyone present to watch."],
+  ["Green flame", "Farsight",
+   "A whole district or valley arrives at once: everything alive in it, and every flame in it."],
+];
+
+// The one-sheet version. Same four things, written short enough to sit on a
+// Quick Reference a student holds during a scene. It is a SHORTENING of the
+// tables above and must never say anything they do not; when one of them
+// changes, this changes with it.
+const flameQuickRef = [
+  ["Red flame", "Courage",
+   "Steady — what you touch stops shaking or slipping",
+   "Reinforce — your body, or a patch you touch, becomes very hard to break"],
+  ["Yellow flame", "Empathy",
+   "Reach — one wordless feeling to one person you can see",
+   "Message — one sentence to one person you have met, anywhere"],
+  ["Blue flame", "Wit",
+   "Last Hand — the last thing done to a made thing",
+   "Imprint — one true fact about who made it, carried it, or broke it"],
+  ["Green flame", "Instinct",
+   "Read — one fact about one living thing, and a person's flame colour",
+   "Senses — everything around you at once, and every flame in sight"],
+];
+
+// A first character only. Print it as help, never as a rule.
+const flameSuggested = [
+  ["Vanguard", "Red flame", "Courage +2"],
+  ["Diplomat", "Yellow flame", "Empathy +2"],
+  ["Strategist", "Blue flame", "Wit +2"],
+  ["Scout", "Green flame", "Instinct +2"],
+];
+const flameSuggestedNote =
+  "This is the easy first character, not a rule. A red-flame Scout and a green-flame "
+  + "Diplomat are both legal, and both are more interesting. Take the suggestion for "
+  + "your first character and break it for your second.";
+
+// ---------------------------------------------------------------------------
+// BURNING AT THE TABLE — the only rule in this file that touches dice.
+//
+// ⚠ This is NOT one of the six Moves and must never be printed as one. The six
+// Moves are untouched. This is its own roll, and it is the only other 2d6 in
+// the game.
+// ---------------------------------------------------------------------------
+const burningRoll = {
+  spark:
+    "A spark is never rolled. It is narrated, it is small, it cannot solve the scene, "
+    + "and it costs nothing but a sentence in English.",
+  taper: "Roll 2d6 and add the Focus that matches your flame.",
+  bands: [
+    ["10+", "Strong hit",
+     "It happens exactly as you said it would."],
+    ["7–9", "Mixed",
+     "It happens, and the place pays more than you meant to spend, or something you "
+     + "did not want comes with it. The GM says which."],
+    ["6 or less", "Miss",
+     "The burn fails — and the kindling is spent anyway. The place paid for nothing."],
+  ],
+  missNote:
+    "The kindling is spent on a miss. That is not a punishment: it is the single most "
+    + "important fact about burning on this coast, and it is how the table learns it.",
+  languagePoints:
+    "A Language Point may be spent to reroll a burning roll, exactly as it may be spent "
+    + "to reroll a Move. Both dice are rerolled, never one.",
+  charge:
+    "One taper per SCENE, not per session. A scene can run for most of a session or "
+    + "across two or three of them; the GM says when one ends, out loud, and your taper "
+    + "comes back with the new scene.",
+  warrant:
+    "A taper is above a spark, so a taper without a Warrant is Burning Unanswered. It "
+    + "works. Somebody will ask who answers for it.",
+};
+
 module.exports = {
   coastPlaces,
   burnLadder,
@@ -183,4 +353,14 @@ module.exports = {
   theSix,
   castPublic,
   archetypeKits,
+  flameLaw,
+  flames,
+  sparkFloor,
+  flameSparks,
+  flameTapers,
+  flameLanterns,
+  flameQuickRef,
+  flameSuggested,
+  flameSuggestedNote,
+  burningRoll,
 };

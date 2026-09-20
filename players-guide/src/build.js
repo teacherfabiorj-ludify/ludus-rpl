@@ -387,7 +387,7 @@ const PAGES = {
   "Ch. 12": "41",
   "Ch. 13": "44",
   "Door Section": "45",
-  "Appendix A": "63",
+  "Appendix A": "68",
 };
 
 const contentsRows = [
@@ -2052,6 +2052,8 @@ const {
 const {
   coastPlaces, burnLadder, peopleQuickRef, humanLineages, lineageNote, theSix,
   archetypeKits,
+  flameLaw, flames, sparkFloor, flameSparks, flameTapers, flameLanterns,
+  flameSuggested, flameSuggestedNote, burningRoll,
 } = require("../../core/doors/tallow-coast.js");
 
 // ---- The world, in prose. The GM's Door Book prints ALL of this file as its
@@ -2176,10 +2178,110 @@ function chapterDoorTallowCoast() {
     "clarify"
   ));
   children.push(calloutBox(
-    "And it never touches the dice",
-    `A Warrant is permission, not power. Burning changes what is possible in a scene and what you are allowed to do about it — it never changes a number. There is no roll in this book that a Warrant improves.`,
+    "A Warrant is permission, not power",
+    `A Warrant never changes a number. It does not make your burn stronger, it does not add to a roll, and there is nothing in this book that a better Warrant improves. What it changes is what you are allowed to do, and who has to answer for it afterwards.`,
     "warn"
   ));
+
+  children.push(pageBreak());
+
+  // ---- THE FOUR FLAMES · 20/09/2026. Everything on these pages comes from
+  // core/doors/tallow-coast.js and tallow-coast-world.js. The Door Book prints
+  // the same tables from the same file. Page breaks are placed so that no
+  // table is ever separated from its own heading.
+  children.push(sectionHeading("The Four Flames"));
+  children.push(bodyPara(WORLD.theFlames.headline, { italics: true, after: 140 }));
+  children.push(bodyPara(WORLD.theFlames.whatItIs));
+  children.push(bodyPara(WORLD.theFlames.born));
+  children.push(bodyPara(WORLD.theFlames.invisible));
+  children.push(spacer(140));
+  children.push(threeColTable(
+    ["FLAME", "FOCUS", "WHAT KIND OF BURNING IT IS"],
+    flames,
+    [1900, 1600, 6580]
+  ));
+  children.push(calloutBox(
+    "Your flame is not your Archetype, your people, or the Focus of the lesson",
+    `A Vanguard can be any colour. A Wickborn can be any colour. And the Language Focus on the Class Board changes every lesson — your flame never changes at all. You were born with it.`,
+    "warn"
+  ));
+  children.push(spacer(140));
+  children.push(bodyPara(WORLD.theFlames.notLineage));
+  children.push(bodyPara(WORLD.theFlames.whatPeopleSay));
+
+  children.push(pageBreak());
+  children.push(sectionHeading("What Your Flame Can Do"));
+  children.push(bodyPara(flameLaw, { italics: true }));
+  children.push(bodyPara(WORLD.theFlames.theLaw));
+  children.push(bodyPara(WORLD.theFlames.whyItMatters));
+  children.push(spacer(140));
+  children.push(bodyPara(sparkFloor, { after: 120 }));
+  children.push(threeColTable(
+    ["FLAME", "YOUR SPARK", "WHAT IT DOES"],
+    flameSparks,
+    [1700, 1700, 6680]
+  ));
+
+  children.push(pageBreak());
+  children.push(sectionHeading("Your Own Taper"));
+  children.push(bodyPara(WORLD.theFlames.theNativeTaper, { after: 120 }));
+  children.push(threeColTable(
+    ["FLAME", "YOUR TAPER", "WHAT IT DOES"],
+    flameTapers,
+    [1700, 1700, 6680]
+  ));
+  children.push(spacer(160));
+  children.push(bodyPara(
+    `The lantern of your colour is printed below so that you can see what the top of the ladder is. It is not something your character has, and it is not something your character is going to buy. A lantern needs a sealed Warrant, and a sealed Warrant needs a named person who has signed to be liable for whatever you do with it — which is a story, not a purchase.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["FLAME", "THE LANTERN", "WHAT IT DOES"],
+    flameLanterns,
+    [1700, 1700, 6680]
+  ));
+
+  children.push(pageBreak());
+  children.push(sectionHeading("Burning at the Table"));
+  children.push(bodyPara(WORLD.playerBurning.theShortVersion, { italics: true }));
+  children.push(spacer(120));
+  children.push(bodyPara(WORLD.playerBurning.spark));
+  children.push(spacer(120));
+  children.push(bodyPara(WORLD.playerBurning.taper));
+  children.push(bodyPara(burningRoll.warrant, { after: 100 }));
+  children.push(threeColTable(
+    ["ROLL", "BAND", "WHAT HAPPENS"],
+    burningRoll.bands,
+    [1500, 1900, 6680]
+  ));
+  children.push(calloutBox(
+    "This is not one of the six Moves",
+    WORLD.playerBurning.notAMove.replace(/^⚠ /, ""),
+    "warn"
+  ));
+  children.push(spacer(140));
+  children.push(bodyPara(burningRoll.missNote, { italics: true }));
+
+  children.push(pageBreak());
+  children.push(sectionHeading("One Taper a Scene"));
+  children.push(bodyPara(WORLD.playerBurning.theScene));
+  children.push(bodyPara(burningRoll.languagePoints));
+  children.push(calloutBox(
+    "When you get to use it",
+    `Sparks from the first session. Your taper is unlocked in the story, by somebody in the fiction teaching it to you — and until that happens you have sparks, which is plenty to be going on with.`,
+    "example"
+  ));
+  children.push(spacer(160));
+  children.push(bodyPara(
+    `If this is your first character, the easy choice is the flame that matches your Archetype, so that your +2 and your burning pull in the same direction. It is a suggestion and nothing else.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["ARCHETYPE", "SUGGESTED FLAME", "WHY"],
+    flameSuggested,
+    [2600, 2600, 4880]
+  ));
+  children.push(bodyPara(flameSuggestedNote, { italics: true }));
 
   children.push(pageBreak());
 

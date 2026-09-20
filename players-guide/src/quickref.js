@@ -26,10 +26,13 @@ const { writeFileSync } = require("fs");
 const {
   moves, priceExamples, distanceLadder, focuses, outcomeBands,
   languagePoints, spotlightTokens, startingMoney,
+  tableRules, lanternSizes,
 } = require("../../core/system.js");
 const {
   burnLadder, peopleQuickRef, humanLineages, theSix, archetypeKits,
+  flames, flameSparks, flameTapers, flameQuickRef, burningRoll,
 } = require("../../core/doors/tallow-coast.js");
+const WORLD = require("../../core/doors/tallow-coast-world.js");
 
 const { GAME_NAME, HOUSE, BOOK_SUBTITLE, VERSION } = require("../../core/brand.js");
 
@@ -56,7 +59,7 @@ const spacer = (h = 100) => new Paragraph({ spacing: { after: h }, children: [] 
 
 function bandHead(text, color) {
   return new Paragraph({
-    spacing: { before: 150, after: 60 },
+    spacing: { before: 92, after: 44 },
     keepNext: true,
     border: { bottom: { style: BorderStyle.SINGLE, size: 10, color, space: 3 } },
     children: [new TextRun({ text: text.toUpperCase(), bold: true, color: INK, size: 20, characterSpacing: 18 })],
@@ -65,7 +68,7 @@ function bandHead(text, color) {
 
 function line(text, opts = {}) {
   return new Paragraph({
-    spacing: { after: opts.after ?? 90 },
+    spacing: { after: opts.after ?? 70 },
     children: [new TextRun({ text, color: opts.color || INK_SECONDARY, size: opts.size || 18, italics: !!opts.italics })],
   });
 }
@@ -76,7 +79,7 @@ function grid(headers, rows, widths, opts = {}) {
     children: headers.map((h, i) => new TableCell({
       width: { size: widths[i], type: WidthType.DXA },
       shading: { type: ShadingType.CLEAR, color: "auto", fill: opts.headFill || ACCENT },
-      margins: { top: 48, bottom: 48, left: 90, right: 90 },
+      margins: { top: 26, bottom: 26, left: 88, right: 88 },
       children: [new Paragraph({ children: [new TextRun({ text: h, bold: true, color: WHITE, size: 15 })] })],
     })),
   });
@@ -85,7 +88,7 @@ function grid(headers, rows, widths, opts = {}) {
     children: r.map((cell, i) => new TableCell({
       width: { size: widths[i], type: WidthType.DXA },
       shading: { type: ShadingType.CLEAR, color: "auto", fill: idx % 2 ? ZEBRA : WHITE },
-      margins: { top: 48, bottom: 48, left: 90, right: 90 },
+      margins: { top: 26, bottom: 26, left: 88, right: 88 },
       verticalAlign: VerticalAlign.TOP,
       children: [new Paragraph({
         children: [new TextRun({
@@ -196,19 +199,16 @@ const PHRASES = [
     "How do you say ___ in English?",
     "What does ___ mean?",
     "I don't know the word — it's like a ___.",
-    "Sorry, can you repeat that more slowly?",
   ]],
   ["When it is your turn", [
     "My character is going to ___.",
     "I want to try something — is that allowed?",
     "Hold on, I need a second to think.",
-    "Can I help her with that?",
   ]],
   ["When you need to know more", [
     "Wait — can I ask about the scene?",
     "What exactly did he say?",
     "Is there anyone else in the room?",
-    "Can I see what she's carrying?",
   ]],
 ];
 
@@ -216,7 +216,7 @@ function phraseBlock() {
   const cell = (title, items) => new TableCell({
     width: { size: Math.floor(W / 3) - 80, type: WidthType.DXA },
     shading: { type: ShadingType.CLEAR, color: "auto", fill: WHITE },
-    margins: { top: 80, bottom: 80, left: 120, right: 120 },
+    margins: { top: 50, bottom: 50, left: 110, right: 110 },
     verticalAlign: VerticalAlign.TOP,
     children: [
       new Paragraph({
@@ -293,8 +293,11 @@ function pageOne() {
   c.push(bandStrip());
 
   c.push(bandHead("Your four Focuses", ACCENT));
-  c.push(line("You have +2, +1, +0 and −1, one in each. They never go up. Where you are good is your choice; how good you get is nobody's.", { after: 120 }));
-  c.push(focusCards());
+  c.push(line("You have +2, +1, +0 and −1, one in each. They never go up. Where you are good is your choice; how good you get is nobody's.", { after: 100 }));
+  c.push(grid(
+    ["FOCUS", "WHAT IT COVERS", "YOU ROLL IT WHEN"],
+    focuses,
+    [1500, 3500, W - 5000]));
 
   c.push(bandHead("The six Moves", ACCENT));
   c.push(grid(
@@ -315,6 +318,12 @@ function pageOne() {
        `Rerolls. Counted at the debrief — homework · Focus used · presentation — and spent the FOLLOWING session. Paid for the attempt, not for getting it right.`],
     ],
     [1900, W - 1900], { headFill: INK_SECONDARY }));
+
+  c.push(bandHead("The five rules of the table", CRIT));
+  tableRules.forEach((r, i) => c.push(line(
+    r[0].toUpperCase() + " — " + r[1].split(". ")[0] + ".",
+    { size: 17, after: i === tableRules.length - 1 ? 0 : 50 })));
+
 
   c.push(bandHead("Saying it in English", BRAND));
   c.push(line("Not knowing a word is part of the game, not a failure at it. Use these out loud — in character or not, it does not matter.", { after: 120 }));
@@ -337,26 +346,42 @@ function pageTwo() {
   c.push(...masthead("The Tallow Coast",
     "Where your character lives. Everyone on this coast knows all of this.", true));
 
+  // 20/09/2026 — a coluna do meio saiu daqui para abrir espaço para as flames.
+  // O nome da característica ("The Old Sense") é cor que se aprende uma vez;
+  // o que ela FAZ é o que se consulta no meio da cena. Os dois nomes continuam
+  // impressos lado a lado no Player's Guide, Door Section.
   c.push(bandHead("The five peoples", ACCENT));
   c.push(line("What your people gives you is never a bonus on the dice. It is something to say.", { after: 110 }));
   c.push(grid(
-    ["PEOPLE", "YOU HAVE", "WHICH MEANS"],
-    peopleQuickRef,
-    [1500, 2000, W - 3500]));
+    ["PEOPLE", "WHICH MEANS"],
+    peopleQuickRef.map((r) => [r[0], r[2].split(". ")[0].replace(/\.$/, "") + "."]),
+    [1500, W - 1500]));
 
-  c.push(bandHead("If you are human — your lineage", ACCENT));
+  c.push(spacer(70));
+  c.push(line("IF YOU ARE HUMAN, YOUR LINEAGE is one of five, chosen at creation — "
+    + humanLineages.map((l) => l[0]).join(" · ")
+    + " — and it is where your family came from, not what you look like. Your FLAME is separate from all of this: any people, any lineage, any colour.",
+    { size: 16, italics: true, after: 0 }));
+
+  c.push(bandHead("Your flame — what YOU can burn", WARN));
+  c.push(line("You were born with one colour and it never changes. A SPARK is free, small and never rolled. Your TAPER rolls 2d6 + the Focus of your colour, once a scene — and on a miss the burn fails and the place is spent anyway.", { after: 110 }));
   c.push(grid(
-    ["LINEAGE", "WHERE YOUR FAMILY CAME FROM"],
-    humanLineages.map((l) => [l[0], l[1]]),
-    [1700, W - 1700]));
-  c.push(spacer(60));
-  c.push(line("Lineage is where your family came from and what it did — it is not what you look like.", { size: 16, italics: true, after: 0 }));
+    ["FLAME", "FOCUS", "YOUR SPARK", "YOUR TAPER"],
+    flameQuickRef,
+    [1300, 1100, W - 5400, 3000], { headFill: INK_SECONDARY }));
 
-  c.push(bandHead("Burning — what you may do", WARN));
+  c.push(bandHead("Burning — what it spends, and what the law says", WARN));
+  c.push(line("A burn is paid for by the PLACE, never by the burner. What it spends is the kindling, and it comes back on its own — an hour of a room for a spark, a day of a street for a taper, a season of a district for a lantern. Nothing replaces a pyre.", { after: 110 }));
   c.push(grid(
     ["RUNG", "YOU NEED", "WHICH BUYS YOU"],
     burnLadder,
-    [1500, 2100, W - 3600], { headFill: INK_SECONDARY }));
+    [1300, 1900, W - 3200], { headFill: INK_SECONDARY }));
+  c.push(spacer(70));
+  c.push(line("It is not illegal to burn. It is illegal to burn with nobody answering for it — that is Burning Unanswered. Inside the walls the wardstone pays first, which is why a city can burn and a village cannot.", { size: 16, italics: true, after: 0 }));
+
+  c.push(spacer(70));
+  c.push(line("WHEN A PLACE RUNS OUT — SOUR: burns fail, milk turns, people tire early; back in a season. HOLLOW: years of that; back in a generation. A WOUND: ground that stopped coming back, and what stays near one goes out — the Unkindled.",
+    { size: 16, italics: true, after: 0 }));
 
   c.push(bandHead("How far · how much", ACCENT));
   c.push(grid(
@@ -370,8 +395,12 @@ function pageTwo() {
 
   c.push(bandHead("What you always carry", WARN));
   c.push(line(`Your Kit comes from your Archetype: it never runs out and is never counted. Your Pack is six slots for what you pick up — full is full, and to take something you say out loud what you are dropping. You start with ${startingMoney.amount}.`, { after: 100 }));
-  c.push(grid(["ARCHETYPE", "YOUR KIT"], archetypeKits, [1700, W - 1700],
-    { headFill: INK_SECONDARY }));
+  // 20/09/2026 — a tabela dos quatro Kits saiu daqui. Motivo: a Character
+  // Sheet de cada aluno JÁ mostra o Kit dele, puxado do Archetype por fórmula.
+  // Imprimir os quatro numa folha comum era repetir, para os quatro, o que
+  // cada um já tem personalizado — e o espaço foi para as flames, que são o
+  // que se consulta no meio da cena. Os quatro Kits continuam impressos no
+  // Player's Guide, Door Section.
 
   // As três cidades saíram desta folha: o aluno consulta isso uma vez, na
   // criação, e está na p. 36 do livro. O que se consulta NO MEIO da cena é o

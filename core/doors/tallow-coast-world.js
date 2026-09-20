@@ -37,6 +37,25 @@
 //  10. WARDSTONES ARE FED BY LIVES GATHERED AROUND THEM. ★ SECRET ★ In public
 //      a wardstone is simply "the heart of the city" and nobody knows how it
 //      fills. What mass death would do to one is deliberately unanswered.
+//
+// DECISIONS 20/09/2026 — THE FOUR FLAMES (Fábio's design, adopted whole)
+//  11. EVERY PERSON IS BORN WITH A FLAME — red, yellow, blue or green — tied
+//      to one of the four Focuses. It never changes. It is not an object.
+//  12. THE COLOUR IS THE DOMAIN; THE RUNG IS THE SCALE. One idea at three
+//      sizes, never three separate powers. This is theRungRule applied to a
+//      person rather than to an act.
+//  13. A FLAME IS INVISIBLE except to a green flame, who can look at one
+//      person and see the colour. Nobody can see their own.
+//  14. FLAME IS ORTHOGONAL TO LINEAGE AND TO ARCHETYPE. A Wickborn can be any
+//      colour. So can a Vanguard.
+//  15. THE NATIVE TAPER. The taper of your colour is the one taper a flame
+//      reaches with no trade behind it. Bone, lock and weather remain LEARNED
+//      tapers, from a shop on Taper Row. Same rung, different training.
+//  16. THE OLD SENSE AND THE GREEN FLAME DO NOT OVERLAP. A Wickborn feels an
+//      EVENT: burning happened here, roughly this much, in the past, in a
+//      place — and works in an empty room. A green flame reads the LIVING:
+//      who is in front of you, now. Neither can do the other's job, which is
+//      why the Concord still has to hire readers.
 // ============================================================================
 
 // ---------------------------------------------------------------------------
@@ -401,6 +420,14 @@ const investigation = {
     "why, never what it did. The Concord wants that badly and does not have enough Wickborn of " +
     "its own, so Wardens travel with a READER: hired by the job, not a Warden, paid in coin and " +
     "resented in three villages out of four. Being Wickborn on this coast means being asked.",
+  whatAReaderCannotDo:
+    "The Old Sense is a sense for EVENTS. It works best in an empty room, hours after everybody " +
+    "has gone, and it will tell a Warden that somebody spent a taper's worth of this street last " +
+    "night. It will not tell him which of the nine people in the tavern did it. A green flame is " +
+    "the opposite instrument: it reads the LIVING, in front of you, now, and says nothing " +
+    "whatever about what was burned here. The Concord would give a great deal for one person who " +
+    "could do both, and has never found one — a Wickborn who is also green flame is the most " +
+    "expensive hire on the coast, and there are fewer than ten.",
   theMethod:
     "A Warden does not interrogate. He asks the same short list of questions of several people " +
     "and lays the answers side by side. What did you notice? When? Who told you that? Did you " +
@@ -600,6 +627,133 @@ const blanks = {
 };
 
 // ---------------------------------------------------------------------------
+// THE FOUR FLAMES — 20/09/2026. The tables live in tallow-coast.js; this is
+// what a person on the coast would tell you about them.
+// ---------------------------------------------------------------------------
+const theFlames = {
+  headline:
+    "Everybody is born with a colour. Almost nobody has ever seen their own.",
+  whatItIs:
+    "Burning is one thing, but it does not come out of two people the same way, and the coast " +
+    "has known that for as long as it has known anything. What comes out of you has a colour — " +
+    "red, yellow, blue or green — and it is the colour you were born with. It is not a talent " +
+    "and not a rank. A red flame is not stronger than a yellow one. It is the SHAPE the burning " +
+    "takes when it leaves you, the way a voice has a register before it has anything to say.",
+  born:
+    "You do not choose it, you cannot trade it, and nothing anybody has tried has ever changed " +
+    "one. Children are usually placed by about six, from what they do without being taught: the " +
+    "one who steadies the ladder, the one who is at the door before the knock, the one who picks " +
+    "up a broken cup and says who broke it, the one who knows the weather is turning. Families " +
+    "make far too much of this and are wrong about it roughly a third of the time.",
+  invisible:
+    "A flame is not an object and there is nothing to look at. It sits in a person the way a key " +
+    "sits in a piece of music — everywhere in it, nowhere you can point to. No instrument has " +
+    "ever measured one. No burn reveals one. The one exception is the green: a green flame can " +
+    "look at a person and simply see the colour, the way you see that somebody is left-handed " +
+    "once you have watched them write.",
+  nobodySeesTheirOwn:
+    "Including the green. A green flame can read the whole room and not themselves, which is a " +
+    "joke on this coast and also, in three villages, a proverb.",
+  theLaw:
+    "The colour decides what KIND of thing you can do. The rung decides HOW MUCH of it. Red " +
+    "holds: at a spark it holds the cup on the cart for a moment, at a taper it holds your own " +
+    "forearm or the patch of door under your hand, at a lantern it holds the gate of a city with " +
+    "nobody touching it. That is one idea at three sizes. It is not three powers, and a person " +
+    "who has climbed to a lantern has not become a different sort of person — they have become " +
+    "able to hold more of the same thing at once.",
+  whyItMatters:
+    "So the question a burner is asked on this coast is never what can you do. It is two " +
+    "questions: what colour, and how high — and the second one is the one that needs a paper.",
+  notLineage:
+    "Flame has nothing to do with people or lineage, and everybody muddles the two anyway. A " +
+    "Wickborn can be any colour. A Greenkept can be any colour, and the name does not help. " +
+    "There are Duskborn families who will tell you their line runs blue, and the Bell House has " +
+    "four generations of records that say it does not.",
+  theNativeTaper:
+    "Your colour reaches exactly one taper on its own, with nobody teaching you and no trade " +
+    "behind it. The coast calls it your own taper, and it is the same for every person of that " +
+    "colour on the coast: red reinforces, yellow carries a sentence, blue reads a made thing, " +
+    "green takes in everything at once. Everything ELSE at that rung — setting a bone, sealing a " +
+    "lock, reading tomorrow's weather off today's — is a trade, and takes years in a shop, and " +
+    "is why Taper Row is a street of shops and not a guild hall. Same rung. Different training. " +
+    "A bone-setter of forty years' standing and a farmhand who has never been taught anything " +
+    "are both, technically, taper burners, and the bone-setter finds that funny about once a year.",
+  whatPeopleSay:
+    "The coast has opinions about colours and most of them are rubbish. Red flames make soldiers. " +
+    "Yellow flames cannot keep a secret. Blue flames are thieves, or they are clerks, depending " +
+    "on who is speaking. Never trust a green at a market. A Concord clerk is not allowed to " +
+    "record a flame colour on a Warrant, and the reason given in the Concord's own hand, eighty " +
+    "years ago, was that it would be used for exactly this.",
+  forTheTeacherOnly:
+    "Four colours, four Focuses, four grammars. Red pulls obligation and duration — it has to " +
+    "hold until we are across. Yellow pulls one careful composed sentence and then reported " +
+    "speech — I told her that. Blue pulls the past and deduction — someone had repaired this " +
+    "before. Green pulls description and prediction — it is going to turn before dark. That is " +
+    "the whole reason there are four and not one, and you should never say it out loud.",
+};
+
+// ---------------------------------------------------------------------------
+// WHAT THE PLAYERS ACTUALLY DO — the rules half, kept beside the world half so
+// the two cannot drift apart. The tables (sparks, tapers, lanterns, the bands)
+// are in tallow-coast.js -> flameSparks / flameTapers / flameLanterns /
+// burningRoll. This is the prose that explains them.
+// ---------------------------------------------------------------------------
+const playerBurning = {
+  theShortVersion:
+    "Your character was born with a flame. A spark is free, small and never rolled. Your taper " +
+    "is one roll, once a scene, and it can fail. A lantern is not something you have.",
+  spark:
+    "A spark costs nothing, needs no paper and is never rolled — so it can never solve the scene " +
+    "and must never be allowed to. It is there so the world stays the world the rest of this " +
+    "book describes: a coast where the cook lights the stove without standing up. Say what you " +
+    "do, in English, in one sentence, and it happens.",
+  taper:
+    "A taper is a real act, it needs a Warrant or it is Burning Unanswered, and it rolls. Roll " +
+    "2d6 and add the Focus that matches your flame — Courage for red, Empathy for yellow, Wit " +
+    "for blue, Instinct for green. Read it against the same three bands as everything else.",
+  notAMove:
+    "⚠ This is not one of the six Moves and it does not replace one. It is its own roll, and it " +
+    "is the only other roll in the game. A character who reinforces a door has not Faced the " +
+    "Danger; they have burned. If Facing the Danger is also the right thing to do, it is a " +
+    "second roll.",
+  theMiss:
+    "On a miss the burn fails and the place is spent anyway. Say so, out loud, at the table: the " +
+    "room is colder, the burn did not take, and the street has less in it than it had a minute " +
+    "ago. Nothing else in this game teaches what burning costs as fast as one wasted taper does.",
+  theScene:
+    "You get one taper a scene. A scene is not a session: a scene can take up most of a session, " +
+    "or run across two or three of them, and it ends when the table's attention moves — a new " +
+    "place, a new day, a decision made and acted on. The GM says when it ends, out loud, in a " +
+    "line everybody learns to recognise, and everybody's taper comes back with the new scene.",
+  theSceneForTheGM:
+    "Say it the same way every time so the players can hear it coming. Something like: THAT IS " +
+    "WHERE THIS ONE ENDS — take a breath, and tell me where you are. It is a bell, not a rule, " +
+    "and it does two jobs at once: it hands the tapers back and it tells four students that the " +
+    "unit of the story is the SCENE, which is also the unit of the lesson.",
+  languagePoints:
+    "A Language Point rerolls a burning roll exactly as it rerolls a Move — both dice, never one. " +
+    "That is the whole economy. There is nothing to buy a second taper with, and that is on " +
+    "purpose.",
+  lanterns:
+    "The lantern of each colour is printed in this book and in the Player's Guide, and no player " +
+    "character is going to reach one. A lantern needs a sealed Warrant, which needs a named " +
+    "person who has signed to be liable for you, which is not a rule — it is a story about " +
+    "somebody trusting you that much. If a table ever gets there, it will be because they earned " +
+    "it in fiction, and by then you will know it.",
+  whenTheyLearn:
+    "Sparks from Session Zero: a five-year-old on this coast can do it and it would be absurd to " +
+    "lock it. Tapers are UNLOCKED at the end of Arc 1, Adventure 2 — after the Warrant in " +
+    "Adventure 1, and after The Empty Taper has shown them three burns failing in the same street " +
+    "for no reason anyone will explain. Permission first, then the cost, then the power. Those " +
+    "two adventures with sparks only are exactly the time it takes for the spark to become a habit.",
+  whoTeaches:
+    "Hesper Vane, if she is alive and free. She keeps Fenny Cross going on unlicensed tapers and " +
+    "she knows to the ounce what she is spending; teaching four strangers is the most dangerous " +
+    "and most in-character thing she can do. If Arc 1 went badly for her, it is the licensed " +
+    "burner on Taper Row instead, and it costs a favour the table will be paying off in Arc 2.",
+};
+
+// ---------------------------------------------------------------------------
 // THE GLOSSARY — asked for on 18/09/2026, and overdue.
 // Categories: place · burning · law · peoples · the past · people
 // Printed in full in the Door Book and in the Player's Guide.
@@ -618,6 +772,16 @@ const glossary = [
   ["A wound", "burning", "Ground that has stopped recovering. Dusk at noon, cold in summer, no flame will take, no animals. Six are known on the coast. None has ever been healed."],
   ["The Unkindled", "burning", "What living things become if they stay near a wound. No reason, no speech, dangerous, and unwilling to enter sunlight. Their true name stops one for a few seconds. Nothing has ever brought one back."],
   ["Lying fallow", "burning", "Not burning a place so it can come back. Village practice, rotated like crops, and thought of as sense rather than magic."],
+  ["A flame", "burning", "The colour a person's burning comes out in — red, yellow, blue or green. Born with, never changed, invisible, and nothing to do with lineage."],
+  ["Red flame", "burning", "Courage. Burning that HOLDS. Its own taper is Reinforce."],
+  ["Yellow flame", "burning", "Empathy. Burning that CARRIES. Its own taper is Message."],
+  ["Blue flame", "burning", "Wit. Burning that READS WHAT WAS MADE. Its own taper is Imprint."],
+  ["Green flame", "burning", "Instinct. Burning that READS WHAT IS ALIVE — including the colour of a flame in front of you. Its own taper is Senses."],
+  ["Your own taper", "burning", "The one taper your colour reaches with no trade behind it. Everything else at that rung is learnt in a shop, over years."],
+  ["Reinforce", "burning", "Red taper. Part of your body, or a small area of something you are touching, becomes very hard to break. It ends when you let go."],
+  ["Message", "burning", "Yellow taper. One sentence reaches one person you have met, wherever they are. They hear your voice and cannot answer."],
+  ["Imprint", "burning", "Blue taper. Touch a made thing and learn one true fact about who made it, who carried it, or how it broke."],
+  ["Senses", "burning", "Green taper. A few seconds of everything at once — sky, wind, the worn ground that means passage — and the flame colour of everyone in sight."],
   ["Ward-candle", "burning", "A tallow stub in a sealed glass tube, carried by every Warden. It burns badly where the kindling is low and will not light inside a wound."],
 
   // --- law ----------------------------------------------------------------
@@ -670,6 +834,15 @@ const glossary = [
 // ---------------------------------------------------------------------------
 const student = {
   opening: readAloud,
+  flames: [
+    theFlames.whatItIs,
+    theFlames.born,
+    theFlames.invisible,
+    theFlames.theLaw,
+    theFlames.notLineage,
+    theFlames.theNativeTaper,
+    theFlames.whatPeopleSay,
+  ],
   burning: [
     burning.whatItIs,
     burning.whatItLooksLike,
@@ -702,4 +875,5 @@ module.exports = {
   wardstones, fallow, theSeaLoophole,
   concord, theLaw, investigation, hush,
   places, everyday, blanks, glossary, student,
+  theFlames, playerBurning,
 };

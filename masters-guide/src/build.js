@@ -1154,7 +1154,7 @@ const doors = [
     setting: "Fantasy",
     drills: "Requests, negotiation, describing places and people.",
     look: "Black iron, too heavy for one person, warm to the touch. It smells of rain on stone.",
-    world: "The Tallow Coast: three walled cities on one road, sea on one side and unmapped interior on the other. Magic did not fade here — it was licensed, and burning it without a Warrant is a crime. Eighty years ago a fourth city stopped, and nobody goes there.",
+    world: "The Tallow Coast: three walled cities on one road, sea on one side and unmapped interior on the other. Magic did not fade here — it was licensed. Burning is not a crime; burning with nobody answering for it is. Everybody is born with one of four flames, which decides what kind of burning comes out of them. Eighty years ago a fourth city stopped, and nobody goes there.",
     feel: "The most forgiving setting to run and the easiest for a beginner to picture. Nothing here needs explaining to anybody.",
     language: "Permission and prohibition, because the whole world runs on paperwork. Requests and negotiation. Describing places and people. The default first world for a table with real beginners in it.",
     hooks: [

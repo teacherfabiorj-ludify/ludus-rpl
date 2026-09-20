@@ -43,9 +43,11 @@ door-fantasy/             O livro da PORTA Fantasy — só do professor  (31 pá
    TallowCoast-DoorBook.docx · src/build.js · src/assets/
 
 planilhas/                Painel, Quadro, ficha e catálogo
-   Painel-Turma-LUDUS.xlsx      do PROFESSOR — nunca compartilhado
-   Quadro-Turma-LUDUS.xlsx      a turma vê, somente leitura
-   Ficha-Personagem-LUDUS.xlsx  MODELO — uma cópia por aluno
+   Painel-Turma-LUDUS.xlsx      do PROFESSOR — nunca compartilhado (PT)
+   Class-Board-LUDUS.xlsx       a turma vê, somente leitura (EN)
+   Character-Sheet-LUDUS.xlsx   MODELO — uma cópia por aluno (EN)
+   apps-script/                 Code.gs + Sidebar.html — o painel lateral
+   COMO-MONTAR.md               montagem das três e instalação do sidebar
    Catalogo-Etiquetas-Evolve.xlsx   ★ fonte das 72 unidades
    src/_common.py · src/build_{painel,quadro,ficha,catalogo}.py
 ```
@@ -96,9 +98,9 @@ E as planilhas (precisa de Python e openpyxl):
 python3 planilhas/src/build_catalogo.py      # 1º: o catálogo é a fonte
 python3 planilhas/src/export_units.py        # 2º: catálogo → core/units.json
 node core/export.js                          # 3º: core/*.js → core/core.json
-python3 planilhas/src/build_painel.py
-python3 planilhas/src/build_quadro.py
-python3 planilhas/src/build_ficha.py
+python3 planilhas/src/build_painel.py    # PT — o painel do professor
+python3 planilhas/src/build_quadro.py    # EN — Class-Board-LUDUS.xlsx
+python3 planilhas/src/build_ficha.py     # EN — Character-Sheet-LUDUS.xlsx
 ```
 
 ⚠ **`core/core.json` é a ponte.** Os livros são JavaScript, as planilhas são Python, e Python
