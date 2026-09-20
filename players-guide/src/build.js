@@ -387,7 +387,7 @@ const PAGES = {
   "Ch. 12": "41",
   "Ch. 13": "44",
   "Door Section": "45",
-  "Appendix A": "68",
+  "Appendix A": "69",
 };
 
 const contentsRows = [
@@ -2231,6 +2231,15 @@ function chapterDoorTallowCoast() {
     [1700, 1700, 6680]
   ));
   children.push(spacer(160));
+  children.push(bodyPara(WORLD.theFlames.theTrade));
+  children.push(bodyPara(WORLD.theFlames.whyTaperRow));
+  children.push(calloutBox(
+    "What your character can earn",
+    `Nobody in this game ever gets a fifth taper, and nobody swaps. What a character can earn, by spending real time in the fiction somewhere, is the right to point their own taper at that one thing with a precision nobody else has. Spend an arc in a rope-maker's yard and rope becomes something you can do things with. That is not a new rule — it is the same taper, aimed properly.`,
+    "example"
+  ));
+  children.push(pageBreak());
+  children.push(sectionHeading("The Top of the Ladder"));
   children.push(bodyPara(
     `The lantern of your colour is printed below so that you can see what the top of the ladder is. It is not something your character has, and it is not something your character is going to buy. A lantern needs a sealed Warrant, and a sealed Warrant needs a named person who has signed to be liable for whatever you do with it — which is a story, not a purchase.`,
     { after: 100 }

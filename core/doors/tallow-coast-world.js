@@ -44,18 +44,25 @@
 //  12. THE COLOUR IS THE DOMAIN; THE RUNG IS THE SCALE. One idea at three
 //      sizes, never three separate powers. This is theRungRule applied to a
 //      person rather than to an act.
-//  13. A FLAME IS INVISIBLE except to a green flame, who can look at one
-//      person and see the colour. Nobody can see their own.
+//  13. A FLAME IS INVISIBLE. A green flame catches a colour IN THE ACT — a
+//      glimpse, when somebody burns in front of them, gone with the burn. To
+//      read somebody who is standing still, a green has to spend the taper,
+//      and then sees everyone in front of them at once. Nobody sees their own.
 //  14. FLAME IS ORTHOGONAL TO LINEAGE AND TO ARCHETYPE. A Wickborn can be any
 //      colour. So can a Vanguard.
-//  15. THE NATIVE TAPER. The taper of your colour is the one taper a flame
-//      reaches with no trade behind it. Bone, lock and weather remain LEARNED
-//      tapers, from a shop on Taper Row. Same rung, different training.
+//  15. FOUR TAPERS, NO OTHERS. Your colour reaches one and that is the one you
+//      have, for life. A TRADE is a narrative advantage on your own taper —
+//      thirty years in a forge, and the smith reinforces his own hammer to
+//      something no red flame off the street could hold — never a second
+//      power. Taper Row sells experience, not spells.
 //  16. THE OLD SENSE AND THE GREEN FLAME DO NOT OVERLAP. A Wickborn feels an
 //      EVENT: burning happened here, roughly this much, in the past, in a
 //      place — and works in an empty room. A green flame reads the LIVING:
 //      who is in front of you, now. Neither can do the other's job, which is
 //      why the Concord still has to hire readers.
+//  17. NO GRAMMAR IS EVER HUNG ON A COLOUR. A flame never changes, so tying a
+//      language structure to one would point a student at the same structure
+//      for a year. The Language Focus rotates for exactly that reason.
 // ============================================================================
 
 // ---------------------------------------------------------------------------
@@ -167,9 +174,12 @@ const learning = {
     "There is no such person as a mage here. There is a midwife, a smith, a locksmith, a " +
     "bone-setter and a weather-reader, and some of them burn.",
   taper:
-    "You learn taper from somebody who already does it in the trade you want. The bone is learnt " +
-    "from whoever sets bones; the lock from whoever makes locks. This is why Taper Row in " +
-    "Ashlight is a street of SHOPS and not a guild hall.",
+    "Nobody is taught a taper. You are born with the one your colour reaches and there is nothing " +
+    "else to hand over. What an apprenticeship actually buys is the ability to POINT it: enough " +
+    "of one structure held in your head that your own taper can be aimed at it precisely, every " +
+    "time, under pressure. You get that from somebody who already does it in the trade you want " +
+    "— the bone from whoever sets bones, the lock from whoever makes locks. This is why Taper " +
+    "Row in Ashlight is a street of SHOPS and not a guild hall.",
   lantern:
     "Lantern is another matter. Ten years with a named master, and then a public demonstration " +
     "at the Assize: you explain out loud what you are about to do, why, and what it will spend, " +
@@ -425,9 +435,11 @@ const investigation = {
     "has gone, and it will tell a Warden that somebody spent a taper's worth of this street last " +
     "night. It will not tell him which of the nine people in the tavern did it. A green flame is " +
     "the opposite instrument: it reads the LIVING, in front of you, now, and says nothing " +
-    "whatever about what was burned here. The Concord would give a great deal for one person who " +
-    "could do both, and has never found one — a Wickborn who is also green flame is the most " +
-    "expensive hire on the coast, and there are fewer than ten.",
+    "whatever about what was burned here. Worse, for the Concord: a green only catches a colour " +
+    "while somebody is actually burning, and a suspect standing in front of a Warden is doing " +
+    "nothing at all. The Concord would give a great deal for one person who could do both and " +
+    "has never found one — a Wickborn who is also green flame is the most expensive hire on the " +
+    "coast, and there are fewer than ten.",
   theMethod:
     "A Warden does not interrogate. He asks the same short list of questions of several people " +
     "and lays the answers side by side. What did you notice? When? Who told you that? Did you " +
@@ -648,9 +660,15 @@ const theFlames = {
   invisible:
     "A flame is not an object and there is nothing to look at. It sits in a person the way a key " +
     "sits in a piece of music — everywhere in it, nowhere you can point to. No instrument has " +
-    "ever measured one. No burn reveals one. The one exception is the green: a green flame can " +
-    "look at a person and simply see the colour, the way you see that somebody is left-handed " +
-    "once you have watched them write.",
+    "ever measured one, and a person standing still shows nothing at all.",
+  theGlimpse:
+    "The one exception is the green, and it is narrower than the stories make it. When somebody " +
+    "burns in front of a green flame — a spark will do, the cook lighting the stove will do — " +
+    "the green catches the colour of it, for as long as the burn lasts and not a moment after. " +
+    "A glimpse, in the act. To read somebody who is standing still and doing nothing, a green " +
+    "has to spend a taper of their own, and then the whole room arrives at once. So the useful " +
+    "version, which every card-sharp on this coast knows: a green can tell you what somebody " +
+    "just DID. Only a green burning properly can tell you what somebody IS.",
   nobodySeesTheirOwn:
     "Including the green. A green flame can read the whole room and not themselves, which is a " +
     "joke on this coast and also, in three villages, a proverb.",
@@ -670,26 +688,37 @@ const theFlames = {
     "There are Duskborn families who will tell you their line runs blue, and the Bell House has " +
     "four generations of records that say it does not.",
   theNativeTaper:
-    "Your colour reaches exactly one taper on its own, with nobody teaching you and no trade " +
-    "behind it. The coast calls it your own taper, and it is the same for every person of that " +
-    "colour on the coast: red reinforces, yellow carries a sentence, blue reads a made thing, " +
-    "green takes in everything at once. Everything ELSE at that rung — setting a bone, sealing a " +
-    "lock, reading tomorrow's weather off today's — is a trade, and takes years in a shop, and " +
-    "is why Taper Row is a street of shops and not a guild hall. Same rung. Different training. " +
-    "A bone-setter of forty years' standing and a farmhand who has never been taught anything " +
-    "are both, technically, taper burners, and the bone-setter finds that funny about once a year.",
+    "There are four tapers on this coast and there are not any others. Your colour reaches one " +
+    "of them, and that is the one you have for the rest of your life: red reinforces, yellow " +
+    "carries a sentence, blue reads a made thing, green takes in everything at once. Nobody " +
+    "learns a fifth. Nobody swaps. A farmhand who has never been taught anything and the " +
+    "bone-setter of forty years' standing on Taper Row have, on paper, exactly the same taper.",
+  theTrade:
+    "And they are not remotely the same, which is the whole of what a trade is worth here. What " +
+    "years in a trade buy you is not a different power — it is the only thing the rung rule ever " +
+    "cared about: how much of one structure you can hold at once. A smith who has been red flame " +
+    "in the same forge for thirty years reinforces the head of his own hammer to something no " +
+    "red flame off the street could hold for a minute, because he knows that hammer the way he " +
+    "knows his own hand. The bone-setter has held ten thousand fractures and can keep a " +
+    "shattered forearm together for a week; the farmhand can harden his own forearm for the " +
+    "length of a fight. Same taper, same rung, the same words written on the Warrant. Thirty " +
+    "years of difference in what it can be pointed at.",
+  whyTaperRow:
+    "Which is why Taper Row is a street of SHOPS and not a guild hall. Nothing is taught there " +
+    "that anybody could have been born without, and nothing is sold there but experience.",
   whatPeopleSay:
     "The coast has opinions about colours and most of them are rubbish. Red flames make soldiers. " +
     "Yellow flames cannot keep a secret. Blue flames are thieves, or they are clerks, depending " +
     "on who is speaking. Never trust a green at a market. A Concord clerk is not allowed to " +
     "record a flame colour on a Warrant, and the reason given in the Concord's own hand, eighty " +
     "years ago, was that it would be used for exactly this.",
-  forTheTeacherOnly:
-    "Four colours, four Focuses, four grammars. Red pulls obligation and duration — it has to " +
-    "hold until we are across. Yellow pulls one careful composed sentence and then reported " +
-    "speech — I told her that. Blue pulls the past and deduction — someone had repaired this " +
-    "before. Green pulls description and prediction — it is going to turn before dark. That is " +
-    "the whole reason there are four and not one, and you should never say it out loud.",
+  notALanguageAssignment:
+    "⚠ Do not hang a grammar on a colour. It is the obvious idea — red would pull obligation and " +
+    "duration, yellow reported speech — and it is a trap, because a flame never changes. A " +
+    "student who chose red at eleven would be pointed at the same structure for a year, and the " +
+    "one thing this course does not do is hand a child a permanent linguistic diet. The Language " +
+    "Focus rotates every lesson for precisely that reason, and it comes off the Board, not off " +
+    "the character. A flame is who your character is. It is not what you are made to practise."
 };
 
 // ---------------------------------------------------------------------------
@@ -776,12 +805,13 @@ const glossary = [
   ["Red flame", "burning", "Courage. Burning that HOLDS. Its own taper is Reinforce."],
   ["Yellow flame", "burning", "Empathy. Burning that CARRIES. Its own taper is Message."],
   ["Blue flame", "burning", "Wit. Burning that READS WHAT WAS MADE. Its own taper is Imprint."],
-  ["Green flame", "burning", "Instinct. Burning that READS WHAT IS ALIVE — including the colour of a flame in front of you. Its own taper is Senses."],
-  ["Your own taper", "burning", "The one taper your colour reaches with no trade behind it. Everything else at that rung is learnt in a shop, over years."],
+  ["Green flame", "burning", "Instinct. Burning that READS WHAT IS ALIVE. Catches the colour of anybody burning in front of you, in the act; to read somebody standing still, spend the taper. Its own taper is Senses."],
+  ["Your own taper", "burning", "The one taper your colour reaches. There are four on the coast and no others: nobody learns a fifth and nobody swaps."],
   ["Reinforce", "burning", "Red taper. Part of your body, or a small area of something you are touching, becomes very hard to break. It ends when you let go."],
   ["Message", "burning", "Yellow taper. One sentence reaches one person you have met, wherever they are. They hear your voice and cannot answer."],
   ["Imprint", "burning", "Blue taper. Touch a made thing and learn one true fact about who made it, who carried it, or how it broke."],
-  ["Senses", "burning", "Green taper. A few seconds of everything at once — sky, wind, the worn ground that means passage — and the flame colour of everyone in sight."],
+  ["Senses", "burning", "Green taper. A few seconds of everything at once — sky, wind, the worn ground that means passage — and the flame colour of everyone in sight, burning or not."],
+  ["A trade", "burning", "Years of doing your own taper on one narrow thing. It buys no new power — it buys how much of that one structure you can hold at once, which is the only thing the rung has ever measured."],
   ["Ward-candle", "burning", "A tallow stub in a sealed glass tube, carried by every Warden. It burns badly where the kindling is low and will not light inside a wound."],
 
   // --- law ----------------------------------------------------------------
@@ -838,9 +868,8 @@ const student = {
     theFlames.whatItIs,
     theFlames.born,
     theFlames.invisible,
-    theFlames.theLaw,
+    theFlames.theGlimpse,
     theFlames.notLineage,
-    theFlames.theNativeTaper,
     theFlames.whatPeopleSay,
   ],
   burning: [

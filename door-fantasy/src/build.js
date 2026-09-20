@@ -691,8 +691,8 @@ function titlePage() {
 // Build once, read the page numbers, write them into PAGES, build again.
 // ===========================================================================
 const PAGES = {
-  ch1: 3, world: 7, ch2: 39, ch3: 44, arc1: 49, a1: 51, a2: 53, a3: 56, a4: 58, a5: 60,
-  appA: 62, appB: 64,
+  ch1: 3, world: 7, ch2: 40, ch3: 45, arc1: 50, a1: 52, a2: 54, a3: 57, a4: 59, a5: 61,
+  appA: 63, appB: 65,
 };
 
 const CONTENTS = [
@@ -932,7 +932,16 @@ function chapterWorld() {
     [1900, 1600, CONTENT_W - 3500]));
   c.push(spacer(140));
   c.push(bodyPara(WORLD.theFlames.invisible));
+  c.push(spacer(120));
+  c.push(subHeading("The glimpse, which is all a green actually gets"));
+  c.push(bodyPara(WORLD.theFlames.theGlimpse));
   c.push(bodyPara(WORLD.theFlames.nobodySeesTheirOwn));
+  c.push(spacer(120));
+  c.push(markerBlock("locked", "A green sees what somebody just DID, not what they ARE",
+    "Keep this narrow, because three adventures depend on it. A colour shows only while a burn " +
+    "is happening. A man standing in front of you with his hands in his pockets shows a green " +
+    "flame exactly nothing — unless the green spends a taper, which is once a scene and which " +
+    "everybody present will notice."));
 
   c.push(pageBreak());
   c.push(subHeading("The colour is the domain; the rung is the scale"));
@@ -966,8 +975,18 @@ function chapterWorld() {
   c.push(spacer(120));
   c.push(dataTable(["FLAME", "TAPER", "WHAT IT DOES"], flameTapers,
     [1700, 1700, CONTENT_W - 3400]));
-
   c.push(pageBreak());
+  c.push(subHeading("What a trade is actually worth"));
+  c.push(bodyPara(WORLD.theFlames.theTrade));
+  c.push(bodyPara(WORLD.theFlames.whyTaperRow));
+  c.push(spacer(120));
+  c.push(markerBlock("locked", "A trade is a narrative advantage, never a second power",
+    "This is your yes for anything a player earns in the fiction. A character who spends an arc " +
+    "in a rope-maker's yard does not get a new taper — they get to point the one they were born " +
+    "with at rope, precisely, under pressure, in a way nobody else at the table can. Say yes to " +
+    "that generously. Say no to a fifth taper every single time."));
+
+  c.push(spacer(170));
   c.push(subHeading("The lantern of each colour"));
   c.push(bodyPara(
     "Printed so the ladder has a top to it. No player character is going to reach one — see the " +
@@ -980,8 +999,8 @@ function chapterWorld() {
   c.push(subHeading("What the coast says about colours"));
   c.push(bodyPara(WORLD.theFlames.whatPeopleSay));
   c.push(spacer(120));
-  c.push(markerBlock("locked", "Four colours, four grammars",
-    WORLD.theFlames.forTheTeacherOnly));
+  c.push(markerBlock("never", "Do not hang a grammar on a colour",
+    WORLD.theFlames.notALanguageAssignment));
 
   c.push(pageBreak());
   c.push(subHeading("The green flame and the Old Sense are not the same instrument"));

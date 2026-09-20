@@ -202,11 +202,17 @@ const archetypeKits = [
 // ⚠ FLAME IS NOT THE LANGUAGE FOCUS. The Language Focus rotates every lesson
 // (core/method.js -> languageFocusRule). A flame never rotates.
 //
-// ⚠ THE NATIVE TAPER. The taper of your colour is the ONE taper a flame
-// reaches with no trade behind it. Setting a bone, sealing a lock and reading
-// the weather are still LEARNED tapers — ten years in a shop on Taper Row
-// (see world.js -> learning). Same rung, different training. Do not collapse
-// the two.
+// ⚠ THERE ARE FOUR TAPERS AND THERE ARE NO OTHERS. Your colour reaches one of
+// them, for life. Nobody learns a fifth and nobody swaps. 20/09/2026 — this
+// replaces an earlier draft in which bone, lock and weather were separate
+// LEARNED tapers; they are not. They are applications of the four.
+//
+// ⚠ A TRADE IS A NARRATIVE ADVANTAGE ON YOUR OWN TAPER, never a second one.
+// Thirty years in a forge does not give a red flame a new power: it lets him
+// reinforce the head of his own hammer to something no red flame off the
+// street could hold, because he can hold more of THAT ONE STRUCTURE at once.
+// That is the rung rule doing its job (world.js -> theRungRule). Taper Row
+// sells experience, not spells.
 // ---------------------------------------------------------------------------
 const flameLaw =
   "The colour decides what kind of thing you can do. The rung decides how much of it.";
@@ -243,7 +249,8 @@ const flameSparks = [
    + "opened, mended, cleaned, forced, dropped."],
   ["Green flame", "Read",
    "Look at one living thing and know one plain fact about its state — hurt, afraid, "
-   + "hungry, lying still. If it is a person, you also see the colour of their flame."],
+   + "hungry, lying still. And if anybody near you burns, even a spark, you catch the "
+   + "colour of their flame in the act: a glimpse, gone the moment the burn is."],
 ];
 
 const flameTapers = [
@@ -259,7 +266,7 @@ const flameTapers = [
   ["Green flame", "Senses",
    "For a few seconds everything around you arrives at once and in full detail: the "
    + "sky turning, the set of the wind, the worn ground that says people pass here — "
-   + "and the flame colour of every person in your field of vision."],
+   + "and the flame colour of every person in your field of vision, burning or not."],
 ];
 
 // Not reachable in Arc 1, and not reachable without a sealed Warrant and a
@@ -291,8 +298,8 @@ const flameQuickRef = [
    "Last Hand — the last thing done to a made thing",
    "Imprint — one true fact about who made it, carried it, or broke it"],
   ["Green flame", "Instinct",
-   "Read — one fact about one living thing, and a person's flame colour",
-   "Senses — everything around you at once, and every flame in sight"],
+   "Read — one fact about one living thing; a glimpse of a colour when somebody burns",
+   "Senses — everything around you at once, and every flame in sight, burning or not"],
 ];
 
 // A first character only. Print it as help, never as a rule.

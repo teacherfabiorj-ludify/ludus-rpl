@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-09-20T17:20:58.975Z",
+  "_generated": "2026-09-20T18:28:04.608Z",
   "_warning": "GENERATED FILE — do not edit. Edit core/*.js and run: node core/export.js",
   "brand": {
     "HOUSE": "Ludify",
@@ -2743,7 +2743,7 @@
         [
           "Green flame",
           "Read",
-          "Look at one living thing and know one plain fact about its state — hurt, afraid, hungry, lying still. If it is a person, you also see the colour of their flame."
+          "Look at one living thing and know one plain fact about its state — hurt, afraid, hungry, lying still. And if anybody near you burns, even a spark, you catch the colour of their flame in the act: a glimpse, gone the moment the burn is."
         ]
       ],
       "flameTapers": [
@@ -2765,7 +2765,7 @@
         [
           "Green flame",
           "Senses",
-          "For a few seconds everything around you arrives at once and in full detail: the sky turning, the set of the wind, the worn ground that says people pass here — and the flame colour of every person in your field of vision."
+          "For a few seconds everything around you arrives at once and in full detail: the sky turning, the set of the wind, the worn ground that says people pass here — and the flame colour of every person in your field of vision, burning or not."
         ]
       ],
       "flameLanterns": [
@@ -2812,8 +2812,8 @@
         [
           "Green flame",
           "Instinct",
-          "Read — one fact about one living thing, and a person's flame colour",
-          "Senses — everything around you at once, and every flame in sight"
+          "Read — one fact about one living thing; a glimpse of a colour when somebody burns",
+          "Senses — everything around you at once, and every flame in sight, burning or not"
         ]
       ],
       "flameSuggested": [
