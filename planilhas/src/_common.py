@@ -84,6 +84,22 @@ def board_public():
     return f"BOARD!{c0}{BOARD_ROW}:{c1}{BOARD_ROW + BOARD_ROWS - 1}"
 
 
+# 24/09/2026 — the Ludify mark. One file, core/assets/ludify-logo.png, used by
+# the character sheet and the teacher's Panel. Silent if the asset is missing,
+# so a checkout without it still builds.
+LOGO = os.path.join(REPO, "core", "assets", "ludify-logo.png")
+
+
+def house_mark(ws, anchor, px_high=56):
+    from openpyxl.drawing.image import Image as XLImage
+    if not os.path.exists(LOGO):
+        return
+    img = XLImage(LOGO)
+    img.height, img.width = px_high, round(px_high * img.width / img.height)
+    img.anchor = anchor
+    ws.add_image(img)
+
+
 def widths(ws, spec):
     """spec: {'A': 22, 'B': 10, ...}"""
     for col, w in spec.items():

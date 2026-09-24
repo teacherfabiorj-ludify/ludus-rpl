@@ -22,7 +22,7 @@ import os
 from openpyxl import Workbook
 from openpyxl.worksheet.datavalidation import DataValidation
 
-from _common import (BORDER, FILL_CALC, FILL_NOTE, FILL_PRIV, FILL_TYPE,
+from _common import (BORDER, FILL_CALC, FILL_NOTE, FILL_PRIV, FILL_TYPE, house_mark,
                      F_BODY, F_LABEL, F_SMALL, HERE, OUT, WRAP, core,
                      freeze, header_row, leia_me, note, paint, title, widths)
 
@@ -103,6 +103,7 @@ def sheet_painel(wb):
                 "V": 8, "W": 8, "X": 30})
     r = title(ws, 1, f"PAINEL DA TURMA · {GAME}",
               "Amarelo você digita. Azul se calcula. Vermelho é privado e nunca sai deste arquivo.")
+    house_mark(ws, "F1", 48)
 
     # --- a chave do formato, uma por grupo ---------------------------------
     c = ws.cell(SET_ROW, 1, "LIÇÕES NESTA SESSÃO →")

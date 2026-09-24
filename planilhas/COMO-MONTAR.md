@@ -43,13 +43,34 @@ IMPORTRANGE é autorizado por arquivo inteiro, não por intervalo.
 3. Compartilhe o Class Board: **Qualquer pessoa com o link → Leitor.** Copie esse link.
 4. Guarde a **Character Sheet** como MODELO. Para cada aluno, faça uma cópia, renomeie,
    escreva o nome dele em `C8` exatamente como está no Painel, e cole o link do Class Board
-   na célula amarela lá embaixo (`C82`). O aluno clica em **Permitir acesso** uma vez
-   (célula `B86`).
+   na célula amarela lá embaixo (`C56`). O aluno clica em **Permitir acesso** uma vez
+   (célula `B60`).
 
-> ⚠ **20/09/2026 — a ficha ganhou a seção 5 · Your flame e os endereços do motor
-> desceram.** O link do Class Board saiu de `C74` para **`C82`**, e o IMPORTRANGE saiu de
-> `B78` para **`B86`**. As 4 cópias que já existem no G1SAT não têm a seção de flame — o
-> mais rápido é refazer as cópias a partir do modelo novo.
+> ⚠ **23/09/2026 — a ficha virou DUAS COLUNAS, layout do Fábio, v3.0.** O nome do aluno
+> continua em **`C8`**; o link do Class Board é **`C56`** e o IMPORTRANGE é **`B60`**.
+> Campos novos: **Bloodline**, **Hybrid feature** e **Tier** (ao lado do Signature Move).
+
+> ⚠ **24/09/2026 — a seção `4 · Your Moves` entrou na ficha.** Os seis Moves com o
+> modificador calculado automaticamente do Focus correspondente, e o nome do Focus ao lado.
+> Motivo: na sessão piloto a pergunta que mais aparecia no meio da cena não era o que um
+> Move faz — era **de qual Focus ele é** ("read the room is wit? or empathy?"). O aluno não
+> digita nada ali; cada célula aponta direto para a célula do Focus, e qual Move usa qual
+> Focus vem do `core/system.js`.
+> As cópias antigas do G1SAT precisam ser refeitas a partir deste modelo.
+
+> **Duas regras de layout que valem para sempre.** (1) A ficha tem **177 caracteres de
+> largura**, ~1290 px — cabe na tela a 100% sem barra horizontal, e isso é um requisito, não
+> um acaso: rolagem horizontal numa planilha que o aluno deixa aberta por duas horas custa
+> mais do que qualquer dica ganha. (2) **Uma dica só ocupa célula se disser algo sobre o
+> CONTEÚDO daquele campo.** Repetir as opções que já estão no menu suspenso é poluição.
+> Explicação de funcionamento vai para a aba REFERENCE — foi para lá que mudaram Spotlight
+> Tokens, Language Points, Pack, Boons, Flame e Taper charge.
+
+> ⚠ **NUNCA reorganize a ficha dentro do Google Sheets.** Mover linha com intervalo nomeado
+> em cima quebra os nomes sem avisar: na cópia que originou este layout, 19 dos 34 voltaram
+> `#REF!` e outros 4 passaram a apontar para células erradas — `LUD_archetype` caiu em cima
+> da nota de Wit. O sidebar teria escrito "Diplomat" no Wit de um aluno sem dar erro nenhum.
+> Mudança de layout se faz no `build_ficha.py` e se regenera.
 
 ---
 

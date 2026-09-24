@@ -335,9 +335,30 @@ function pageFooter() {
 // TITLE PAGE
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// THE HOUSE MARK — 23/09/2026. One file, core/assets/ludify-logo.png, used by
+// every cover. It is drawn only if the file is there, so a checkout without
+// the asset still builds; the cover simply falls back to type.
+// ---------------------------------------------------------------------------
+function houseMark(widthPx = 190) {
+  const p = require("path").join(__dirname, "..", "..", "core", "assets", "ludify-logo.png");
+  if (!require("fs").existsSync(p)) return null;
+  const buf = require("fs").readFileSync(p);
+  const w = buf.readUInt32BE(16), h = buf.readUInt32BE(20);
+  return new Paragraph({
+    spacing: { after: 260 },
+    children: [new ImageRun({
+      data: buf,
+      transformation: { width: widthPx, height: Math.round(widthPx * h / w) },
+    })],
+  });
+}
+
 function titlePage() {
   const children = [];
-  children.push(spacer(1400));
+  children.push(spacer(900));
+  const mark = houseMark(200);
+  if (mark) children.push(mark);
   children.push(new Paragraph({
     spacing: { after: 80 },
     children: [ new TextRun({ text: GAME_NAME.toUpperCase(), bold: true, color: BRAND, size: 88, characterSpacing: 40 }) ],
@@ -358,7 +379,7 @@ function titlePage() {
   }));
   children.push(spacer(1740));
   children.push(new Paragraph({
-    children: [ new TextRun({ text: "Ludify — Idiomas com diversão e propósito", color: MUTED, size: 20 }) ],
+    children: [ new TextRun({ text: HOUSE, color: MUTED, size: 20, characterSpacing: 30 }) ],
   }));
   children.push(pageBreak());
   return children;
@@ -1132,12 +1153,18 @@ function chapterEtiquette() {
 
   children.push(sectionHeading("Mistakes Are How We Play"));
   children.push(bodyPara(
-    `A wrong verb tense, a mixed-up preposition, a sentence that trails off halfway through — none of that stops the story. Nobody at the table corrects you mid-scene, including your GM. If your GM catches something worth fixing, they'll model the correct form right back to you in their own next line of narration — a technique called a recast — instead of pausing to explain a rule. You hear the right version without ever being told you were wrong.`
+    `A wrong verb tense, a mixed-up preposition, a sentence that trails off halfway through — none of that stops the story. Nobody at the table corrects you mid-scene, including your GM. Nobody says “careful, wrong tense.” Nobody explains a rule at you while four other people wait.`
+  ));
+  children.push(bodyPara(
+    `Two things happen instead, and it is worth knowing about the second one before it happens to you. Sometimes the right version simply comes back inside the GM's next line, and you either notice it or you do not. And sometimes a character asks you to say it again.`
   ));
   children.push(calloutBox(
-    "In Practice",
-    `You: "If you letting us in, we show the papers." GM, narrating straight back: "Oren studies you a moment longer, weighing whether he'll let you in once you can prove it..." Same idea, correct grammar, zero interruption. You keep playing — the correction already did its job.`,
-    "clarify"
+    "When somebody asks you to repeat yourself, that is the game working",
+    `A clerk who needs it written down exactly. A guard who did not quite catch that. Somebody who starts your sentence and then waits for you to finish it. None of that is you being caught out — it is the most useful thing that can happen to your English in a session, because you are the one who gets to say it better. Take the second go. That is what it is for.`,
+    "example"
+  ));
+  children.push(bodyPara(
+    `What never happens is being told you were wrong in front of the table. If something is worth naming out loud, it comes up at the very end of the session, once the story has closed, without your name attached to it.`
   ));
 
   children.push(sectionHeading("One Scene, One Voice"));

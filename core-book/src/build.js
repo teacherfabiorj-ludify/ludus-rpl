@@ -14,6 +14,7 @@ const {
   Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel,
   Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType,
   Header, Footer, PageNumber, PageBreak, VerticalAlign,
+  ImageRun,
 } = require("docx");
 const { writeFileSync } = require("fs");
 const path = require("path");
@@ -261,9 +262,29 @@ const footer = new Footer({
 // ---------------------------------------------------------------------------
 // FRONT MATTER
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// THE HOUSE MARK — 23/09/2026. One file, core/assets/ludify-logo.png, used by
+// every cover. It is drawn only if the file is there, so a checkout without
+// the asset still builds; the cover simply falls back to type.
+// ---------------------------------------------------------------------------
+function houseMark(widthPx = 190) {
+  const p = require("path").join(__dirname, "..", "..", "core", "assets", "ludify-logo.png");
+  if (!require("fs").existsSync(p)) return null;
+  const buf = require("fs").readFileSync(p);
+  const w = buf.readUInt32BE(16), h = buf.readUInt32BE(20);
+  return new Paragraph({
+    spacing: { after: 260 },
+    children: [new ImageRun({
+      data: buf,
+      transformation: { width: widthPx, height: Math.round(widthPx * h / w) },
+    })],
+  });
+}
+
 function titlePage() {
   return [
-    spacer(2200),
+    spacer(1500),
+    ...[houseMark(200)].filter(Boolean),
     new Paragraph({
       spacing: { after: 90 },
       children: [new TextRun({ text: GAME_NAME.toUpperCase(), bold: true, size: 96,
@@ -1416,19 +1437,60 @@ function ch24() {
     "Focus on a different pressure point and all four of them produce the structure they are " +
     "studying without any of them being told to."));
 
-  c.push(h2("Never correct inside the scene"));
+  // ⚠ 24/09/2026 — THIS SECTION WAS A DEFECT AND IT WAS IN THE REFERENCE BOOK.
+  // It said "never correct inside the scene" and then printed one worked
+  // example of a RECAST, presented as the technique, with nothing about the
+  // other five and no hint that the recast is the weakest of them. The
+  // Master's Guide had already moved on; this book, which declares itself the
+  // authority every other book is a view onto, had not. Cause: the section was
+  // hand-written rather than taken from core/method.js, which is exactly the
+  // failure mode the core/ law exists to prevent.
+  c.push(h2("Correct without stopping the scene"));
   c.push(body(
-    "The correct form comes back inside your next line, in character, and the student either picks " +
-    "it up or does not. A student interrupted to be corrected stops producing and starts " +
-    "monitoring, and a room full of people monitoring their own grammar is a silent room."));
+    "A student interrupted to be corrected stops producing and starts monitoring, and a room " +
+    "full of people monitoring their own grammar is a silent room. So the governing rule is not " +
+    "about which technique is best. It is about what a correction is allowed to cost."));
+  c.push(spacer(80));
+  c.push(body(M.correctionPriority[0][2].split(".")[0] + ".", { italics: true }));
   c.push(spacer(100));
-  c.push(box("Recasting, in one exchange", [
-    `Student: "Yesterday I go to the harbour and I see the ship."`,
-    `Teacher, in character: "You went to the harbour? And you saw it yourself — the ship, at the " +
-     "quay, with your own eyes?"`,
-    `No lesson, no pause, no apology. The past simple has been said back to them twice and the ` +
-    `scene did not stop.`,
-  ], GOOD, "E8F4EE"));
+  c.push(box("The rule above the others",
+    "Keep the immersion. Do not interrupt production. Breaking the narrative to correct is a " +
+    "real option and it is the last one. The five steps, in order of preference: " +
+    M.correctionPriority.map((x) => `${x[0]} ${x[1].toLowerCase()}`).join(" \u00b7 ") + ".",
+    ACCENT));
+
+  c.push(spacer(140));
+  c.push(h2("The six techniques, and which one to reach for"));
+  c.push(body(
+    "There are six recognised ways to correct spoken language and they are not equivalent. The " +
+    `recast \u2014 saying the corrected form back inside your own next line \u2014 is ${M.RECAST_SHARE} percent of ` +
+    "every correction teachers make and the weakest thing in the table. The column that decides " +
+    "this is the third one: whether the STUDENT produced the correct form, or whether you handed " +
+    "it to them."));
+  c.push(spacer(100));
+  c.push(dataTable(["TECHNIQUE", "UPTAKE", "REPAIR", "THE STUDENT'S OWN", "FAMILY"],
+    M.feedbackResearch, [2600, 1400, 1400, 2400, W - 7800]));
+  c.push(spacer(60));
+  c.push(body("Source: " + M.CORRECTION_SOURCE, { italics: true, size: 17 }));
+  c.push(spacer(120));
+  c.push(body(M.feedbackFinding));
+  c.push(spacer(140));
+  c.push(box("The way out",
+    "Four of the five prompt types are ordinary things a person does in conversation \u2014 asking " +
+    "somebody to repeat, saying their phrase back in surprise, trailing off and waiting, refusing " +
+    "to write something down until it is put correctly. A character can do every one of them " +
+    "without a word of English class entering the room. Explicit correction cannot, and belongs " +
+    "in the debrief.", GOOD, "E8F4EE"));
+
+  c.push(spacer(140));
+  c.push(h2("Which error gets which treatment"));
+  c.push(dataTable(["WHEN", "WHAT YOU DO"], M.correctionLadder, [4600, W - 4600]));
+  c.push(spacer(140));
+  c.push(box("The craft of this is the Master's Guide's job",
+    "This chapter states the law: immersion first, the ladder, and who produces the corrected " +
+    "form. How to perform each technique in character, which of the Ludus cast does which one " +
+    "naturally, what the metalinguistic clue may and may not say, and how to run the notes and " +
+    "the feedback at the close are Chapter 6 of the Master's Guide.", ACCENT));
 
   c.push(h2("Pass the Lantern often"));
   c.push(body(

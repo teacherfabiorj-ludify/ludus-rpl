@@ -639,6 +639,29 @@ const blanks = {
 };
 
 // ---------------------------------------------------------------------------
+// FENNY CROSS — 24/09/2026.
+//
+// It is here, as data, because it was in three places as prose and one of them
+// drifted: the Door Book's Adventure 3 read-aloud had grown a different name
+// (Sedge Bottom) and a different population (ninety), and nothing caught it,
+// because nothing could. Now the name and the number exist once and everything
+// else interpolates them.
+// ---------------------------------------------------------------------------
+const fennyCross = {
+  name: "Fenny Cross",
+  population: 60,
+  populationInWords: "sixty",
+  what:
+    "A wetland village on the coast road, two days inland from Ashlight. No wardstone, which "
+    + "is the whole of its problem: out here a burn is paid for by the place and the people in "
+    + "it, immediately and visibly.",
+  whyItMatters:
+    "It is alive because Hesper Vane burns tapers for it without a licence — bones, fevers, "
+    + "one difficult birth a year. She is keeping them alive by spending the thing that keeps "
+    + "them alive, she knows it, and she does it anyway.",
+};
+
+// ---------------------------------------------------------------------------
 // THE FOUR FLAMES — 20/09/2026. The tables live in tallow-coast.js; this is
 // what a person on the coast would tell you about them.
 // ---------------------------------------------------------------------------
@@ -839,7 +862,7 @@ const glossary = [
   ["Ashlight", "place", "The smallest of the three cities and the busiest gate. Where the campaign begins."],
   ["Bellmoor", "place", "The largest, the richest, and the seat of the Concord. Three bells at dawn, one for each surviving city."],
   ["Saltgate", "place", "The port at the end of the road. Works at night, asks no questions, and cheats on the water."],
-  ["Fenny Cross", "place", "A wetland village of sixty on the coast road, kept alive by Hesper Vane's unlicensed tapers."],
+  [fennyCross.name, "place", `A wetland village of ${fennyCross.populationInWords} on the coast road, kept alive by Hesper Vane's unlicensed tapers.`],
   ["The Coast Road", "place", "Four days Ashlight to Bellmoor, five Bellmoor to Saltgate. Not lawless — unattended."],
   ["Inland", "place", "Where the road gives up. Nobody goes. This is where the Hush is."],
 
@@ -903,6 +926,6 @@ module.exports = {
   depletion, depletionNote, wounds, unkindled,
   wardstones, fallow, theSeaLoophole,
   concord, theLaw, investigation, hush,
-  places, everyday, blanks, glossary, student,
+  places, everyday, blanks, glossary, student, fennyCross,
   theFlames, playerBurning,
 };

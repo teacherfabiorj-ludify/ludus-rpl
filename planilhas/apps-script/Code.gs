@@ -26,6 +26,9 @@ var FIELDS = [
   { key: 'lineage',         label: 'Lineage or Gift',    type: 'text' },
   { key: 'archetype',       label: 'Archetype',          type: 'select',
     options: ['', 'Vanguard', 'Diplomat', 'Strategist', 'Scout'] },
+  { key: 'bloodline',       label: 'Bloodline',          type: 'select',
+    options: ['', 'Elf-touched', 'Orc-blooded'] },
+  { key: 'hybridFeature',   label: 'Hybrid feature',     type: 'area' },
   { key: 'flame',           label: 'Flame',              type: 'select',
     options: ['', 'Red flame', 'Yellow flame', 'Blue flame', 'Green flame'] },
   { key: 'taperCharge',     label: 'Taper charge',       type: 'select',
@@ -37,6 +40,8 @@ var FIELDS = [
   { key: 'languagePoints',  label: 'Language Points',    type: 'number' },
   { key: 'spotlightTokens', label: 'Spotlight Tokens',   type: 'number' },
   { key: 'signatureMove',   label: 'Signature Move',     type: 'area' },
+  { key: 'tier',            label: 'Tier',               type: 'select',
+    options: ['1', '2', '3', '4'] },
   { key: 'crossTraining1',  label: 'Cross-Training 1',   type: 'text' },
   { key: 'crossTraining2',  label: 'Cross-Training 2',   type: 'text' },
   { key: 'pack1',           label: 'Pack slot 1',        type: 'text' },
@@ -68,6 +73,14 @@ var PULLED = [
   ['Next lesson',       9]
 ];
 
+/* 24/09/2026 — the six Moves and the modifier the sheet works out for each.
+   Same reason they went onto the sheet: mid-scene, the question is which Focus
+   a Move uses, and the sidebar is what a student has open. Read-only, and read
+   off the cells rather than recomputed here — a rule computed in this file
+   would be a rule that lives nowhere in core/. */
+var MOVE_READ = ['Act Under Pressure', 'Face Danger', 'Read the Scene',
+                 'Persuade or Manipulate', 'Parley', 'Help or Interfere'];
+
 /* Read-only rows that the sheet works out from your Flame. 20/09/2026.
    Same trick as PULLED: read what the cell already shows, never recompute a
    rule here. A rule computed in this file would be a rule that lives nowhere
@@ -93,7 +106,7 @@ function nameRange_(key) {
 
 /** Everything the sidebar needs, in one call. */
 function getSheetData() {
-  var out = { fields: [], pulled: [], flame: [], studentName: '' };
+  var out = { fields: [], pulled: [], flame: [], moves: [], studentName: '' };
   var nameR = nameRange_('studentName');
   out.studentName = nameR ? String(nameR.getDisplayValue()) : '';
 
@@ -114,12 +127,29 @@ function getSheetData() {
      already show rather than recomputing anything here. */
   var sh = SpreadsheetApp.getActive().getSheetByName('CHARACTER SHEET');
   if (sh) {
-    var vals = sh.getRange('B1:D200').getDisplayValues();
+    /* B..I, because the sheet is two columns wide: the left block is B/C/D and
+       the right block is F/G/I. */
+    var wide = sh.getRange('B1:I200').getDisplayValues();
+    var vals = wide;
     for (var p = 0; p < PULLED.length; p++) {
       var label = PULLED[p][0];
       for (var row = 0; row < vals.length; row++) {
         if (String(vals[row][0]).toLowerCase().indexOf(label.toLowerCase()) === 0) {
           out.pulled.push({ label: label, value: vals[row][1] });
+          break;
+        }
+      }
+    }
+    /* A Move can be in either block, so look in both label columns. */
+    for (var mi = 0; mi < MOVE_READ.length; mi++) {
+      var mlabel = MOVE_READ[mi];
+      for (var mrow = 0; mrow < wide.length; mrow++) {
+        if (String(wide[mrow][0]) === mlabel) {
+          out.moves.push({ label: mlabel, value: wide[mrow][1], focus: wide[mrow][2] });
+          break;
+        }
+        if (String(wide[mrow][4]) === mlabel) {
+          out.moves.push({ label: mlabel, value: wide[mrow][5], focus: wide[mrow][7] });
           break;
         }
       }

@@ -180,11 +180,12 @@ function fieldNode(f){
 }
 
 var SECTIONS = [
-  ['Who you are',      ['charName','people','lineage','archetype','flame']],
+  ['Who you are',      ['charName','people','lineage','bloodline','hybridFeature','archetype','flame']],
   ['Your Focuses',     ['focus_courage','focus_empathy','focus_wit','focus_instinct']],
+  ['Your Moves',       []],
   ['Your flame',       ['taperCharge']],
   ['Your resources',   ['languagePoints','spotlightTokens']],
-  ['Signature Moves',  ['signatureMove','crossTraining1','crossTraining2']],
+  ['Signature Moves',  ['signatureMove','tier','crossTraining1','crossTraining2']],
   ['What you carry',   ['pack1','pack2','pack3','pack4','pack5','pack6','boons']],
   ['Money',            ['money_coin','money_handful','money_bag','money_chest']],
   ['Notes',            ['note1','note2','note3','note4','note5']]
@@ -216,6 +217,16 @@ function render(data){
     form.appendChild(el('h2', {}, sec[0]));
     // 20/09/2026 — the flame section shows three read-only lines above its one
     // editable field. They are read off the sheet, never computed here.
+    if (sec[0] === 'Your Moves' && data.moves && data.moves.length){
+      var mb = el('div', {'class':'board'});
+      data.moves.forEach(function(m){
+        var row = el('div');
+        row.appendChild(el('b', {}, m.label));
+        row.appendChild(el('span', {}, (m.value || '—') + '  ·  ' + (m.focus || '')));
+        mb.appendChild(row);
+      });
+      form.appendChild(mb);
+    }
     if (sec[0] === 'Your flame' && data.flame && data.flame.length){
       var fb = el('div', {'class':'board'});
       data.flame.forEach(function(p){

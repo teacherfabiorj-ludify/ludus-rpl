@@ -17,7 +17,10 @@ const HOUSE = "Ludify";
 const GAME_NAME = "Ludus";
 const METHOD = "RPL";
 
-const VERSION = "v2.0 · September 2026";
+// 23/09/2026 — v3.0. Bumped because the suite is materially different from
+// what v2.0 named: the four flames are canon, the Master's Guide was rewritten
+// and wired to core/, and the character sheet was rebuilt in two columns.
+const VERSION = "v3.0 · September 2026";
 
 const BOOK_SUBTITLE = `A ${HOUSE} language roleplaying system`;
 

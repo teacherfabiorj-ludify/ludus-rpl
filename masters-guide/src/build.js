@@ -33,6 +33,20 @@ const sizeOf = (() => {
 const BOOK_NAME = "Master's Guide";
 const { GAME_NAME, HOUSE, BOOK_SUBTITLE, VERSION } = require("../../core/brand.js");
 
+// ---------------------------------------------------------------------------
+// ⚠ 23/09/2026 — THIS BOOK NOW IMPORTS core/. Until today it imported only the
+// brand, and every rule, number and table on these pages was typed by hand in
+// this file. That is the one thing the project does not allow, and it is why
+// this was the book that went stale: chapter 1 was still telling teachers to
+// recast while chapter 2 had already stopped saying that.
+//
+// RULE, the same as in every other build script here: if it is a rule, a term
+// or a number, it is imported. Nothing below defines one.
+// ---------------------------------------------------------------------------
+const SYS = require("../../core/system.js");
+const METHOD = require("../../core/method.js");
+const LUDUS = require("../../core/ludus.js");
+
 // ---- Palette (shared across Player's Guide AND Master's Guide for visual consistency) ----
 const ACCENT = "2A78D6";
 const GOOD = "0CA30C";
@@ -164,6 +178,22 @@ function markTerms(text, base = {}) {
     runs.push(new TextRun({ text: text.slice(last), ...base }));
   }
   return runs.length ? runs : [new TextRun({ text, ...base })];
+}
+
+// 23/09/2026 — a second heading level. The book had exactly one, which meant
+// every sub-point inside a chapter had to be either a full section heading or
+// nothing at all, and the newer chapters have real structure inside them.
+// Counted numbers still have to read as English. "Go through the 7" does not.
+const WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven",
+               "eight", "nine", "ten", "eleven", "twelve"];
+const n = (x) => WORDS[x] ?? String(x);
+
+function subHeading(text) {
+  return new Paragraph({
+    spacing: { before: 240, after: 80 },
+    keepNext: true,
+    children: [new TextRun({ text: text.toUpperCase(), bold: true, color: INK_SECONDARY, size: 19 })],
+  });
 }
 
 function bodyPara(text, opts = {}) {
@@ -337,9 +367,30 @@ function pageFooter() {
 // TITLE PAGE
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// THE HOUSE MARK — 23/09/2026. One file, core/assets/ludify-logo.png, used by
+// every cover. It is drawn only if the file is there, so a checkout without
+// the asset still builds; the cover simply falls back to type.
+// ---------------------------------------------------------------------------
+function houseMark(widthPx = 190) {
+  const p = require("path").join(__dirname, "..", "..", "core", "assets", "ludify-logo.png");
+  if (!require("fs").existsSync(p)) return null;
+  const buf = require("fs").readFileSync(p);
+  const w = buf.readUInt32BE(16), h = buf.readUInt32BE(20);
+  return new Paragraph({
+    spacing: { after: 260 },
+    children: [new ImageRun({
+      data: buf,
+      transformation: { width: widthPx, height: Math.round(widthPx * h / w) },
+    })],
+  });
+}
+
 function titlePage() {
   const children = [];
-  children.push(spacer(1400));
+  children.push(spacer(900));
+  const mark = houseMark(200);
+  if (mark) children.push(mark);
   children.push(new Paragraph({
     spacing: { after: 80 },
     children: [ new TextRun({ text: GAME_NAME.toUpperCase(), bold: true, color: BRAND, size: 88, characterSpacing: 40 }) ],
@@ -358,7 +409,7 @@ function titlePage() {
     children: [ new TextRun({ text: "For the teacher running the table.", italics: true, color: INK_SECONDARY, size: 22 }) ],
   }));
   children.push(new Paragraph({
-    children: [ new TextRun({ text: "Ludify — Idiomas com diversão e propósito", color: MUTED, size: 20 }) ],
+    children: [ new TextRun({ text: HOUSE, color: MUTED, size: 20, characterSpacing: 30 }) ],
   }));
   children.push(pageBreak());
   return children;
@@ -369,27 +420,24 @@ function titlePage() {
 // ---------------------------------------------------------------------------
 
 const PAGES = {
-  "Ch. 1": "3",
-  "Ch. 2": "6",
-  "Ch. 3": "9",
-  "Ch. 4": "11",
-  "Ch. 5": "14",
-  "Ch. 6": "18",
-  "Ch. 7": "22",
-  "Ch. 8": "26",
-  "Ch. 9": "30",
+  "Ch. 1": "3", "Ch. 2": "6", "Ch. 3": "9", "Ch. 4": "12", "Ch. 5": "16",
+  "Ch. 6": "21", "Ch. 7": "28", "Ch. 8": "31", "Ch. 9": "38", "Ch. 10": "42",
+  "Ch. 11": "46", "Ch. 12": "50",
 };
 
 const contentsRows = [
   ["Ch. 1 — Before You Run This", "What you are actually running, what to read first, and what an RPG is if you have never played one."],
   ["Ch. 2 — Teaching Philosophy", "The seven principles the whole system is built on."],
   ["Ch. 3 — The Two Clocks", "How a study track drives the table without ever slowing it down."],
-  ["Ch. 4 — Your Job at the Table", "The three things only you can do, and the habits that make them work."],
-  ["Ch. 5 — Correcting Without Breaking the Scene", "Why the technique everyone uses is the weakest one, and what to do instead."],
-  ["Ch. 6 — Passing the Lantern", "How a student becomes a co-author of the world, and why that is the same act as aiming at their grammar."],
-  ["Ch. 7 — The Ludus", "The shared world that holds every setting, and the five people in it."],
-  ["Ch. 8 — The Six Doors", "Choosing a Door: what each world feels like, and what language it produces."],
-  ["Ch. 9 — Learning to Run It", "Training a teacher in five meetings, and how to do it alone if you have to."],
+  ["Ch. 4 — Before the Session", "The twenty-minute preparation routine, step by step, and the four steps to keep if you only have five minutes."],
+  ["Ch. 5 — At the Table", "The shape of a session, how you behave during one, and how a group of four at four different units is run as one table."],
+  ["Ch. 6 — Correcting Without Breaking the Scene", "Keeping the immersion first, what the research actually says about correction, and where the serious errors go instead."],
+  ["Ch. 7 — After the Session", "Ten minutes, the same night: homework, the quiz, Language Points, the Codex and the Ledger — field by field."],
+  ["Ch. 8 — Session Zero", "The nine concepts, said, shown and used — and the running order that means nobody spends week one quietly lost."],
+  ["Ch. 9 — Passing the Lantern", "How a student becomes a co-author of the world, and why that is the same act as aiming at their grammar."],
+  ["Ch. 10 — The Ludus", "The shared world that holds every setting, and the five people in it."],
+  ["Ch. 11 — The Six Doors", "Choosing a Door: what each world feels like, and what language it produces."],
+  ["Ch. 12 — Learning to Run It", "Training a teacher in five meetings, and how to do it alone if you have to."],
 ];
 
 const bookContents = contentsRows.map(([title, blurb]) => {
@@ -459,7 +507,7 @@ function chapter1() {
     `In a normal class, you decide what happens next. Here, you decide what is at stake and the students decide what happens next. That single change is what produces the language: a student who is choosing has to explain, negotiate, argue and describe. A student who is answering only has to answer.`
   ));
   children.push(bodyPara(
-    `The other change is error. In a normal class, an error is something to fix. Here, an error is evidence that a student attempted something above their comfort level, which is exactly the behaviour the whole system is designed to reward. You never stop a scene to correct. You recast — Chapter 2, Principle 3 — and the scene keeps moving.`
+    `The other change is error. In a normal class, an error is something to fix. Here, an error is evidence that a student attempted something above their comfort level, which is exactly the behaviour the whole system is designed to reward. You never stop a scene to correct — but you do not simply feed the right answer back either. You make a character react so that the student says it again themselves. That is Principle 3, and Chapter 6 is entirely about how.`
   ));
 
   children.push(sectionHeading("How This Differs From a Normal RPG"));
@@ -489,7 +537,7 @@ function chapter1() {
       ["The Player's Guide", "Your students.", "Every rule of play: the dice, the six Moves, Archetypes, the twelve-level track, what a character carries — and, at the back, a Door Section for each world that is open, holding the peoples, the gods and the plain public facts your players need in order to build a character. Written at roughly B2, with a Portuguese summary in the appendix."],
       ["This guide", "You.", "How to run it. Not the rules again — the judgement calls, the session shape, the world, and the things nobody tells you until you have run twenty sessions. It is the same guide behind every Door."],
       ["A Door Book", "You, and only you.", "One per Door. The campaign for that world: its arcs, its antagonist, what its people are hiding, and what happens if the players push. Never shown to students."],
-      ["Your table's spreadsheet", "You and your students.", "Character sheets, and a permanent Growth Ledger for each student. Chapter 3 covers what lives where and why the two must never be the same file."],
+      ["The three files", "One is yours, one is the group's, one is each student's.", "The Panel is yours alone and holds everything — marks, attempts, flags. The Class Board is read-only and shows the group only what can be public. Each student has a character sheet that reads its own row from the Board. Chapter 3 covers why the Growth Ledger must never live on a character sheet; Chapters 4 and 7 cover what you actually type into which file, and when."],
     ],
     [2600, 2000, 5480]
   ));
@@ -497,7 +545,7 @@ function chapter1() {
   children.push(spacer(180));
   children.push(calloutBox(
     "Do not read this guide cover to cover before your first session",
-    `Read Chapters 1 to 4 and skim Chapter 5. That is enough to run well. The rest is reference you will want in your second month, not your first week — and reading it now will mostly make you nervous about problems you do not have yet.`,
+    `Read Chapters 1 to 5 and skim Chapter 6. That is enough to run well. Chapter 7 you will need on the night of your first session, and it is four pages. The rest is reference you will want in your second month, not your first week — and reading it now will mostly make you nervous about problems you do not have yet.`,
     "warn"
   ));
 
@@ -528,7 +576,7 @@ const principles = [
    `“Do you attack him?” gets a one-word answer. “What do you do?” forces real language production. This is already built into how every Move is worded — none of them ask for a yes or no — but name it explicitly so you carry the habit into your own improvised narration too.`,
    `Weak: “Are you scared?” Strong: “What is going through your head right now?” Weak: “Do you want to help her?” Strong: “What do you say to her?”`],
   [3, "Hand the Ball Back, Inside the Fiction",
-   `Never stop a scene to correct. But do not simply feed the right answer back either — that is a recast, and the research is clear that it is the least noticed form of correction there is. Instead, make an NPC react in a way that forces the student to say it again themselves. Chapter 5 is entirely about how, and it is the most useful chapter in this book.`,
+   `Never stop a scene to correct. But do not simply feed the right answer back either — that is a recast, and in the study this system is built on it produced correct student-generated repair exactly zero percent of the time, because there was nothing left for the student to generate. Instead, make a character react in a way that gets the student to say it again themselves. Chapter 6 is entirely about how, and it is the most useful chapter in this book.`,
    `Student: “If you letting us in, we show the papers.” Weak: you narrate the correct version and move on. Strong: Quill looks up and says, “I'm sorry — say that again? I have to write it down exactly.” The student reformulates. Nobody was corrected out loud, and this time they noticed.`],
   [4, "One Communicative Task Per Scene",
    `Every scene you build should have one clear communicative task behind the plot: negotiate, describe, recount a past event, speculate. Design the task first, then dress it in story. Doing it the other way round produces scenes that look exciting and generate three sentences.`,
@@ -571,7 +619,7 @@ function chapter2() {
     [
       ["1 — Low teacher talk", "Under forty-five seconds of narration, then hand it back."],
       ["2 — Open questions", "Never ask anything answerable with yes or no."],
-      ["3 — Hand the ball back", "Make an NPC react so the student says it again. See Chapter 5."],
+      ["3 — Hand the ball back", "Make a character react so the student says it again. See Chapter 6."],
       ["4 — One task per scene", "Decide the communicative task first, the plot second."],
       ["5 — Not the centre", "Count student output, not your own performance."],
       ["6 — Mistakes are data", "Reward the attempt, never the accuracy."],
@@ -601,12 +649,9 @@ function chapter3() {
     `Two things are moving at once in this course, at different speeds, and understanding that they are separate is the single most important structural idea in the whole system.`
   ));
   children.push(threeColTable(
-    ["THE CLOCK", "WHOSE IT IS", "WHAT MOVES IT"],
-    [
-      ["The campaign", "The table's. Everyone shares it.", "Sessions. The story advances every week for everybody at once, whatever anyone's English level is."],
-      ["The study track", "Each student's own. Nobody shares it.", "Units of coursework finished outside the session, at whatever pace that student works."],
-    ],
-    [2200, 3000, 4880]
+    ["THE CLOCK", "WHAT MOVES IT"],
+    METHOD.twoClocks,
+    [2600, 7480]
   ));
 
   children.push(spacer(180));
@@ -629,7 +674,7 @@ function chapter3() {
     [
       ["It is divided into units of roughly equal size.", "Growth Moments are counted in units. Six units, one level. If units vary wildly in length, students climb the ladder at unfair speeds through no fault of their own."],
       ["Each unit has one or two clear language targets.", "That target becomes the student's Language Focus for those weeks — the thing you build spotlight moments around. A unit with no identifiable target gives you nothing to aim at."],
-      ["Each unit closes with something that can be passed or not passed.", "The game needs a signal that a target is now usable, not just seen. A quiz, a test, a task — the form does not matter. The existence of a threshold does."],
+      ["Each unit closes with something that can be passed or not passed.", "The game needs a signal that a target is now usable, not just seen. A quiz, a test, a task — the form does not matter, and it does not have to come from the publisher. Ours does not: we write our own. The existence of a threshold does."],
       ["The student can work through it without you.", "The whole design depends on study happening outside the session. If the track requires teaching time, the two clocks collapse back into one."],
     ],
     [3400, 6680]
@@ -638,7 +683,7 @@ function chapter3() {
   children.push(spacer(180));
   children.push(calloutBox(
     "The track we use, and why it is only an example",
-    `Ludify currently runs on Evolve Digital, which has all four properties: twelve units per level, one or two language targets per unit, a unit test the student can take on their own, and a platform that tracks progress without teacher input. Every example in this guide uses it because that is what our tables actually use.`,
+    `${HOUSE} currently runs on ${METHOD.COURSEBOOK} — the ${METHOD.COURSEBOOK_EDITION}, on ${METHOD.COURSEBOOK_PLATFORM} — which has all four properties: twelve units per level, one or two language targets per unit, homework the platform marks on its own, and progress it tracks without teacher input. The fourth property, the threshold, is the one we supply ourselves: the ${METHOD.TEST_NAME} is written by ${HOUSE} in ${METHOD.TEST_TOOL} and is not the publisher\u2019s test. Every example in this guide uses this track because it is what our tables actually use.`,
     "example"
   ));
   children.push(bodyPara(
@@ -648,7 +693,7 @@ function chapter3() {
   children.push(spacer(240));
   children.push(sectionHeading("The Growth Moment"));
   children.push(bodyPara(
-    `When a student finishes their sixth unit, they hit a Growth Moment: their Growth Level goes up by one and they take whatever that rung of the ladder gives them. It is the only way anyone ever levels up.`
+    `${METHOD.growthRule.trigger} Their Growth Level goes up by one and they take whatever that rung of the ladder gives them. It is the only way anyone ever levels up, the ladder has ${METHOD.growthRule.levels} rungs, and everybody starts at ${METHOD.growthRule.startsAt}. Chapter 7 covers what you write down when it happens.`
   ));
   children.push(bodyPara(
     `Running one costs you about two minutes, at the top of a session, and it is worth doing out loud in front of everyone. The student announces it. They take the reward. The table reacts. Then you start playing. The public part is not ceremony for its own sake — it is the only moment in the week where private study becomes visible to the group, and it does more for the other students' motivation than anything you could say to them directly.`
@@ -658,6 +703,24 @@ function chapter3() {
     `“Before we start — Bruno finished his sixth unit this week.” Bruno says what he chose: his Signature Move goes from Tier 1 to Tier 2. He writes it on his sheet. Somebody says nice. You start the recap. Total elapsed time: under two minutes, and Ana is now thinking about how far she is from her own sixth unit.`,
     "example"
   ));
+
+  children.push(sectionHeading("Two Formats, One Trail"));
+  children.push(bodyPara(
+    `A group meets either once a week for two hours or twice a week for an hour, and nothing in this book changes between them. Both cover the same four lessons a fortnight.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["FORMAT", "SHAPE", "WHAT IT COVERS", "WHERE IT IS USED"],
+    METHOD.sessionFormats,
+    [2200, 2000, 3800, 2080]
+  ));
+  children.push(spacer(160));
+  children.push(calloutBox(
+    "No student-facing document ever names a day",
+    METHOD.formatNeutrality,
+    "warn"
+  ));
+  children.push(spacer(200));
 
   children.push(sectionHeading("Growth Belongs to the Student, Not the Character"));
   children.push(bodyPara(
@@ -713,106 +776,11 @@ function contentsPage() {
 // CHAPTER 4 — YOUR JOB AT THE TABLE
 // ---------------------------------------------------------------------------
 
-function chapter4() {
-  const children = [];
-  children.push(eyebrow("Chapter 4"));
-  children.push(chapterTitle("Your Job at the Table"));
-
-  children.push(flavorQuote(
-    `Three people can describe the room. Only one person can decide that describing the room is what this moment is for.`
-  ));
-  children.push(spacer(140));
-
-  children.push(bodyPara(
-    `Most of what happens in a session could, in principle, be done by anyone. Description, voices, reacting to a roll — a confident student could do all of it. Three things could not, and those three are your actual job. Everything else you do is optional and should be the first thing you drop when a session runs short.`
-  ));
-
-  children.push(sectionHeading("One — You Decide What Each Moment Is For"));
-  children.push(bodyPara(
-    `Before a scene starts, you know which student is about to be in the spotlight and which structure you want out of them. That is invisible to the table and it is the difference between a session that produces language and one that produces excitement.`
-  ));
-  children.push(bodyPara(
-    `The mechanism is simple. Each student is carrying a Language Focus — one grammar point or vocabulary set, from their own coursework, that week. You build the scene so that the natural thing to say uses it. Not the only thing. The natural thing.`
-  ));
-  children.push(calloutBox(
-    "Example",
-    `Leo's Language Focus is “is / are — affirmative and questions.” You do not announce a grammar exercise. You put him alone in a room with a nervous servant and have the servant ask, quietly, whether the people he arrived with are dangerous. Leo cannot answer that without using is and are half a dozen times, and he will never notice that he was aimed at.`,
-    "example"
-  ));
-  children.push(bodyPara(
-    `Do this for each student, once per session, and the session did its job. Trying to do it for every student in every scene will exhaust you by week three.`
-  ));
-
-  children.push(sectionHeading("Two — You Protect the Weakest Speaker"));
-  children.push(bodyPara(
-    `A mixed-level table has a gravity problem. The strongest speaker answers first, because they can. The weakest speaker learns, by about session four, that waiting three seconds means somebody else will handle it. Left alone, this hardens permanently, and it looks like shyness when it is actually a habit the table taught them.`
-  ));
-  children.push(bodyPara(
-    `You break it with structure, not with encouragement. Address a question to a named player instead of to the group. Ask the beginner first, and the advanced student second — asking in the other order tells the beginner that everything worth saying has already been said. Where possible, give the beginner the closed choice and the advanced student the open one: “Do you go through the window or the door?” for one, “What do you do?” for the other. Both are playing the same scene. Only one of them was asked something they can answer under pressure.`
-  ));
-  children.push(calloutBox(
-    "Watch for this",
-    `A student who ends three sessions in a row with all their Spotlight Tokens unspent is not being modest. They are not getting in. That is your problem to fix, not theirs.`,
-    "warn"
-  ));
-
-  children.push(sectionHeading("Three — You Correct Without Anybody Noticing"));
-  children.push(bodyPara(
-    `The single hardest habit to build, and the one that most separates this from a normal class. A student says something wrong. Every teaching instinct you have says correct it. You are not going to — not out loud, and not by stopping anything. Sometimes you fold the right form into your next line; more often you make a character react in a way that gets the student to say it again themselves.`
-  ));
-  children.push(bodyPara(
-    `Which of those two you reach for, and when, is the whole of Chapter 5. It is the most useful chapter in this book and the one worth rereading after your first month. What follows here is only the simplest version — the one to use while everything else is still new.`
-  ));
-  children.push(threeColTable(
-    ["THE STUDENT SAYS", "YOU SAY BACK"],
-    [
-      ["“I go and I asking him where is the money.”", "“You cross the room and ask him where the money is. He does not look up.”"],
-      ["“Yesterday we was in the tower and we finded a door.”", "“So you were in the tower yesterday and you found a door. Tell me what was on the other side.”"],
-      ["“If she will come, we can escaping.”", "“If she comes, you can escape. So — do you wait for her?”"],
-    ],
-    [5040, 5040]
-  ));
-  children.push(spacer(160));
-  children.push(bodyPara(
-    `Notice what all three have in common. The correct form is delivered, the scene never pauses, nobody is told they were wrong, and every one of them ends by handing the moment straight back to the student. A recast that ends with you still talking is a recast that turned into a lecture.`
-  ));
-
-  children.push(pageBreak());
-  children.push(sectionHeading("When a Student Freezes"));
-  children.push(bodyPara(
-    `It will happen weekly, and it is not a discipline problem — it is a working-memory problem. A student who is holding a plan, a grammar target and a second language at the same time will occasionally drop all three. What you do in the next four seconds decides whether they try again next week.`
-  ));
-  children.push(threeColTable(
-    ["DO", "DO NOT"],
-    [
-      ["Wait. Count four seconds silently before you fill the gap. Most freezes end on their own by three.", "Jump in at one second. You will be the reason the silence never gets a chance to resolve."],
-      ["Narrow the question. “What is the first thing you say to him?” is easier than “What do you do?”", "Repeat the same question louder or slower. The problem was never that they did not hear it."],
-      ["Offer two options and let them pick, then ask them to say the chosen one in their own words.", "Answer for them and move on. It rescues the scene and costs you the student."],
-      ["Let them ask you, in English, how to say the word they are missing. That question is part of the game.", "Supply the Portuguese. The moment you do it once, it becomes the default for the rest of the year."],
-    ],
-    [5040, 5040]
-  ));
-
-  children.push(sectionHeading("When One Student Takes Everything"));
-  children.push(bodyPara(
-    `Usually the most fluent, usually not doing it on purpose, usually the person having the best time. Handle it structurally and you keep their enthusiasm; handle it personally and you lose it.`
-  ));
-  children.push(bodyPara(
-    `Cut away mid-momentum. End their scene at its high point and move to somebody else — this is a standard television technique and it works because leaving is not the same as being stopped. Give them Moves that only pay off through other people: Help or Interfere is built for exactly this, and so is the Diplomat's Tier 4, which only earns Language Points when another player narrates too. And give them the hardest linguistic target in the room, because a bored advanced student is a loud advanced student.`
-  ));
-
-  children.push(sectionHeading("The Half of the Job That Happens Before the Session"));
-  children.push(bodyPara(
-    `Ten minutes, once a week. You need to know, for each student, which unit they are on, which Language Focus that gives them, and where they are in the four-session cycle. That is the whole preparation requirement, and if you have that written down in front of you, you can improvise everything else.`
-  ));
-  children.push(calloutBox(
-    "What ten minutes buys you",
-    `Ana on past simple, Tiago on indirect questions, Leo on is and are, Vitor revising his unit. That is four scene ideas, already. Somebody has to be asked to tell what happened, somebody has to ask a stranger a careful question, somebody has to describe what is in a room, and somebody needs the same ground twice. You have not written a plot yet and you already have a session.`,
-    "example"
-  ));
-
-  return children;
-}
+// ⚠ 23/09/2026 — the old chapter4() ("Your Job at the Table") was removed here.
+// Its three jobs, the freeze table and the dominant-student section all live on,
+// in chapterAtTable(); its preparation section grew into chapterBefore(). Nothing
+// was thrown away — it was split along the line the teacher actually works on,
+// which is before the session and during it.
 
 // ---------------------------------------------------------------------------
 // CHAPTER 5 — THE LUDUS
@@ -871,7 +839,7 @@ const lanternPrompts = [
 
 function chapterLantern() {
   const children = [];
-  children.push(eyebrow("Chapter 6"));
+  children.push(eyebrow("Chapter 9"));
   children.push(chapterTitle("Passing the Lantern"));
 
   children.push(flavorQuote([
@@ -1031,7 +999,7 @@ const ludusCast = [
 
 function chapterLudus() {
   const children = [];
-  children.push(eyebrow("Chapter 7"));
+  children.push(eyebrow("Chapter 10"));
   children.push(chapterTitle("The Ludus"));
 
   children.push(flavorQuote([
@@ -1286,7 +1254,7 @@ function doorBlock(d) {
 
 function chapterDoors() {
   const children = [];
-  children.push(eyebrow("Chapter 8"));
+  children.push(eyebrow("Chapter 11"));
   children.push(chapterTitle("The Six Doors"));
 
   children.push(bodyPara(
@@ -1322,38 +1290,21 @@ function chapterDoors() {
 // that the technique most teachers reach for is the one learners least notice.
 // ---------------------------------------------------------------------------
 
-const feedbackTypes = [
-  ["Clarification request", "~67%",
-   "“Sorry? I don't follow.”",
-   "Quill looks up from the ledger. “I'm sorry — say that again? I have to write it down exactly.”"],
-  ["Repetition", "~69%",
-   "Repeat the error back with a rising intonation.",
-   "The Tenant raises an eyebrow and repeats the sentence back, politely, as though he is not quite sure he heard it."],
-  ["Elicitation", "~60%",
-   "Start the sentence and stop.",
-   "Halden: “So yesterday you…” — and then nothing. He has never finished anybody's sentence and he is not going to start."],
-  ["Recast", "~45%",
-   "Say the correct version back inside your narration.",
-   "Still your default for anything not worth stopping for. Cheap, invisible, weak."],
-  ["Explicit correction", "—",
-   "Name the error and give the right form.",
-   "Never during a scene. It belongs in the debrief, when the fiction is already closed."],
-  ["Metalinguistic clue", "—",
-   "Name the rule the error broke.",
-   "Never during a scene, for the same reason."],
-];
-
+// ⚠ 23/09/2026 — feedbackTypes and promptCast used to be typed out here, with
+// percentages that matched no metric in the study they claimed to come from.
+// Both are now imported. The cast pairing below is the only thing left, and it
+// is a casting note, not a rule.
 const promptCast = [
   ["Halden", "Elicitation", "He is slow and he does not fill silences. Starting a sentence and waiting is simply how he talks."],
   ["Quill", "Clarification request", "He needs everything exact, for the form, for the catalogue, for the record. Asking again is his whole personality."],
   ["The Tenant", "Repetition", "Repeating your words back with mild surprise is the most Tenant thing that could possibly happen."],
   ["Piro", "Elicitation", "He interrupts constantly, then loses his thread and waits for you to finish the thought. Same effect, different reason."],
-  ["Sable", "Clarification request", "She refuses to write down anything she is not certain of, so she asks again. And again."],
+  ["Sable", "Metalinguistic clue", "She will not write down anything she is not certain of. Refusing a wording until it is right is what she is for."],
 ];
 
 function chapter5() {
   const children = [];
-  children.push(eyebrow("Chapter 5"));
+  children.push(eyebrow("Chapter 6"));
   children.push(chapterTitle("Correcting Without Breaking the Scene"));
 
   children.push(flavorQuote([
@@ -1362,41 +1313,105 @@ function chapter5() {
   children.push(spacer(140));
 
   children.push(bodyPara(
-    `This is the chapter that changes how your sessions actually sound, and it starts with an uncomfortable piece of research.`
+    `This is the chapter that changes how your sessions actually sound. It has two halves: which technique works, which is a research question with a clear answer, and when you are allowed to reach for one at all, which is a judgement call and yours. The second half outranks the first, so it goes first.`
   ));
 
+  children.push(sectionHeading("The Rule Above All the Others"));
+  children.push(bodyPara(
+    `Keep the immersion. Do not interrupt production. Breaking the narrative to correct is a real option and it is the last one — available, because occasionally something is getting so badly in the way that the table has stopped understanding each other, but last.`,
+    { italics: true }
+  ));
+  children.push(bodyPara(
+    `Everything else in this chapter sits underneath that. The reason is not delicacy: it is that an interrupted student stops producing, and production is the only thing this course actually measures. A perfectly aimed correction that cost you the scene has, on the night, lost you more English than the error did.`
+  ));
+  children.push(spacer(140));
+  children.push(threeColTable(
+    ["", "IN ORDER OF PREFERENCE", "WHAT IT IS"],
+    METHOD.correctionPriority,
+    [500, 2600, 6980]
+  ));
+  children.push(spacer(180));
+  children.push(calloutBox("This is a judgement, not a flowchart", METHOD.correctionJudgement, "clarify"));
+  children.push(spacer(160));
+  children.push(bodyPara(
+    `Notice what step 1 is doing, because it is the part that takes practice. Most of the time the choice is not between correcting and not correcting — it is between correcting now and correcting forty seconds from now, when the scene has reached a point where somebody would have spoken anyway. A prompt delivered at that beat is invisible. The identical prompt two seconds after the error is an interruption wearing a costume.`
+  ));
+
+  children.push(spacer(220));
   children.push(sectionHeading("The Technique Everyone Uses Is the Weakest One"));
   children.push(bodyPara(
-    `There are six recognised ways to correct spoken language. One of them is the recast: you repeat what the student said, fixed, without ever announcing that you fixed it. It is fluent, it is kind, it does not interrupt anything — and it is by a wide margin the one teachers reach for most.`
+    `There are six recognised ways to correct spoken language. One of them is the recast: you repeat what the student said, fixed, without ever announcing that you fixed it. It is fluent, it is kind, it does not interrupt anything — and it is by a wide margin the one teachers reach for most. In the study this chapter is built on, ${METHOD.RECAST_SHARE} percent of every correction a teacher made was a recast.`
   ));
   children.push(bodyPara(
-    `It is also the one that works least. Study after study finds the same thing: learners frequently do not notice a recast at all. They assume you are responding to what they said, not how they said it — and in a game, where you are visibly responding to content all the time, that misreading is close to guaranteed.`
-  ));
-  children.push(calloutBox(
-    "The numbers",
-    `Around 55% of teacher corrections are recasts, and they produce learner repair roughly 45% of the time. The alternatives — which get grouped together as prompts, because they push the work back to the learner instead of handing over the answer — run considerably higher: about 69% for repetition, 67% for clarification requests, 60% for elicitation. The difference is not subtle, and it is not about kindness. It is about who does the reformulating.`,
-    "warn"
-  ));
-  children.push(bodyPara(
-    `So the obvious fix is to stop recasting and start prompting. Except that the obvious fix breaks the game: stopping a scene to say “careful, that is the wrong tense” costs exactly the immersion this whole system is built to protect.`
+    `It is also the one that works least. Learners frequently do not notice a recast at all: they assume you are responding to what they said, not to how they said it — and in a game, where you are visibly responding to content all the time, that misreading is close to guaranteed.`
   ));
 
+  children.push(spacer(160));
+  children.push(bodyPara(
+    `Three numbers are reported for each technique and they are constantly confused, so read the headings carefully before the figures.`,
+    { after: 60 }
+  ));
+  children.push(threeColTable(
+    ["", "UPTAKE", "REPAIR", "THE STUDENT'S OWN", "FAMILY"],
+    METHOD.feedbackResearch,
+    [2400, 1400, 1400, 2200, 2680]
+  ));
+  children.push(spacer(120));
+  children.push(threeColTable(
+    ["COLUMN", "WHAT IT COUNTS"],
+    [
+      ["Uptake", "The student said something back. Anything at all — right, wrong or half."],
+      ["Repair", "What they said back was correct."],
+      ["The student's own", "They produced the correct form THEMSELVES, rather than repeating one you had already supplied. This is the column this course cares about."],
+    ],
+    [2400, 7680]
+  ));
+  children.push(spacer(160));
+  children.push(calloutBox("What the table actually says", METHOD.feedbackFinding, "warn"));
+  children.push(spacer(140));
+  children.push(bodyPara(
+    `Source: ${METHOD.CORRECTION_SOURCE}`,
+    { italics: true, size: 17 }
+  ));
+
+  children.push(spacer(220));
   children.push(sectionHeading("The Way Out: A Prompt Is Something a Person Can Do"));
   children.push(bodyPara(
-    `Three of the strongest prompt types are not teaching behaviours at all. They are ordinary things a human being does in conversation — asking someone to repeat, saying a phrase back in surprise, trailing off and waiting. An NPC can do every one of them without a single word of English class entering the room.`
+    `The obvious conclusion is to stop recasting and start prompting. Except that the obvious conclusion breaks the game: stopping a scene to say “careful, that is the wrong tense” costs exactly the immersion this whole system is built to protect.`
+  ));
+  children.push(bodyPara(
+    `The way out is that four of the prompt types are not teaching behaviours at all. They are ordinary things a human being does in conversation — asking someone to repeat, saying a phrase back in surprise, trailing off and waiting, refusing to write something down until it is put correctly. A character can do every one of them without a single word of English class entering the room.`
   ));
   children.push(bodyPara(
     `You never step outside the fiction. The character reacts, the student says it again, and the correction happened without anybody naming it.`,
     { after: 100 }
   ));
-  children.push(pageBreak());
   children.push(threeColTable(
-    ["TYPE", "REPAIR", "OUT OF THE FICTION", "INSIDE THE FICTION"],
-    feedbackTypes,
-    [2100, 1000, 2800, 4180]
+    ["TYPE", "WHERE IT LIVES", "OUT OF THE FICTION", "INSIDE THE FICTION"],
+    METHOD.feedbackInPlay,
+    [2000, 1700, 2400, 3980]
   ));
 
   children.push(pageBreak());
+  children.push(sectionHeading("The Metalinguistic Clue, Which This Book Used to Ban"));
+  children.push(bodyPara(
+    `An earlier version of this chapter said never to use a metalinguistic clue during play, on the reasoning that naming a rule breaks the fiction. That was right about classroom metalanguage and wrong about this game — and it was throwing away the second strongest technique in the table.`
+  ));
+  children.push(bodyPara(
+    `A metalinguistic clue is not a grammar explanation. It is one clause that names what went wrong, and there are people in every setting who would plausibly say one: a clerk, a scribe, a judge, anybody writing something down and unwilling to write it down wrong. On a coast that runs on licences and exact wording, that person is on nearly every street.`
+  ));
+  children.push(spacer(160));
+  children.push(threeColTable(
+    ["THE FOUR LIMITS", "WHAT THAT MEANS"],
+    METHOD.metalinguisticLimits,
+    [2800, 7280]
+  ));
+  children.push(spacer(160));
+  children.push(bodyPara(
+    `Inside those four limits it is the strongest move you have that a character can still perform. Outside them it is a grammar lesson, and a grammar lesson costs you the fiction that makes everything else in this book work.`
+  ));
+
+  children.push(spacer(220));
   children.push(sectionHeading("The Three-Step Ladder"));
   children.push(bodyPara(
     `You cannot prompt every error — a session would collapse into repetition and the story would never move. So the rule is not “always prompt”. It is a ladder, and where an error lands on it depends entirely on whose error it is and what they are studying.`,
@@ -1404,14 +1419,7 @@ function chapter5() {
   ));
   children.push(threeColTable(
     ["WHEN", "WHAT YOU DO"],
-    [
-      ["An error that does not block understanding and is not that student's Language Focus.",
-       "Recast, and keep going. It is not worth the friction, and you will get another chance next week."],
-      ["An error in the exact structure that student is working on this month.",
-       "Prompt, in character. Ask them to say it again, repeat it back, or stop halfway and wait. They reformulate, and this time they notice."],
-      ["A pattern you have watched the same student repeat for weeks.",
-       "Name it explicitly — in the debrief at the end of the session, with the fiction already closed. This is the one place where saying “here is the rule” is the right move."],
-    ],
+    METHOD.correctionLadder,
     [4400, 5680]
   ));
 
@@ -1436,27 +1444,46 @@ function chapter5() {
   children.push(spacer(180));
   children.push(calloutBox(
     "If you are not at the Ludus",
-    `Any NPC in any setting can do all three. A bored border guard asks you to repeat yourself. A suspicious merchant says your own words back to you. A nervous informant starts a sentence and cannot finish it. The technique does not need the Ludus — the Ludus just means you already know who is going to do it.`,
+    `Any NPC in any setting can do all four. A bored border guard asks you to repeat yourself. A suspicious merchant says your own words back to you. A nervous informant starts a sentence and cannot finish it. A clerk will not stamp the form until the sentence on it is right. The technique does not need the Ludus — the Ludus just means you already know who is going to do it.`,
     "clarify"
   ));
 
-  children.push(sectionHeading("The Debrief Is Where Explicit Teaching Lives"));
+  children.push(pageBreak());
+  children.push(sectionHeading("Taking Notes, and Then Feedback"));
   children.push(bodyPara(
-    `The last five minutes of a session are out of character by design, and that makes them the only safe place for direct correction. Keep it to one point per student, maximum, and tie it to something that actually happened in play — “twice tonight you said if she will come; the if half never takes will” lands because both of you remember the moment.`
+    `This is the other half of correction, and it is the half that makes the priority rule affordable. You can decline to correct in the moment precisely because there is somewhere else for the error to go.`
   ));
+  children.push(spacer(140));
+  children.push(subHeading("Taking notes"));
+  children.push(bodyPara(METHOD.takingNotes.what));
+  children.push(bodyPara(METHOD.takingNotes.how));
+  children.push(bodyPara(METHOD.takingNotes.what_not));
+  children.push(spacer(120));
+  children.push(calloutBox("Why the notebook is what buys you the rule", METHOD.takingNotes.why, "clarify"));
+
+  children.push(spacer(200));
+  children.push(subHeading("Feedback, at the close"));
   children.push(bodyPara(
-    `Do not save up a list. A student who receives five corrections at the end of a session hears one message, and it is not about grammar.`
+    `The last ten minutes of a session are out of character by design, and that makes them the only safe place for direct correction. Explicit correction scores thirty-six percent repair in the table and zero on the student's own repair, for the same reason the recast does: you handed over the answer. That is acceptable here, where the goal is that they notice something, and unacceptable during a scene, where the goal is that they produce something.`
+  ));
+  children.push(spacer(140));
+  children.push(threeColTable(
+    ["HOW FEEDBACK IS GIVEN", "WHAT THAT MEANS"],
+    METHOD.feedbackRules,
+    [3000, 7080]
+  ));
+  children.push(spacer(180));
+  children.push(calloutBox("Never point a finger", METHOD.feedbackNever, "warn"));
+  children.push(spacer(160));
+  children.push(bodyPara(
+    `The whole of this is one idea: the objective is never to show a student their error. It is to leave them thinking about their own English on the way home. Those two things look similar from the outside and they produce opposite students.`,
+    { italics: true }
   ));
 
   children.push(sectionHeading("What Never Happens"));
   children.push(threeColTable(
     ["NEVER", "WHY"],
-    [
-      ["Stopping a scene to explain a rule.", "It converts a game back into a class, and the students feel the switch instantly. Whatever you were about to teach costs more than it is worth."],
-      ["Correcting a student in front of the table by naming their error.", "Principle 6 and Principle 7 both die in that sentence. Everything after it is spoken more carefully and less often."],
-      ["Prompting the same student twice in one scene.", "Once is a character reacting. Twice is an interrogation, and they will hear the difference."],
-      ["Prompting an error the student cannot yet fix.", "If the structure is above where they are, they will reformulate it wrong twice and learn only that speaking is risky. Recast that one and move on."],
-    ],
+    METHOD.correctionNever,
     [3400, 6680]
   ));
 
@@ -1482,22 +1509,22 @@ const trainingPhases = [
    "Half a session where every student spoke and the trainee never once explained a rule out loud."],
   ["5", "Run a full session",
    "Silent observation end to end, then a structured debrief. After this they are cleared to run their own table, with one follow-up visit a month for the first three months.",
-   "All seven criteria met in a single session."],
+   "Every criterion met in a single session."],
 ];
 
 const trainingCriteria = [
   ["No stretch of teacher narration ran past 45 seconds.", "Principle 1. The most common failure in phases 3 and 4, and the easiest to see."],
   ["Every student spoke in at least three scenes.", "Principle 7. Count it. Do not estimate it."],
   ["Each student's Language Focus was aimed at at least once.", "Principle 4. This is the difference between a fun session and a lesson."],
-  ["At least three in-character prompts were used.", "Chapter 5. Clarification request, repetition or elicitation — not recasts."],
-  ["No explicit correction happened during a scene.", "Chapter 5. One slip is a note; a habit is a retrain."],
+  ["At least three in-character prompts were used.", "Chapter 6. Elicitation, a metalinguistic clue from somebody exact, repetition or a clarification request — not recasts."],
+  ["No explicit correction happened during a scene.", "Chapter 6. One slip is a note; a habit is a retrain."],
   ["Nobody finished anybody's sentence, the trainee included.", "Principle 7, and the single hardest habit to break in an experienced teacher."],
-  ["Every student held the lantern at least once.", "Chapter 6. The easiest of the seven to check and the easiest to forget under pressure."],
+  ["Every student held the lantern at least once.", "Chapter 9. The easiest of these to check and the easiest to forget under pressure."],
 ];
 
 function chapter8() {
   const children = [];
-  children.push(eyebrow("Chapter 9"));
+  children.push(eyebrow("Chapter 12"));
   children.push(chapterTitle("Learning to Run It"));
 
   children.push(flavorQuote([
@@ -1551,7 +1578,7 @@ function chapter8() {
   children.push(spacer(180));
   children.push(calloutBox(
     "How to run the debrief",
-    `Trainee speaks first, for two minutes, on what they would change. Then you go through the six, in order, saying yes or no to each. Then you pick exactly one to work on next time. One. A trainee who leaves with six things to fix fixes none of them.`,
+    `Trainee speaks first, for two minutes, on what they would change. Then you go through the ${n(trainingCriteria.length)}, in order, saying yes or no to each. Then you pick exactly one to work on next time. One. A trainee who leaves with ${n(trainingCriteria.length)} things to fix fixes none of them.`,
     "example"
   ));
 
@@ -1560,17 +1587,460 @@ function chapter8() {
     `The first teacher of this system has no trainer, and neither will the second one in a school that only has one table. The five phases still work, with one substitution: record the session, and be your own observer a day later.`
   ));
   children.push(bodyPara(
-    `You cannot self-assess in the moment — you are busy running the table, and your memory of a session is systematically kinder to you than the recording is. But watching yourself against seven binary criteria a day later is close to as good as an observer, and on two of them it is better, because the recording knows exactly how long you talked and your memory does not.`
+    `You cannot self-assess in the moment — you are busy running the table, and your memory of a session is systematically kinder to you than the recording is. But watching yourself against ${n(trainingCriteria.length)} binary criteria a day later is close to as good as an observer, and on two of them it is better, because the recording knows exactly how long you talked and your memory does not.`
   ));
   children.push(calloutBox(
     "The cheap version that actually works",
-    `Record the audio on your phone. The next day, do one pass with a timer and a piece of paper: mark every stretch where you speak for more than 45 seconds, and tally which student spoke in which scene. That is two of the seven criteria measured properly, and it is fifteen minutes of work. Do it once a month, not every week.`,
+    `Record the audio on your phone. The next day, do one pass with a timer and a piece of paper: mark every stretch where you speak for more than 45 seconds, and tally which student spoke in which scene. That is two of the ${n(trainingCriteria.length)} criteria measured properly, and it is fifteen minutes of work. Do it once a month, not every week.`,
     "example"
   ));
 
   children.push(sectionHeading("What Comes After the Fifth Session"));
   children.push(bodyPara(
-    `The new teacher runs their own table. You visit once a month for three months, observe silently, and debrief against the same seven lines. After that they are on their own, with one standing rule: any time a table starts to feel flat, go back to the seven criteria before changing anything about the story. Nine times out of ten the story was never the problem.`
+    `The new teacher runs their own table. You visit once a month for three months, observe silently, and debrief against the same ${n(trainingCriteria.length)} lines. After that they are on their own, with one standing rule: any time a table starts to feel flat, go back to the seven criteria before changing anything about the story. Nine times out of ten the story was never the problem.`
+  ));
+
+  return children;
+}
+
+// ---------------------------------------------------------------------------
+// CHAPTER 4 — BEFORE THE SESSION
+// Every number, step and rule on these pages comes from core/method.js.
+// ---------------------------------------------------------------------------
+
+function chapterBefore() {
+  const children = [];
+  children.push(eyebrow("Chapter 4"));
+  children.push(chapterTitle("Before the Session"));
+
+  children.push(flavorQuote(
+    `You are not preparing a story. You are preparing four questions and one situation, and the story is what the table does to them.`
+  ));
+  children.push(spacer(140));
+
+  children.push(bodyPara(
+    `Twenty minutes, once per session. That is the whole requirement, and it is deliberately small — a preparation routine that takes an hour is a routine that gets skipped in week six, and a skipped routine is a session aimed at where your students used to be.`
+  ));
+  children.push(bodyPara(
+    `The routine is built so that the Panel does the reading and you do the deciding. Every step that could be a lookup is a lookup. Exactly one step needs a human being, and it is step 6.`
+  ));
+
+  children.push(sectionHeading("The Routine, In Order"));
+  children.push(threeColTable(
+    ["", "STEP", "TIME", "WHAT IT IS"],
+    METHOD.preparation,
+    [500, 2600, 900, 6080]
+  ));
+  children.push(spacer(180));
+  children.push(calloutBox("If you have five minutes instead of twenty", METHOD.preparationLaw, "warn"));
+
+  children.push(spacer(220));
+  children.push(sectionHeading("Step 1, Properly: What You Type"));
+  children.push(bodyPara(
+    `You type three things per student and nothing else: their coursebook level, their unit, and their lesson letter. The Panel calculates the rest — the Language Focus, whether they present tonight, which Actions their unit pulls, the reminder they get for next time, and whether a quiz is due.`
+  ));
+  children.push(bodyPara(
+    `The lesson letter is the single most important cell in the file, because everything else is derived from it. The cycle has five positions and a student walks A to D and then starts the next unit.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["LETTER", "WHAT IT IS", "WHAT HAPPENS IN THE SESSION", "PRESENTS?"],
+    METHOD.lessonCycle,
+    [1100, 2200, 4780, 2000]
+  ));
+  children.push(spacer(160));
+  METHOD.cycleNotes.forEach((n) => children.push(bodyPara("· " + n, { after: 40 })));
+
+  children.push(spacer(200));
+  children.push(calloutBox(
+    "Both class formats use the same routine",
+    `A group that meets once for two hours covers two lessons of the cycle back to back — A in the first hour, B in the second. A group that meets twice for an hour covers one lesson each time. ${METHOD.trailPace.note} So you prepare the same way for both, and the only difference is how many letters you move on a given night.`,
+    "clarify"
+  ));
+
+  children.push(pageBreak());
+  children.push(sectionHeading("Step 2, Properly: Reading the Four Focuses"));
+  children.push(bodyPara(METHOD.languageFocusRule.what));
+  children.push(bodyPara(METHOD.languageFocusRule.changesWhen + " " + METHOD.languageFocusRule.notTiedToGrowth));
+  children.push(calloutBox(
+    "Nobody types a Focus",
+    METHOD.languageFocusRule.whoTypesIt,
+    "example"
+  ));
+  children.push(spacer(160));
+  children.push(bodyPara(
+    `Four lines is one minute of reading and it is the entire pedagogical content of the session. A teacher who does this step and nothing else will run a better session than one who writes three pages of plot and never looks at it.`
+  ));
+
+  children.push(sectionHeading("Steps 4 and 5: Aiming the Scene"));
+  children.push(bodyPara(METHOD.actionPrinciple, { italics: true }));
+  children.push(spacer(120));
+  children.push(bodyPara(
+    `Each unit of the coursework maps to one or two Actions — the communicative jobs a person actually does with language. The Panel does that mapping for you and tells you which Action reaches the most of your table tonight. Build the situation on that Action.`
+  ));
+  children.push(bodyPara(
+    `Then find who it misses, because there is nearly always one. You do not redesign the scene for them. You write one line of dialogue for a character that asks for their Action, and you have it ready before the session starts. One prepared line is the difference between a student being included and a student being remembered at ten to nine.`
+  ));
+  children.push(calloutBox(
+    "What twenty minutes buys you",
+    `Ana on past simple, Tiago on indirect questions, Leo on is and are, Vitor revising his unit. That is four scene ideas already. Somebody has to be asked to tell what happened, somebody has to ask a stranger a careful question, somebody has to describe what is in a room, and somebody needs the same ground twice. You have not written a plot yet and you already have a session.`,
+    "example"
+  ));
+
+  children.push(pageBreak());
+  children.push(sectionHeading("Step 6: Situations, Never Outcomes"));
+  children.push(bodyPara(
+    `This is the one step no file can do for you, and it is where the eight minutes go. For each scene you write three things down: who wants what, what is at stake, and what happens if nobody does anything. You never write what the players will do.`
+  ));
+  children.push(bodyPara(
+    `A scene that only works one way turns you into a driver, and every minute you spend steering is a minute a student is not talking. A scene built as a situation cannot be derailed, because there is no rail.`
+  ));
+  children.push(spacer(160));
+  children.push(threeColTable(
+    ["NEVER", ""],
+    METHOD.preparationNever.map((n) => [n.split(". ")[0] + ".", n.split(". ").slice(1).join(". ")]),
+    [3400, 6680]
+  ));
+
+  children.push(spacer(200));
+  children.push(sectionHeading("Step 8: The Flags"));
+  children.push(bodyPara(
+    `The Panel raises these on its own, and none of them is something you act on during the session. A flag is a fifteen-minute conversation to schedule, not a scene to change.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["THE FLAG", "WHAT IT MEANS, AND WHAT YOU DO"],
+    METHOD.homeworkWatchpoints,
+    [3400, 6680]
+  ));
+
+  return children;
+}
+
+// ---------------------------------------------------------------------------
+// CHAPTER 5 — AT THE TABLE
+// ---------------------------------------------------------------------------
+
+function chapterAtTable() {
+  const children = [];
+  children.push(eyebrow("Chapter 5"));
+  children.push(chapterTitle("At the Table"));
+
+  children.push(flavorQuote(
+    `Three people can describe the room. Only one person can decide that describing the room is what this moment is for.`
+  ));
+  children.push(spacer(140));
+
+  children.push(bodyPara(
+    `Most of what happens in a session could, in principle, be done by anyone. Description, voices, reacting to a roll — a confident student could do all of it. Three things could not, and those three are your actual job. Everything else you do is optional and should be the first thing you drop when a session runs short.`
+  ));
+
+  children.push(sectionHeading("One — You Decide What Each Moment Is For"));
+  children.push(bodyPara(
+    `Before a scene starts, you know which student is about to be in the spotlight and which structure you want out of them. That is invisible to the table and it is the difference between a session that produces language and one that produces excitement.`
+  ));
+  children.push(bodyPara(
+    `The mechanism is simple. Each student is carrying a Language Focus, and you build the scene so that the natural thing to say uses it. Not the only thing. The natural thing.`
+  ));
+  children.push(calloutBox(
+    "Example",
+    `Leo's Language Focus is “is / are — affirmative and questions.” You do not announce a grammar exercise. You put him alone in a room with a nervous servant and have the servant ask, quietly, whether the people he arrived with are dangerous. Leo cannot answer that without using is and are half a dozen times, and he will never notice that he was aimed at.`,
+    "example"
+  ));
+  children.push(bodyPara(
+    `Do this for each student, once per session, and the session did its job. Trying to do it for every student in every scene will exhaust you by week three.`
+  ));
+
+  children.push(sectionHeading("Two — You Protect the Weakest Speaker"));
+  children.push(bodyPara(
+    `A mixed-level table has a gravity problem. The strongest speaker answers first, because they can. The weakest speaker learns, by about session four, that waiting three seconds means somebody else will handle it. Left alone, this hardens permanently, and it looks like shyness when it is actually a habit the table taught them.`
+  ));
+  children.push(bodyPara(
+    `You break it with structure, not with encouragement. Address a question to a named player instead of to the group. Ask the beginner first and the advanced student second — asking in the other order tells the beginner that everything worth saying has already been said. Where possible, give the beginner the closed choice and the advanced student the open one. Both are playing the same scene. Only one of them was asked something they can answer under pressure.`
+  ));
+  children.push(calloutBox(
+    "Watch for this",
+    `A student who ends three sessions in a row with all their Spotlight Tokens unspent is not being modest. They are not getting in. That is your problem to fix, not theirs.`,
+    "warn"
+  ));
+
+  children.push(sectionHeading("Three — You Correct Without Anybody Noticing"));
+  children.push(bodyPara(
+    `The single hardest habit to build, and the one that most separates this from a normal class. A student says something wrong. Every teaching instinct you have says correct it. You are not going to — not out loud, and not by stopping anything. Sometimes you fold the right form into your next line; more often you make a character react in a way that gets the student to say it again themselves.`
+  ));
+  children.push(bodyPara(
+    `Which of those two you reach for, and when, is the whole of Chapter 6. It is the most useful chapter in this book and the one worth rereading after your first month.`
+  ));
+
+  children.push(spacer(220));
+  children.push(sectionHeading("The Shape of a Session"));
+  children.push(bodyPara(
+    `Two hours, in seven blocks. A group that meets twice for an hour runs the same blocks split across the two meetings, with one opening and one debrief each time.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["MIN", "BLOCK", "WHAT HAPPENS"],
+    METHOD.sessionShape,
+    [1200, 2200, 6680]
+  ));
+  children.push(spacer(180));
+  children.push(calloutBox(
+    "What you earn tonight is what you spend next week",
+    `Language Points are counted in the ${METHOD.pointsRhythm.countedIn.toLowerCase()} and handed over in the ${METHOD.pointsRhythm.handedOutIn.toLowerCase()} of the following session. The gap is not an oversight. It means the last ten minutes of a session are about what somebody attempted, and the first ten minutes of the next one are about what they can now do with it.`,
+    "clarify"
+  ));
+
+  children.push(spacer(200));
+  children.push(sectionHeading("Presentations"));
+  children.push(bodyPara(METHOD.presentationRule.what + " " + METHOD.presentationRule.when + ", " + METHOD.presentationRule.length + "."));
+  children.push(bodyPara(METHOD.presentationRule.why));
+  children.push(calloutBox("Nobody is marked on it", METHOD.presentationRule.notAssessed, "example"));
+
+  children.push(pageBreak());
+  children.push(sectionHeading("How You Behave, As Things You Can Be Observed Doing"));
+  children.push(bodyPara(
+    `None of these are attitudes. Every one of them is a behaviour somebody watching a recording could mark yes or no, which is the only kind of rule worth writing for a person who is busy.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["DO THIS", "WHY, AND HOW YOU KNOW"],
+    METHOD.conduct,
+    [3000, 7080]
+  ));
+
+  children.push(pageBreak());
+  children.push(sectionHeading("Running a Group of Four"));
+  children.push(bodyPara(
+    `Four students, four different units, one shared story. This is the arrangement every new teacher asks about first, and the answers are short.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["THE QUESTION", "THE ANSWER"],
+    METHOD.groupRules,
+    [3400, 6680]
+  ));
+
+  children.push(pageBreak());
+  children.push(sectionHeading("When a Student Freezes"));
+  children.push(bodyPara(
+    `It will happen weekly, and it is not a discipline problem — it is a working-memory problem. A student who is holding a plan, a grammar target and a second language at the same time will occasionally drop all three. What you do in the next four seconds decides whether they try again next week.`
+  ));
+  children.push(threeColTable(
+    ["DO", "DO NOT"],
+    [
+      ["Wait. Count four seconds silently before you fill the gap. Most freezes end on their own by three.", "Jump in at one second. You will be the reason the silence never gets a chance to resolve."],
+      ["Narrow the question. “What is the first thing you say to him?” is easier than “What do you do?”", "Repeat the same question louder or slower. The problem was never that they did not hear it."],
+      ["Offer two options and let them pick, then ask them to say the chosen one in their own words.", "Answer for them and move on. It rescues the scene and costs you the student."],
+      ["Let them ask you, in English, how to say the word they are missing. That question is part of the game.", "Supply the Portuguese. The moment you do it once, it becomes the default for the rest of the year."],
+    ],
+    [5040, 5040]
+  ));
+
+  children.push(sectionHeading("When One Student Takes Everything"));
+  children.push(bodyPara(
+    `Usually the most fluent, usually not doing it on purpose, usually the person having the best time. Handle it structurally and you keep their enthusiasm; handle it personally and you lose it.`
+  ));
+  children.push(bodyPara(
+    `Cut away mid-momentum. End their scene at its high point and move to somebody else — this is a standard television technique and it works because leaving is not the same as being stopped. Give them Moves that only pay off through other people. And give them the hardest linguistic target in the room, because a bored advanced student is a loud advanced student.`
+  ));
+
+  return children;
+}
+
+// ---------------------------------------------------------------------------
+// CHAPTER 7 — AFTER THE SESSION
+// ---------------------------------------------------------------------------
+
+function chapterAfter() {
+  const children = [];
+  children.push(eyebrow("Chapter 7"));
+  children.push(chapterTitle("After the Session"));
+
+  children.push(flavorQuote(
+    `Ten minutes, the same night. Done the next morning it takes twenty and is worse. Left for the weekend it does not get done.`
+  ));
+  children.push(spacer(140));
+
+  children.push(bodyPara(
+    `This chapter is the shortest in the book and the one you will actually use every week. It is a list of what gets written down, where it goes, and who types it.`
+  ));
+  children.push(bodyPara(
+    `There is one thing on it that surprises teachers, so it is worth saying at the top: you never mark homework in this course. ${METHOD.HOMEWORK_LOAD} What you record is whether it was done, because that is the number that predicts a stall three weeks before it happens.`
+  ));
+
+  children.push(sectionHeading("What You Fill In"));
+  children.push(threeColTable(
+    ["WHAT", "WHERE IT GOES", "WHAT YOU ACTUALLY DO"],
+    METHOD.afterTheSession,
+    [2000, 2400, 5680]
+  ));
+  children.push(spacer(180));
+  children.push(calloutBox("The same night", METHOD.afterTheSessionLaw, "warn"));
+
+  children.push(spacer(220));
+  children.push(sectionHeading("The Quiz"));
+  children.push(bodyPara(
+    `The unit quiz is ours. It is called the ${METHOD.TEST_NAME}, it is written by ${HOUSE} in ${METHOD.TEST_TOOL}, and it is not the publisher's unit test. Teachers coming from the platform assume otherwise, and it matters: this one is ours to change when it is wrong.`
+  ));
+  children.push(threeColTable(
+    ["", ""],
+    [
+      ["Released", METHOD.testRule.released],
+      ["Pass mark", `${METHOD.PASS_MARK}%`],
+      ["Attempts", `No hard limit. At the ${METHOD.testRule.softCap + 1}rd attempt, you talk to the student first. ${METHOD.testRule.softCapReason}`],
+      ["On a pass", METHOD.testRule.onPass],
+      ["If they stall", METHOD.testRule.onStall],
+      ["Watchpoint", METHOD.testRule.watchpoint],
+    ],
+    [2000, 8080]
+  ));
+  children.push(spacer(180));
+  children.push(calloutBox(
+    "The brake is the student's, not yours",
+    `${METHOD.pacing.theBrake} ${METHOD.pacing.why}`,
+    "clarify"
+  ));
+
+  children.push(spacer(200));
+  children.push(sectionHeading("The Growth Moment"));
+  children.push(bodyPara(
+    `${METHOD.growthRule.trigger} Growth Level goes up by one, and the student takes whatever that rung of the ladder carries. Everybody starts at ${METHOD.growthRule.startsAt}, the ladder has ${METHOD.growthRule.levels} rungs, and none of it ever touches the dice.`
+  ));
+  children.push(calloutBox(
+    "Growth Level is not the coursebook level",
+    METHOD.growthRule.notTheSameAs,
+    "warn"
+  ));
+  children.push(spacer(160));
+  children.push(bodyPara(
+    `Running one costs about two minutes at the top of a session and it is worth doing out loud in front of everyone. The student announces it, takes the reward, the table reacts, and you start playing. The public part is not ceremony — it is the only moment in the week when private study becomes visible to the group.`
+  ));
+  children.push(pageBreak());
+  children.push(sectionHeading("What a Rung Can Carry"));
+  children.push(bodyPara(
+    `A Boon at every single Growth Moment, without exception, and on some rungs one of the other two as well. None of the three ever adds a number to a roll.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["", "WHAT IT IS"],
+    SYS.growthKinds.map((g) => [g[0], g[1].split(". ").slice(0, 2).join(". ") + "."]),
+    [2400, 7680]
+  ));
+  children.push(spacer(200));
+  children.push(sectionHeading("The Codex"));
+  children.push(bodyPara(
+    `One sentence per lantern passed, written the same night: what the student invented, and what they called it. Four lines a week, thirty seconds of work.`
+  ));
+  children.push(bodyPara(
+    `The reason it is worth thirty seconds is arithmetic. After a year it is roughly a hundred and fifty lines of world, written by your own students, in English, about subject matter they are invested in, at exactly their level. No published material produces reading text like that, and it costs you half a minute a week.`
+  ));
+  children.push(calloutBox(
+    "And use one, next session, by name",
+    `Step 7 of the preparation routine exists for this. Nothing makes a student own the world faster than hearing their own invention come back with somebody else's hands on it.`,
+    "example"
+  ));
+
+  children.push(sectionHeading("One Note Per Student"));
+  children.push(bodyPara(
+    `Not a grade, and not a correction — those live in the debrief. One observation: what they tried, what they avoided, what they said that surprised you.`
+  ));
+  children.push(bodyPara(
+    `A month of one-line notes is the only document that will tell you what is actually happening to somebody's English. Marks tell you what they can do under test conditions. These tell you what they reach for when nobody is testing them, which is the thing this whole course is built to change.`
+  ));
+
+  return children;
+}
+
+// ---------------------------------------------------------------------------
+// CHAPTER 8 — SESSION ZERO
+// Written 23/09/2026, because of what the first real session exposed.
+// ---------------------------------------------------------------------------
+
+function chapterSessionZero() {
+  const children = [];
+  children.push(eyebrow("Chapter 8"));
+  children.push(chapterTitle("Session Zero"));
+
+  children.push(flavorQuote(
+    `A confused student does not decide the game is confusing. They decide they were not able to keep up.`
+  ));
+  children.push(spacer(140));
+
+  children.push(bodyPara(
+    `This chapter exists because of a specific failure, and it is worth naming. The first real session of this system was run by the person who designed it, and he came out of it having written down that he felt lost. He had improvised the introduction to the Ludus, and when he handed the lantern to a student to describe a gate, he realised there had never been a moment where anybody explained that a student might be asked to invent part of the world.`
+  ));
+  children.push(bodyPara(
+    `If the designer felt lost, the four students were worse off. And the thing about week one is that students do not attribute confusion to the explanation. They attribute it to themselves — they conclude that this is something other people can follow and they cannot — and that conclusion is very hard to reverse and usually leaves quietly.`
+  ));
+  children.push(calloutBox(
+    "What was actually missing",
+    `The old Session Zero script was a clock: what to do at 10:35. It was not a teaching module. A clock tells you when to introduce Language Points. It does not tell you how to introduce a concept to somebody who has never heard of it, which is a different skill and the one that was needed.`,
+    "warn"
+  ));
+
+  children.push(spacer(200));
+  children.push(sectionHeading("The Five Laws of This Session"));
+  children.push(threeColTable(
+    ["THE LAW", "WHY IT IS ONE"],
+    METHOD.sessionZeroLaws,
+    [3000, 7080]
+  ));
+
+  children.push(pageBreak());
+  children.push(sectionHeading("The Running Order"));
+  children.push(bodyPara(
+    `Two hours. A group that meets for one hour runs it across two meetings, splitting after the character building — but do not start Adventure 1 until the whole of this has happened.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["MIN", "WHAT", "HOW"],
+    METHOD.sessionZero,
+    [1200, 2600, 6280]
+  ));
+
+  children.push(pageBreak());
+  children.push(sectionHeading("Introducing the Concepts"));
+  children.push(bodyPara(
+    `Nine concepts, twenty minutes, and the same three steps for every one of them: you SAY it in English a beginner can follow, you SHOW it happening once, and then every student USES it once while you are still standing there.`
+  ));
+  children.push(bodyPara(METHOD.conceptIntroductionRule));
+  children.push(spacer(140));
+  children.push(calloutBox(
+    "The third step is the one that gets dropped",
+    `And it is the one that matters. A concept a student has heard is a concept they will half-remember. A concept a student has used once, out loud, in front of the others, is a concept they own.`,
+    "warn"
+  ));
+
+  // Three to a page: nine concepts land as exactly three clean pages. The
+  // concept's name IS the table header — a separate heading above an empty
+  // blue bar looked like a bug, because it was one.
+  METHOD.conceptsToIntroduce.forEach((c, i) => {
+    if (i % 3 === 0) children.push(pageBreak());
+    children.push(spacer(i % 3 === 0 ? 0 : 240));
+    children.push(threeColTable(
+      [`${i + 1} · ${c.name}`, ""],
+      [["SAY", c.say], ["SHOW", c.show], ["EVERY STUDENT USES IT", c.use]],
+      [2400, 7680]
+    ));
+  });
+
+  children.push(pageBreak());
+  children.push(sectionHeading("Before Anybody Leaves"));
+  children.push(bodyPara(
+    `Seven lines. Not a feeling about how it went — a check you can actually run in the last two minutes, and any line you cannot tick is a thing to fix at the top of session one rather than discover in session four.`,
+    { after: 100 }
+  ));
+  children.push(threeColTable(
+    ["✓", "EVERY STUDENT HAS…"],
+    METHOD.sessionZeroChecklist.map((c) => ["", c]),
+    [700, 9380]
+  ));
+
+  children.push(spacer(200));
+  children.push(calloutBox(
+    "Over-explain here and you never have to again",
+    `Session Zero is the one session where you are explaining rather than playing, which makes it the one where the English is heaviest and the stakes are lowest — nothing is at risk in the fiction because there is no fiction yet. Spend the twenty minutes. Every one of them buys back an hour of somebody being quietly lost in October.`,
+    "example"
   ));
 
   return children;
@@ -1589,9 +2059,15 @@ children.push(...chapter2());
 children.push(pageBreak());
 children.push(...chapter3());
 children.push(pageBreak());
-children.push(...chapter4());
+children.push(...chapterBefore());
+children.push(pageBreak());
+children.push(...chapterAtTable());
 children.push(pageBreak());
 children.push(...chapter5());
+children.push(pageBreak());
+children.push(...chapterAfter());
+children.push(pageBreak());
+children.push(...chapterSessionZero());
 children.push(pageBreak());
 children.push(...chapterLantern());
 children.push(pageBreak());

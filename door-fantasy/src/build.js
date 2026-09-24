@@ -41,6 +41,10 @@ const {
 // and this build already has a readAloud() (layout). Do not un-alias it.
 const WORLD = require("../../core/doors/tallow-coast-world.js");
 const OPENING = WORLD.readAloud;
+// ⚠ 24/09/2026 — the village had been retyped here as "Sedge Bottom, ninety"
+// while core/ said Fenny Cross, sixty, in three other places. It is data now.
+// Never type this village's name or size into this file again.
+const VILLAGE = WORLD.fennyCross;
 
 const sizeOf = (path) => {
   const buf = readFileSync(path);
@@ -652,9 +656,29 @@ function npcCard(npc) {
 // ===========================================================================
 // TITLE PAGE
 // ===========================================================================
+// ---------------------------------------------------------------------------
+// THE HOUSE MARK — 23/09/2026. One file, core/assets/ludify-logo.png, used by
+// every cover. It is drawn only if the file is there, so a checkout without
+// the asset still builds; the cover simply falls back to type.
+// ---------------------------------------------------------------------------
+function houseMark(widthPx = 190) {
+  const p = require("path").join(__dirname, "..", "..", "core", "assets", "ludify-logo.png");
+  if (!require("fs").existsSync(p)) return null;
+  const buf = require("fs").readFileSync(p);
+  const w = buf.readUInt32BE(16), h = buf.readUInt32BE(20);
+  return new Paragraph({
+    spacing: { after: 260 },
+    children: [new ImageRun({
+      data: buf,
+      transformation: { width: widthPx, height: Math.round(widthPx * h / w) },
+    })],
+  });
+}
+
 function titlePage() {
   return [
-    spacer(2400),
+    spacer(1700),
+    ...[houseMark(180)].filter(Boolean),
     new Paragraph({
       spacing: { after: 60 },
       children: [new TextRun({ text: GAME_NAME.toUpperCase(), bold: true, color: BRAND, size: 26, characterSpacing: 40 })],
@@ -1096,6 +1120,17 @@ function chapterWorld() {
   c.push(markerBlock("never", "Do not let a wardstone become a battery the players can carry",
     "A wardstone is buried, immovable, and older than the city on top of it. The moment one becomes portable, the coast stops being a place where burning has a geography — and the geography is the whole reason the licence, the road and Hesper Vane are interesting."));
   c.push(spacer(140));
+  c.push(markerBlock("never", "One city, one stone",
+    ["A city has ONE wardstone. Not a network, not a ring of them, not a big one and some small " +
+     "ones — one, buried, at the middle of the place the city actually lives in. That is why " +
+     "people call it the heart of the city and mean it literally, and the phrase stops meaning " +
+     "anything the moment there are several.",
+     "So a wardstone in trouble does not fail by having its siblings go out one at a time. It " +
+     "fails by REACHING LESS: the cold arrives at the edge of the city first and walks inwards, " +
+     "and the last ground still covered is the square the stone is under. Adventure 5 is built " +
+     "on exactly that, and it is why the Harvest Fair — which is held in the Ash Market, on top " +
+     "of the stone — is the worst possible place for the city to be standing when it goes."]));
+  c.push(spacer(140));
   c.push(bodyPara(WORLD.wardstones.andWhyTheRoadIsFrightening));
   c.push(spacer(120));
   c.push(calloutBox("How a wardstone is actually fed",
@@ -1108,7 +1143,7 @@ function chapterWorld() {
   c.push(subHeading("The sea, which is the hole in everything"));
   c.push(bodyPara(WORLD.theSeaLoophole));
 
-  c.push(pageBreak());
+  c.push(spacer(220));
   c.push(sectionHeading("What a used-up place is like"));
   c.push(bodyPara(
     "This is the question a student will ask in the first hour, and the one the GM most needs a " +
@@ -1713,11 +1748,11 @@ const ARC1 = [
 },
 {
   n: 3, sessions: "5–6", title: "The Woman Who Would Not Stop",
-  pitch: "A village two days inland is alive because Hesper Vane burns tapers for it without a licence — bones, fevers, one difficult birth a year. The Concord has scheduled an inspection. Everyone involved is right, and somebody is going to lose.",
+  pitch: `${VILLAGE.name} is two days inland and alive because Hesper Vane burns tapers for it without a licence — bones, fevers, one difficult birth a year. The Concord has scheduled an inspection. Everyone involved is right, and somebody is going to lose.`,
   lock: ["The village knows the characters' names and has an opinion about them. That opinion — good, bad, or split — is fixed and returns in Arc 2.",
          "Hesper's fate is whatever the table caused. She may be dead. Nothing later depends on her."],
   readAloud: [
-    "There are about ninety people in Sedge Bottom and today most of them are pretending to work. Word came up the road yesterday that an inspector is coming, and nobody has said out loud what that means, which is how you know they have all worked it out.",
+    `There are about ${VILLAGE.populationInWords} people in ${VILLAGE.name} and today most of them are pretending to work. Word came up the road yesterday that an inspector is coming, and nobody has said out loud what that means, which is how you know they have all worked it out.`,
     "Hesper Vane is in the third house from the well, setting a boy's arm. She does not stop when you come in. She does not look up when you explain who you are. She finishes, ties the sling, tells the boy he can go, and only then turns around.",
     "“Right,” she says. “Say it, then. I'd like to hear how you'll put it.”",
   ],
@@ -1802,17 +1837,17 @@ const ARC1 = [
 },
 {
   n: 5, sessions: "9–12", title: "The Harvest Fair",
-  pitch: "Ashlight's wardstones are failing, and the fair is in four days. If they go while the city is full, there will be a small Hush in the middle of a crowd. The characters have four days, no authority, and nobody who believes them yet.",
+  pitch: "Ashlight's wardstone is failing — not all at once, but from the edges in, and the fair is in four days. If it goes while the city is full, there will be a small Hush in the middle of a crowd. The characters have four days, no authority, and nobody who believes them yet.",
   lock: ["The disaster does not happen. Whatever route the table took, the fair ends and the city is standing.",
          "They are known in Ashlight now — by the guard, the guild and the Concord.",
          "They destroyed the first anchor of the Second Silence and have no idea that they did."],
   readAloud: [
     "Four days before the fair, Ashlight is the best it ever looks. There are trestles going up along the length of the west wall, somebody is arguing cheerfully about where the musicians will stand, and the whole city smells of frying onions and wet paint.",
-    "And on the north side, past the tannery, the wardstone is cold. It should be warm. It has been warm every day of every year that anyone has been paying attention to it, and nobody is paying attention to it, because the fair is in four days.",
+    "And on the north side, out past the Wick, the ground is cold. Not the weather — the ground. That is the far edge of what the wardstone under the market reaches, and it has reached that far every day of every year that anyone has been paying attention, and nobody is paying attention, because the fair is in four days.",
   ],
   waysIn: [
     ["A social victory", "They convince the council to postpone or move the fair. Hardest, cleanest, and needs everything they earned in Adventures 1 to 4."],
-    ["An investigative victory", "They find and break the thing draining the stones, without ever understanding what it was. Most satisfying mechanically."],
+    ["An investigative victory", "They find and break the thing draining the stone, without ever understanding what it was. Most satisfying mechanically."],
     ["A victory with a price", "They save the city and something is lost doing it — a person, a reputation, Hesper, the Warrant itself. The strongest ending for Arc 1 and the best set-up for Arc 2."],
   ],
   whoIsInIt: [
@@ -1821,7 +1856,7 @@ const ARC1 = [
     "Walk-ons: a council of five, of whom two are persuadable, one is hostile, and two have already spent the money.",
   ],
   ladder: [
-    "1. A second wardstone goes cold.",
+    "1. The cold reaches a second district, closer in. The stone is not being drained so much as shrinking.",
     "2. Somebody important dismisses them publicly, and the city takes his side.",
     "3. The fair opens early, by a day, because the weather turned good.",
   ],
@@ -1840,7 +1875,7 @@ const ARC1 = [
             "After it: ask the student whose character did the most to save the city what people are saying about them a week later. Let them describe their own reputation. It is the last beat of Arc 1 and it belongs to a student."],
   omen: ["The last of the arc, and the largest.",
          "In the final session, when the anchor breaks: everybody on that side of the city feels rested, suddenly and for no reason. Nobody remarks on it, because feeling well is not the sort of thing people remark on. Say it as a description of the evening, not as a clue."],
-  short: "Two days instead of four, three council members instead of five, one wardstone. Two sessions and the arc still lands.",
+  short: "Two days instead of four, three council members instead of five, one district cold instead of three. Two sessions and the arc still lands.",
   long: "Play all four days with a clock on the wall. Give the council five names and five reasons. Four sessions, and it is the best thing in the arc.",
   codex: ["Every tradition your students invented for the fair. Which route they took. What it cost.",
           "One line on all six people. This is the end of an arc — do the full two-minute routine."],
@@ -1877,7 +1912,7 @@ function chapterArc1() {
       ["2", "3–4", "The Empty Taper", "Three legal burns fail on one street. They are hired to find out why, and they will not."],
       ["3", "5–6", "The Woman Who Would Not Stop", "An unlicensed healer, a village that needs her, and an inspection in two days."],
       ["4", "7–8", "What Marrow Remembers", "The shrine, the stone, and three accounts of the day a city stopped."],
-      ["5", "9–12", "The Harvest Fair", "The wardstones are failing and the city is about to fill up."],
+      ["5", "9–12", "The Harvest Fair", "The wardstone is failing from the edges in and the city is about to fill up."],
     ], [500, 1200, 3000, CONTENT_W - 4700]));
 
   c.push(sectionHeading("The slow signals"));
@@ -1926,7 +1961,7 @@ function appendixA() {
     ["6", "3 · The Woman Who Would Not Stop", "The inspection has happened. The village has an opinion about them.", "ARGUE · SUPPOSE", "Hesper's burn fails"],
     ["7", "4 · What Marrow Remembers", "They know a fourth city existed and that it stopped rather than fell.", "NARRATE · REPORT", "—"],
     ["8", "4 · What Marrow Remembers", "They know Marrow has the name, and why she will not give it.", "REPORT · SPECULATE", "A name on the stone"],
-    ["9", "5 · The Harvest Fair", "They know the wardstones are failing and nobody believes them.", "PLAN", "—"],
+    ["9", "5 · The Harvest Fair", "They know the wardstone is failing and nobody believes them.", "PLAN", "—"],
     ["10", "5 · The Harvest Fair", "They have a plan, and one piece of evidence short of authority.", "PLAN · ARGUE", "Inland arrivals"],
     ["11", "5 · The Harvest Fair", "The plan is in motion and something has gone wrong with it.", "ARGUE · REGULATE", "—"],
     ["12", "5 · The Harvest Fair", "The fair ends, the city stands, the anchor is destroyed unknowingly.", "NARRATE", "Sudden rest"],
